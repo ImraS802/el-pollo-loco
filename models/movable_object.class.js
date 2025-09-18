@@ -5,6 +5,7 @@ class MovableObject {
   height = 150;
   width = 200;
   imageCache = {};
+  speed = 0.15;
 
   loadImage(path) {
     //creates a new image element in memory
@@ -15,11 +16,11 @@ class MovableObject {
 
   loadImages(arr) {
     arr.forEach((path) => {
-      //Create a new image → let img = new Image();.
+      //Create a new image
       let img = new Image();
       //Load the file
       img.src = path;
-      //Save it in imageCache → so you can reuse it later
+      //Save it in imageCache, so you can reuse it later
       this.imageCache[path] = img;
     });
   }
@@ -28,5 +29,9 @@ class MovableObject {
     console.log('Moving right');
   }
 
-  moveLeft() {}
+  moveLeft() {
+    setInterval(() => {
+      this.x -= this.speed;
+    }, 1000 / 60);
+  }
 }
