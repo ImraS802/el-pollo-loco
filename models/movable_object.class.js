@@ -7,14 +7,19 @@ class MovableObject {
   imageCache = {};
 
   loadImage(path) {
+    //creates a new image element in memory
     this.img = new Image();
+    //tells the image what file to load the path of the image
     this.img.src = path;
   }
 
   loadImages(arr) {
     arr.forEach((path) => {
+      //Create a new image → let img = new Image();.
       let img = new Image();
+      //Load the file
       img.src = path;
+      //Save it in imageCache → so you can reuse it later
       this.imageCache[path] = img;
     });
   }
