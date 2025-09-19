@@ -6,6 +6,7 @@ class MovableObject {
   width = 200;
   imageCache = {};
   speed = 0.15;
+  otherDirection = false;
 
   loadImage(path) {
     //creates a new image element in memory

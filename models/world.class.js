@@ -45,12 +45,22 @@ class World {
   }
 
   addToMap(movable) {
-    this.ctx.drawImage(
-      movable.img,
-      movable.x,
-      movable.y,
-      movable.height,
-      movable.width
-    );
+    this.ctx.save();
+
+    if (movable.otherDirection) {
+      // Flip horizontally
+      this.ctx.translate(movable.x + movable.width, movable.y);
+      this.ctx.scale(-1, 1);
+      this.ctx.drawImage(movable.img, 0, 0, movable.width, movable.height);
+    } else {
+      this.ctx.drawImage(
+        movable.img,
+        movable.x,
+        movable.y,
+        movable.width,
+        movable.height
+      );
+    }
+    this.ctx.restore();
   }
 }
