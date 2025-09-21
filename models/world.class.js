@@ -45,6 +45,7 @@ class World {
   }
 
   addToMap(movable) {
+    if (!movable.img || !movable.img.complete) return;
     this.ctx.save();
 
     if (movable.otherDirection) {

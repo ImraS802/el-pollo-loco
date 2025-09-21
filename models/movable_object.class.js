@@ -1,4 +1,5 @@
 class MovableObject {
+  currentImage = 0;
   x = 100;
   y = 250;
   img;
@@ -8,6 +9,7 @@ class MovableObject {
   speed = 0.15;
   otherDirection = false;
 
+  // Immediately assign a default image
   loadImage(path) {
     //creates a new image element in memory
     this.img = new Image();
@@ -15,6 +17,7 @@ class MovableObject {
     this.img.src = path;
   }
 
+  // Preload multiple images into cache
   loadImages(arr) {
     arr.forEach((path) => {
       //Create a new image
@@ -26,13 +29,24 @@ class MovableObject {
     });
   }
 
+  playAnimation(images) {
+    if (!images || images.length === 0) return;
+
+    let i = this.currentImage % images.length;
+    let path = images[i];
+
+    // Only assign if the image exists and is fully loaded
+    if (this.imageCache[path] && this.imageCache[path].complete) {
+      this.img = this.imageCache[path];
+      this.currentImage++; // only increment if image is ready
+    }
+  }
+
   moveRight() {
-    console.log('Moving right');
+    this.x += this.speed;
   }
 
   moveLeft() {
-    setInterval(() => {
-      this.x -= this.speed;
-    }, 1000 / 60);
+    this.x -= this.speed;
   }
 }
