@@ -8,6 +8,22 @@ class MovableObject {
   imageCache = {};
   speed = 0.15;
   otherDirection = false;
+  speedY = 0;
+  acceleration = 2; // how fast item accelerates
+
+  applyGravity() {
+    setInterval(() => {
+      if (this.isAboveGround()) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+      }
+    }, 1000 / 25);
+  }
+
+  isAboveGround() {
+    //141 falling spot on ground
+    return this.y < 141;
+  }
 
   // Immediately assign a default image
   loadImage(path) {
