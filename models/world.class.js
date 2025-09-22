@@ -49,16 +49,22 @@ class World {
     this.ctx.save();
 
     if (movable.otherDirection) {
-      // turn around
-      this.ctx.translate(movable.x + movable.width, movable.y);
-      this.ctx.scale(-1, 1);
-      this.ctx.drawImage(movable.img, 0, 0, movable.width, movable.height);
-      // draw rectangle
-      movable.drawRectangle(this.ctx);
+      this.flipImageBack(movable);
     } else {
       movable.draw(this.ctx);
       movable.drawFrame(this.ctx);
     }
     this.ctx.restore();
+  }
+  flipImage(movable) {
+    this.ctx.translate(movable.x + movable.width, movable.y);
+    this.ctx.scale(-1, 1);
+    this.ctx.drawImage(movable.img, 0, 0, movable.width, movable.height);
+  }
+  flipImageBack(movable) {
+    // turn around
+    this.flipImage(movable);
+    // draw rectangle
+    movable.drawRectangle(this.ctx);
   }
 }
