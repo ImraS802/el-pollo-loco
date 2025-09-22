@@ -45,6 +45,26 @@ class MovableObject {
     });
   }
 
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  }
+
+  drawFrame(ctx) {
+    ctx.beginPath();
+    ctx.lineWidth = '5';
+    ctx.strokeStyle = 'blue';
+    ctx.rect(this.x, this.y, this.width, this.height);
+    ctx.stroke();
+  }
+
+  drawRectangle(ctx) {
+    ctx.beginPath();
+    ctx.lineWidth = '4';
+    ctx.strokeStyle = 'blue';
+    ctx.rect(0, 0, this.width, this.height);
+    ctx.stroke();
+  }
+
   playAnimation(images) {
     if (!images || images.length === 0) return;
 

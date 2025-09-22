@@ -53,14 +53,11 @@ class World {
       this.ctx.translate(movable.x + movable.width, movable.y);
       this.ctx.scale(-1, 1);
       this.ctx.drawImage(movable.img, 0, 0, movable.width, movable.height);
+      // draw rectangle
+      movable.drawRectangle(this.ctx);
     } else {
-      this.ctx.drawImage(
-        movable.img,
-        movable.x,
-        movable.y,
-        movable.width,
-        movable.height
-      );
+      movable.draw(this.ctx);
+      movable.drawFrame(this.ctx);
     }
     this.ctx.restore();
   }

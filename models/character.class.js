@@ -37,8 +37,10 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
+      // this.walking_sound.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
+        this.otherDirection = false;
         // this.walking_sound.play();
       }
 
@@ -46,8 +48,7 @@ class Character extends MovableObject {
         this.moveLeft();
         // this.walking_sound.play();
 
-        // this.x -= this.speed;
-        // this.otherDirection = true;
+        this.otherDirection = true;
       }
 
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
