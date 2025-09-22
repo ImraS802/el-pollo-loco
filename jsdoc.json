@@ -1,0 +1,8 @@
+{
+  "source": {
+    "include": ["./person.js", "./classes/student.class.js"]
+  },
+  "opts": {
+    "destination": "./out"
+  }
+}
