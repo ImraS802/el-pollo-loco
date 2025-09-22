@@ -20,26 +20,6 @@ class MovableObject extends DrawableObject {
     return this.y < 141;
   }
 
-  drawFrame(ctx) {
-    if (this instanceof Character) {
-      ctx.beginPath();
-      ctx.lineWidth = '5';
-      ctx.strokeStyle = 'blue';
-      ctx.rect(this.x, this.y, this.width, this.height);
-      ctx.stroke();
-    }
-  }
-
-  drawRectangle(ctx) {
-    if (this instanceof Chicken) {
-      ctx.beginPath();
-      ctx.lineWidth = '4';
-      ctx.strokeStyle = 'blue';
-      ctx.rect(0, 0, this.width, this.height);
-      ctx.stroke();
-    }
-  }
-
   isColliding(movable) {
     return (
       this.x < movable.x + movable.width &&

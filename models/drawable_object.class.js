@@ -19,6 +19,26 @@ class DrawableObject {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
+  drawFrame(ctx) {
+    if (this instanceof Character) {
+      ctx.beginPath();
+      ctx.lineWidth = '5';
+      ctx.strokeStyle = 'blue';
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+    }
+  }
+
+  drawRectangle(ctx) {
+    if (this instanceof Chicken) {
+      ctx.beginPath();
+      ctx.lineWidth = '4';
+      ctx.strokeStyle = 'blue';
+      ctx.rect(0, 0, this.width, this.height);
+      ctx.stroke();
+    }
+  }
+
   // Preload multiple images into cache
   loadImages(arr) {
     arr.forEach((path) => {

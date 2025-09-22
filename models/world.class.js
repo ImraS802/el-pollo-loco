@@ -1,5 +1,6 @@
 class World {
   character = new Character();
+  statusBar = new StatusBar();
   level = level1;
   enemies = level1.enemies;
   clouds = level1.clouds;
@@ -28,6 +29,7 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
+          this.statusBar.setPercentage(this.character.energy);
         }
       });
     }, 1000);
@@ -37,6 +39,14 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
+
+    // back
+    this.ctx.translate(-this.camera_x, 0);
+    // ----- Space for fixed objects -------
+    this.addToMap(this.statusBar);
+    // forward
+    this.ctx.translate(this.camera_x, 0);
+
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enemies);
