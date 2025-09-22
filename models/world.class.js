@@ -1,6 +1,8 @@
 class World {
   character = new Character();
-  statusBar = new StatusBar();
+  statusBarHealth = new StatusBar('health', 20, 10); // top left
+  statusBarBottle = new StatusBar('bottle', 20, 70);
+  statusBarCoin = new StatusBar('coin', 20, 130);
   level = level1;
   enemies = level1.enemies;
   clouds = level1.clouds;
@@ -29,7 +31,27 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
+          this.statusBarHealth.setPercentage(this.character.energy);
+        }
+      });
+
+      this.level.bottles.forEach((bottle, index) => {
+        if (this.character.isColliding(bottle)) {
+          this.character.collectBottle();
+          this.statusBarBottle.setPercentage(this.character.bottlesCollected);
+
+          // remove collected bottle from level
+          this.level.bottles.splice(index, 1);
+        }
+      });
+
+      this.level.coins.forEach((coin, index) => {
+        if (this.character.isColliding(coin)) {
+          this.character.collectBottle();
+          this.statusBarCoin.setPercentage(this.character.coinsCollected);
+
+          // remove collected bottle from level
+          this.level.coins.splice(index, 1);
         }
       });
     }, 1000);
@@ -43,13 +65,16 @@ class World {
     // back
     this.ctx.translate(-this.camera_x, 0);
     // ----- Space for fixed objects -------
-    this.addToMap(this.statusBar);
+    this.addToMap(this.statusBarHealth);
+    this.addToMap(this.statusBarBottle);
+    this.addToMap(this.statusBarCoin);
     // forward
     this.ctx.translate(this.camera_x, 0);
-
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.level.bottles);
+
     this.ctx.translate(-this.camera_x, 0);
 
     //draws world/animations as soon as page is loaded, draw() gets called many times instantly

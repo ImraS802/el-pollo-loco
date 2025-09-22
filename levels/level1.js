@@ -42,5 +42,12 @@ const level1 = new Level(
       'img/5_background/layers/1_first_layer/1.png',
       719 * 3
     ),
+  ],
+  [new Bottle(200, 350), new Bottle(400, 350), new Bottle(600, 350)],
+  [
+    new Coin(200, 350),
+    new Coin(400, 350),
+    new Coin(600, 350),
+    new Coin(800, 350),
   ]
 );

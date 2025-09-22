@@ -1,5 +1,5 @@
 class StatusBar extends DrawableObject {
-  IMAGES_STATUSBAR_BLUE = [
+  IMAGES_STATUSBAR_HEALTH = [
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png',
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png',
@@ -8,23 +8,61 @@ class StatusBar extends DrawableObject {
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png',
   ];
 
-  percentage = 100;
+  IMAGES_STATUSBAR_BOTTLE = [
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/60.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png',
+    'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png',
+  ];
 
-  constructor() {
+  IMAGES_STATUSBAR_COIN = [
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/40.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/60.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png',
+    'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png',
+  ];
+
+  percentage = 100;
+  type;
+
+  constructor(type, x, y) {
     super();
-    this.loadImages(this.IMAGES_STATUSBAR_BLUE);
-    this.setPercentage(100); // default full health
-    this.x = 20; // position on canvas
-    this.y = 10;
+    this.type = type;
+    this.x = x; // position on canvas
+    this.y = y;
     this.width = 200;
     this.height = 50;
+
+    // load the correct images depending on type
+    if (this.type === 'health') {
+      this.loadImages(this.IMAGES_STATUSBAR_HEALTH);
+      this.setPercentage(100);
+    } else if (this.type === 'bottle') {
+      this.loadImages(this.IMAGES_STATUSBAR_BOTTLE);
+      this.setPercentage(0); // default: no bottles
+    } else if (this.type === 'coin') {
+      this.loadImages(this.IMAGES_STATUSBAR_COIN);
+      this.setPercentage(0);
+    }
   }
 
-  // updates the health
   setPercentage(percentage) {
     this.percentage = percentage;
-    let imagePath = this.IMAGES_STATUSBAR_BLUE[this.resolveImageIndex()];
-    this.img = this.imageCache[imagePath]; // update the displayed image
+
+    let images;
+    if (this.type === 'health') {
+      images = this.IMAGES_STATUSBAR_HEALTH;
+    } else if (this.type === 'bottle') {
+      images = this.IMAGES_STATUSBAR_BOTTLE;
+    } else if (this.type === 'coin') {
+      images = this.IMAGES_STATUSBAR_COIN;
+    }
+    let imagePath = images[this.resolveImageIndex()];
+    this.img = this.imageCache[imagePath];
   }
 
   resolveImageIndex() {

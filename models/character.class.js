@@ -2,8 +2,11 @@ class Character extends MovableObject {
   height = 280;
   width = 210;
   y = 20;
-  // y = 430 - this.height; // walk path
   speed = 10;
+  energy = 100;
+  bottlesCollected = 0;
+  coinsCollected = 0;
+
   IMAGES_WALKING = [
     'img/2_character_pepe/2_walk/W-21.png',
     'img/2_character_pepe/2_walk/W-22.png',
@@ -93,5 +96,25 @@ class Character extends MovableObject {
 
   jump() {
     this.speedY = 30;
+  }
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy <= 0) {
+      this.energy = 0;
+    } else {
+      this.lastHit = new Date().getTime();
+    }
+  }
+
+  collectBottle() {
+    this.bottlesCollected += 20;
+    if (this.bottlesCollected > 100) {
+      this.bottlesCollected = 100;
+    }
+  }
+
+  collectCoin() {
+    this.coinsCollected += 1;
   }
 }
