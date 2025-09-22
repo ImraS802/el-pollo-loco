@@ -10,6 +10,7 @@ class MovableObject {
   otherDirection = false;
   speedY = 0;
   acceleration = 2; // how fast item accelerates
+  energy = 100;
 
   applyGravity() {
     setInterval(() => {
@@ -76,6 +77,17 @@ class MovableObject {
       this.y < movable.y + movable.height &&
       this.y + this.height > movable.y
     );
+  }
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy <= 0) {
+      this.energy = 0;
+    }
+  }
+
+  isDead() {
+    return this.energy == 0;
   }
 
   playAnimation(images) {
