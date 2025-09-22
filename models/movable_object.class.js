@@ -69,6 +69,15 @@ class MovableObject {
     }
   }
 
+  isColliding(movable) {
+    return (
+      this.x < movable.x + movable.width &&
+      this.x + this.width > movable.x &&
+      this.y < movable.y + movable.height &&
+      this.y + this.height > movable.y
+    );
+  }
+
   playAnimation(images) {
     if (!images || images.length === 0) return;
 
