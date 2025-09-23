@@ -16,8 +16,13 @@ class MovableObject extends DrawableObject {
   }
 
   isAboveGround() {
-    //141 falling spot on ground
-    return this.y < 141;
+    // throwing bottle
+    if (this instanceof ThrowableObject) {
+      return true;
+    } else {
+      //141 falling spot on ground for jump
+      return this.y < 141;
+    }
   }
 
   isColliding(movable) {
