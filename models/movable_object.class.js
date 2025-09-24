@@ -56,6 +56,7 @@ class MovableObject extends DrawableObject {
     return this.energy == 0;
   }
 
+  // animate images e.g. walking
   playAnimation(images) {
     if (!images || images.length === 0) return;
 

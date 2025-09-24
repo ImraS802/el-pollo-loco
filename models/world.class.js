@@ -74,6 +74,7 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
+    // draw repeating bg
     this.addObjectsToMap(this.level.backgroundObjects);
 
     // back
@@ -82,10 +83,13 @@ class World {
     this.addToMap(this.statusBarHealth);
     this.addToMap(this.statusBarBottle);
     this.addToMap(this.statusBarCoin);
+
     // forward
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
+    this.level.clouds.forEach((cloud) => cloud.moveLeft());
     this.addObjectsToMap(this.level.clouds);
+
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.throwableObject);

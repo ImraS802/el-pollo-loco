@@ -19,6 +19,7 @@ class DrawableObject {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
+  // beginPath() draws rectangle around
   drawFrame(ctx) {
     if (this instanceof Character) {
       ctx.beginPath();

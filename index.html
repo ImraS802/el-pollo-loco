@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html translate="no">
 
 <head>
     <meta charset="UTF-8">
@@ -16,11 +17,10 @@
     <script src="./models/status_bar.class.js"></script>
     <script src="./models/background_object.class.js"></script>
     <script src="./models/keyboard.class.js"></script>
-    <script src="./models/world.class.js"></script>
     <script src="./models/endboss.class.js"></script>
     <script src="./models/level.class.js"></script>
     <script src="./levels/level1.js"></script>
-
+    <script src="./models/world.class.js"></script>
     <script src="./scripts/script.js"></script>
 
     <title>El Pollo Loco</title>
@@ -28,8 +28,29 @@
 
 <body onload="init()">
     <h1>El Pollo Loco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
-
+    <main>
+        <div class="canvas_frame">
+            <canvas id="canvas" width="720" height="480"></canvas>
+        </div>
+        <div class="keyboard_mapping">
+            <div class="key">
+                <img class="arrow" src="./img/assets/arrow_left.svg" alt="arrow left">
+                <span class="instructions">Left</span>
+            </div>
+            <div class="key">
+                <img class="arrow" src="./img/assets/arrow_right.svg" alt="arrow right">
+                <span class="instructions">Right</span>
+            </div>
+            <div class="key">
+                <img class="arrow" src="./img/assets/arrow_upward.svg" alt="arrow upward">
+                <span class="instructions">Jump</span>
+            </div>
+            <div class="key">
+                <span class="d_key">d</span>
+                <span class="instructions">Throw</span>
+            </div>
+        </div>
+    </main>
 </body>
 
 </html>
