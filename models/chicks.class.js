@@ -22,7 +22,8 @@ class Chicks extends MovableObject {
   animate() {
     setInterval(() => {
       this.moveLeft();
-      this.otherDirection = false; // make them face left when moving left
+      // make them face left when false, if true => right
+      this.otherDirection = false;
     }, 2000 / 60);
 
     setInterval(() => {
