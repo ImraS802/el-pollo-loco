@@ -94,19 +94,6 @@ class Character extends MovableObject {
     }, 50);
   }
 
-  jump() {
-    this.speedY = 30;
-  }
-
-  hit() {
-    this.energy -= 5;
-    if (this.energy <= 0) {
-      this.energy = 0;
-    } else {
-      this.lastHit = new Date().getTime();
-    }
-  }
-
   collectBottle() {
     this.bottlesCollected += 20;
     if (this.bottlesCollected > 100) {
@@ -116,5 +103,9 @@ class Character extends MovableObject {
 
   collectCoin() {
     this.coinsCollected += 1;
+  }
+
+  jump() {
+    this.speedY = 30;
   }
 }

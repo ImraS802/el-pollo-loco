@@ -6,7 +6,6 @@ class World {
   throwableObject = [];
   level = level1;
   ctx; // context
-  canvas;
   keyboard;
   camera_x = 0;
 
@@ -72,6 +71,13 @@ class World {
   }
 
   draw() {
+    // this.ctx.drawImage(
+    //   this.character.img,
+    //   this.character.x,
+    //   this.character.y,
+    //   100,
+    //   100
+    // );
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
     // draw repeating bg
