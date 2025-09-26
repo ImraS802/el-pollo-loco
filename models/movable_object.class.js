@@ -66,7 +66,17 @@ class MovableObject extends DrawableObject {
   isIdle() {
     let now = new Date().getTime();
     let timePassed = (now - this.lastAction) / 1000;
-    return timePassed > 2;
+    return timePassed > 1;
+  }
+
+  isLongIdle() {
+    let now = new Date().getTime();
+    let timePassed = (now - this.lastAction) / 1000;
+    return timePassed > 5;
+  }
+
+  jump() {
+    this.speedY = 30;
   }
 
   // animate images e.g. walking
