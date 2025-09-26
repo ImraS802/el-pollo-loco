@@ -56,6 +56,19 @@ class MovableObject extends DrawableObject {
     return this.energy == 0;
   }
 
+  // idle
+  lastAction = new Date().getTime();
+
+  setAction() {
+    this.lastAction = new Date().getTime();
+  }
+
+  isIdle() {
+    let now = new Date().getTime();
+    let timePassed = (now - this.lastAction) / 1000;
+    return timePassed > 2;
+  }
+
   // animate images e.g. walking
   playAnimation(images) {
     if (!images || images.length === 0) return;

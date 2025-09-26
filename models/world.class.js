@@ -7,6 +7,8 @@ class World {
   level = level1;
   ctx; // context
   camera_x = 0;
+  keyboard;
+  canvas;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
@@ -73,8 +75,9 @@ class World {
     // clears canvas
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
-    // draw repeating bg
     this.addObjectsToMap(this.level.backgroundObjects);
+    this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.coins);
 
     // back
     this.ctx.translate(-this.camera_x, 0);
@@ -86,13 +89,9 @@ class World {
     // forward
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
-    this.level.clouds.forEach((cloud) => cloud.moveLeft());
-    this.addObjectsToMap(this.level.clouds);
-
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.throwableObject);
-    this.addObjectsToMap(this.level.coins);
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -122,11 +121,13 @@ class World {
     }
     this.ctx.restore();
   }
+
   flipImage(movable) {
     this.ctx.translate(movable.x + movable.width, movable.y);
     this.ctx.scale(-1, 1);
     this.ctx.drawImage(movable.img, 0, 0, movable.width, movable.height);
   }
+
   flipImageBack(movable) {
     // turn around
     this.flipImage(movable);
