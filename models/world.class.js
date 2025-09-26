@@ -1,6 +1,6 @@
 class World {
   character = new Character();
-  statusBarHealth = new StatusBar('health', 20, 10); // top left
+  statusBarHealth = new StatusBar('health', 20, 10);
   statusBarBottle = new StatusBar('bottle', 20, 70);
   statusBarCoin = new StatusBar('coin', 20, 130);
   throwableObject = [];
@@ -42,7 +42,6 @@ class World {
   }
 
   checkCollisions() {
-    // check collisions
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
@@ -55,7 +54,6 @@ class World {
         this.character.collectBottle();
         this.statusBarBottle.setPercentage(this.character.bottlesCollected);
 
-        // remove collected bottle from level
         this.level.bottles.splice(index, 1);
       }
     });

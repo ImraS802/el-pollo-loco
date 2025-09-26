@@ -1,7 +1,7 @@
 class MovableObject extends DrawableObject {
   speed = 0.15;
   otherDirection = false;
-  speedY = 0;
+  speedY = 0; // how many pixels he falls
   acceleration = 2; // how fast item accelerates
   energy = 100;
   lastHit = 0;
