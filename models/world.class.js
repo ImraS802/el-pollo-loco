@@ -20,7 +20,14 @@ class World {
   }
 
   setWorld() {
+    // give endboss access to world
     this.character.world = this;
+    this.level.enemies.forEach((enemy) => {
+      if (enemy instanceof Endboss) {
+        enemy.world = this;
+        enemy.animate();
+      }
+    });
     this.character.animate();
   }
 
@@ -28,6 +35,7 @@ class World {
     setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
+      this.checkEndbossBehavior();
     }, 1000);
   }
 
@@ -48,7 +56,6 @@ class World {
         this.statusBarHealth.setPercentage(this.character.energy);
       }
     });
-
     this.level.bottles.forEach((bottle, index) => {
       if (this.character.isColliding(bottle)) {
         this.character.collectBottle();
@@ -65,6 +72,18 @@ class World {
 
         // remove collected bottle from level
         this.level.coins.splice(index, 1);
+      }
+    });
+  }
+
+  checkEndbossBehavior() {
+    this.level.enemies.forEach((enemy) => {
+      if (enemy instanceof Endboss) {
+        if (enemy.speed > 0) {
+          enemy.playAnimation(enemy.IMAGES_WALK);
+        } else {
+          enemy.playAnimation(enemy.IMAGES_ALERT);
+        }
       }
     });
   }

@@ -1,4 +1,9 @@
 class Endboss extends MovableObject {
+  width = 350;
+  height = 400;
+  y = 455 - this.height; // standing on ground
+  x = 2400; // starting position
+
   IMAGES_ALERT = [
     'img/4_enemie_boss_chicken/2_alert/G5.png',
     'img/4_enemie_boss_chicken/2_alert/G6.png',
@@ -40,24 +45,44 @@ class Endboss extends MovableObject {
     'img/4_enemie_boss_chicken/5_dead/G26.png',
   ];
 
-  constructor() {
+  constructor(world) {
     super();
-    this.width = 350;
-    this.height = 400;
-    this.y = 455 - this.height; // standing on ground
-    this.x = 2400; // starting position
-
-    // Immediately assign first image
-    this.img = new Image();
-    this.img.src = this.IMAGES_ALERT[0];
-    // Preload all walking images
+    this.world = world; // give endboss access to world
+    this.loadImage(this.IMAGES_ALERT[0]);
     this.loadImages(this.IMAGES_ALERT);
-    this.animate();
+    this.loadImages(this.IMAGES_WALK);
+    this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_HURT);
+    this.loadImages(this.IMAGES_DEAD);
+
+    this.speed = 0.2 + Math.random() * 0.3; // random speed
   }
 
   animate() {
     setInterval(() => {
-      this.playAnimation(this.IMAGES_ALERT);
+      if (!this.hasStarted) {
+        this.playAnimation(this.IMAGES_ALERT);
+
+        // wake up trigger
+        if (this.world.character && this.world.character.x > 1800) {
+          this.hasStarted = true;
+        }
+      } else {
+        this.moveLeft();
+        this.otherDirection = false;
+      }
+    }, 2000 / 60);
+
+    setInterval(() => {
+      this.playAnimation(this.IMAGES_WALK);
     }, 200);
+  }
+
+  shouldMove() {
+    return !this.isDead();
+  }
+
+  isMoving() {
+    return this.speed > 0 && this.otherDirection === false;
   }
 }

@@ -31,10 +31,10 @@ class DrawableObject {
   }
 
   drawRectangle(ctx) {
-    if (this instanceof Chicken) {
+    if (this instanceof Chicken || this instanceof Endboss) {
       ctx.beginPath();
       ctx.lineWidth = '4';
-      ctx.strokeStyle = 'blue';
+      ctx.strokeStyle = 'red';
       ctx.rect(0, 0, this.width, this.height);
       ctx.stroke();
     }
