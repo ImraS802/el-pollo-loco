@@ -7,10 +7,13 @@ class Chicken extends MovableObject {
     'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
   ];
 
+  IMAGES_DEAD = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
+
   constructor(x = 500 + Math.random() * 500) {
     super();
     this.loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
+    this.loadImages(this.IMAGES_DEAD);
 
     this.x = x;
     this.speed = 0.15 + Math.random() * 0.5; // different speed for each chicken
@@ -18,13 +21,17 @@ class Chicken extends MovableObject {
   }
 
   animate() {
-    setInterval(() => {
+    this.walkInterval = setInterval(() => {
       this.moveLeft();
       this.otherDirection = true; // make them face left when moving left
     }, 1000 / 60);
 
-    setInterval(() => {
-      this.playAnimation(this.IMAGES_WALKING);
+    this.animationInterval = setInterval(() => {
+      if (this.dead) {
+        this.playAnimation(this.IMAGES_DEAD);
+      } else {
+        this.playAnimation(this.IMAGES_WALKING);
+      }
     }, 200);
   }
 }

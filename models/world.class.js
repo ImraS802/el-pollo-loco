@@ -31,10 +31,25 @@ class World {
     this.character.animate();
   }
 
+  checkBottleHitsEnemies() {
+    this.throwableObject.forEach((bottle, bIndex) => {
+      this.level.enemies.forEach((enemy, eIndex) => {
+        if (enemy instanceof Chicken && bottle.isColliding(enemy)) {
+          enemy.playAnimation(enemy.IMAGES_DEAD);
+          // remove chicken
+          this.level.enemies.splice(eIndex, 1);
+          // remove bottle
+          this.throwableObject.splice(bIndex, 1);
+        }
+      });
+    });
+  }
+
   run() {
     setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
+      this.checkBottleHitsEnemies();
       this.checkEndbossBehavior();
     }, 1000);
   }

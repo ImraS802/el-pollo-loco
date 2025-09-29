@@ -3,8 +3,8 @@ class Bottle extends DrawableObject {
     super();
     this.loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
     this.x = x;
-    this.y = 360;
-    this.width = 60;
-    this.height = 60;
+    this.y = y;
+    this.width = 70;
+    this.height = 70;
   }
 }

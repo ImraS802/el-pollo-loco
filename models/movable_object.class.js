@@ -25,12 +25,13 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  isColliding(movable) {
+  //mO = movable object the parameter which is the enemy(chicken or Endboss) that the function gets checked against
+  isColliding(mO) {
     return (
-      this.x < movable.x + movable.width &&
-      this.x + this.width > movable.x &&
-      this.y < movable.y + movable.height &&
-      this.y + this.height > movable.y
+      this.x + this.w > mO.x &&
+      this.y + this.h > mO.y &&
+      this.x < mO.x + mO.w &&
+      this.y < mO.y + mO.h
     );
   }
 

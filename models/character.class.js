@@ -8,6 +8,23 @@ class Character extends MovableObject {
   bottlesCollected = 0;
   coinsCollected = 0;
 
+  rX;
+  rY;
+  rW;
+  rH;
+
+  offset = {
+    top: 30,
+    right: 10,
+    bottom: 20,
+    left: 15,
+  };
+
+  getRealFrame() {
+    this.rx = this.x + this.offset.left;
+    this.rY = this.y + this.offset.top;
+  }
+
   IMAGES_WALKING = [
     'img/2_character_pepe/2_walk/W-21.png',
     'img/2_character_pepe/2_walk/W-22.png',
