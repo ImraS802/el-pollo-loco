@@ -7,6 +7,26 @@ class DrawableObject {
   height = 150;
   width = 200;
 
+  rX;
+  rY;
+  rW;
+  rH;
+
+  offset = {
+    top: 30,
+    right: 10,
+    bottom: 20,
+    left: 15,
+  };
+
+  // draw compressed/narrow rectangle
+  getRealFrame() {
+    this.rX = this.x + this.offset.left;
+    this.rY = this.y + this.offset.top;
+    this.rW = this.width - this.offset.left - this.offset.right;
+    this.rH = this.height - this.offset.top - this.offset.bottom;
+  }
+
   // Immediately assign a default image
   loadImage(path) {
     //creates a new image element in memory
@@ -16,26 +36,30 @@ class DrawableObject {
   }
 
   draw(ctx) {
+    this.getRealFrame();
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
   // beginPath() draws rectangle around
   drawFrame(ctx) {
-    if (this instanceof Character) {
+    if (this instanceof Character || this instanceof Endboss) {
       ctx.beginPath();
       ctx.lineWidth = '5';
       ctx.strokeStyle = 'blue';
-      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.rect(this.rX, this.rY, this.rW, this.rH);
       ctx.stroke();
     }
   }
 
   drawRectangle(ctx) {
-    if (this instanceof Chicken || this instanceof Endboss) {
+    if (this instanceof Chicken) {
+      this.getRealFrame();
+      const relX = this.rX - this.x;
+      const relY = this.rY - this.y;
       ctx.beginPath();
       ctx.lineWidth = '4';
       ctx.strokeStyle = 'red';
-      ctx.rect(0, 0, this.width, this.height);
+      ctx.rect(relX, relY, this.rW, this.rH);
       ctx.stroke();
     }
   }

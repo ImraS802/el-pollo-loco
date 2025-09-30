@@ -27,11 +27,13 @@ class MovableObject extends DrawableObject {
 
   //mO = movable object the parameter which is the enemy(chicken or Endboss) that the function gets checked against
   isColliding(mO) {
+    this.getRealFrame();
+    mO.getRealFrame();
     return (
-      this.x + this.w > mO.x &&
-      this.y + this.h > mO.y &&
-      this.x < mO.x + mO.w &&
-      this.y < mO.y + mO.h
+      this.rX + this.rW > mO.rX &&
+      this.rY + this.rH > mO.rY &&
+      this.rX < mO.rX + mO.rW &&
+      this.rY < mO.rY + mO.rH
     );
   }
 
