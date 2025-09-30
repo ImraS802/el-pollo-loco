@@ -42,7 +42,11 @@ class DrawableObject {
 
   // beginPath() draws rectangle around
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Endboss) {
+    if (
+      this instanceof Character ||
+      this instanceof Endboss ||
+      this instanceof Chicks
+    ) {
       ctx.beginPath();
       ctx.lineWidth = '5';
       ctx.strokeStyle = 'blue';

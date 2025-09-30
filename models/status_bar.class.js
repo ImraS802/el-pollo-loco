@@ -32,18 +32,17 @@ class StatusBar extends DrawableObject {
   constructor(type, x, y) {
     super();
     this.type = type;
-    this.x = x; // position on canvas
+    this.x = x;
     this.y = y;
     this.width = 200;
     this.height = 50;
 
-    // load the correct images depending on type
     if (this.type === 'health') {
       this.loadImages(this.IMAGES_STATUSBAR_HEALTH);
       this.setPercentage(100);
     } else if (this.type === 'bottle') {
       this.loadImages(this.IMAGES_STATUSBAR_BOTTLE);
-      this.setPercentage(0); // default: no bottles
+      this.setPercentage(0);
     } else if (this.type === 'coin') {
       this.loadImages(this.IMAGES_STATUSBAR_COIN);
       this.setPercentage(0);

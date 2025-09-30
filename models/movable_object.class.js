@@ -96,6 +96,20 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  // for death, it stops at the last death image
+  playAnimationOnce(images) {
+    if (!images || images.length === 0) return;
+
+    let i = this.currentImage;
+    if (i < images.length) {
+      let path = images[i];
+      if (this.imageCache[path] && this.imageCache[path].complete) {
+        this.img = this.imageCache[path];
+        this.currentImage++;
+      }
+    }
+  }
+
   moveRight() {
     this.x += this.speed;
     this.otherDirection = false;

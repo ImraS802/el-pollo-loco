@@ -146,11 +146,21 @@ class World {
     this.ctx.save();
 
     if (movable.otherDirection) {
-      this.flipImageBack(movable);
+      // prevent flipping idle animations (so Z stays correct)
+      if (
+        movable instanceof Character &&
+        (movable.isIdle() || movable.isLongIdle())
+      ) {
+        movable.draw(this.ctx);
+        movable.drawFrame(this.ctx);
+      } else {
+        this.flipImageBack(movable);
+      }
     } else {
       movable.draw(this.ctx);
       movable.drawFrame(this.ctx);
     }
+
     this.ctx.restore();
   }
 
