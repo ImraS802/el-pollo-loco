@@ -42,8 +42,14 @@ canvas {
     background-color: black;
 }
 
-.canvas_frame {
+.canvas_wrapper {
     display: inline-block;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.canvas_frame {
+    display: block;
     border: 40px solid transparent;
     border-image: url('img/assets/wood_frame.jpg') 20 round;
 }
