@@ -75,7 +75,7 @@ class MovableObject extends DrawableObject {
   isLongIdle() {
     let now = new Date().getTime();
     let timePassed = (now - this.lastAction) / 1000;
-    return timePassed > 5;
+    return timePassed > 9;
   }
 
   jump() {
