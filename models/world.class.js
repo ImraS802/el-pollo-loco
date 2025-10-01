@@ -82,10 +82,12 @@ class World {
 
     this.level.coins.forEach((coin, index) => {
       if (this.character.isColliding(coin)) {
-        this.character.collectBottle();
-        this.statusBarCoin.setPercentage(this.character.coinsCollected);
-
-        // remove collected bottle from level
+        this.character.collectCoin();
+        // Convert to percentage for the status bar
+        let percentage =
+          (this.character.coinsCollected / this.level.totalCoins) * 100;
+        this.statusBarCoin.setPercentage(percentage);
+        // Remove collected coin from level
         this.level.coins.splice(index, 1);
       }
     });

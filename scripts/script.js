@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 
 function init() {
   canvas = document.getElementById('canvas');
+  level1.totalCoins = level1.coins.length;
   world = new World(canvas, keyboard);
 }
 
