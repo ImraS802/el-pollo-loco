@@ -1,4 +1,4 @@
-body {
+/* body {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -87,4 +87,349 @@ canvas {
     font-family: "Rubik Bubbles", Arial, Helvetica, sans-serif;
     font-size: 28px;
     color: white;
+} */
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Boogaloo', cursive;
+    color: #a0220a;
+    background-color: #f0984b;
+    /*background-image: url('img/background/background.png');*/
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0px;
+    height: 100vh;
+    width: 100vw;
+}
+
+h1 {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+canvas {
+    background-color: black;
+}
+
+.startscreen {
+    position: relative;
+    height: 480px;
+    width: 720px;
+}
+
+.startscreen img {
+    /*object-fit: cover;*/
+    height: 480px;
+    width: 720px;
+}
+
+.start-button button {
+    position: absolute;
+    top: 48px;
+    left: 280px;
+    z-index: 1;
+    cursor: pointer;
+    height: 56px;
+    outline: none;
+    color: #a0220a;
+    font-family: 'Boogaloo', cursive;
+    font-size: 32px;
+    box-shadow: inset 0px 1px 0px 0px #ffd300;
+    background: linear-gradient(to bottom, #ffdb00 5%, #ff9d00 100%);
+    background-color: #ffcc01;
+    border-radius: 6px;
+    border: 1px solid #ff9f00;
+    display: inline-block;
+    cursor: pointer;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #c76758;
+}
+
+.start-button button:hover {
+    background: linear-gradient(to bottom, #ff9d00 5%, #ffdb00 100%);
+    background-color: #ffd300;
+}
+
+.sound img {
+    object-fit: cover;
+    height: 32px;
+    width: 32px;
+    cursor: pointer;
+}
+
+.sound {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mute {
+    margin: 12px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.manual {
+    position: relative;
+    /*background-color: #4191295c;*/
+    background-color: #679b16;
+    /*color: black;*/
+    font-size: 24px;
+    width: 720px;
+    height: 40px;
+    text-align: center;
+}
+
+.fullscreen img {
+    object-fit: cover;
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+}
+
+.fullscreen {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+}
+
+.description {
+    width: 720px;
+    /*background-color: #4191295c;*/
+    background-color: #ffcc01;
+    /*color: black;*/
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    position: relative;
+}
+
+.book {
+    margin-left: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.book img {
+    object-fit: cover;
+    height: 24px;
+    width: 24px;
+    transition: all 225ms ease-in-out;
+}
+
+.book img:hover {
+    height: 32px;
+    width: 32px;
+    transition: all 225ms ease-in-out;
+}
+
+.story {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fde287e0;
+    color: #a0220a;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    font-size: 24px;
+    padding: 64px;
+}
+
+.story button {
+    position: absolute;
+    bottom: 80px;
+    height: 48px;
+    outline: none;
+    color: #a0220a;
+    font-family: 'Boogaloo', cursive;
+    font-size: 24px;
+    box-shadow: inset 0px 1px 0px 0px #d9fbbe;
+    background: linear-gradient(to bottom, #b8e356 5%, #a5cc52 100%);
+    background-color: #b8e356;
+    border-radius: 6px;
+    border: 1px solid #83c41a;
+    display: inline-block;
+    cursor: pointer;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #86ae47;
+}
+
+.story button:hover {
+    background: linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
+    background-color: #a5cc52;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.play-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.play-btn button {
+    /* position: absolute;
+    top: 400px;
+    left: 544px;*/
+    margin-top: -256px;
+    z-index: 2;
+    cursor: pointer;
+    height: 56px;
+    outline: none;
+    color: #a0220a;
+    font-family: 'Boogaloo', cursive;
+    font-size: 32px;
+    box-shadow: inset 0px 1px 0px 0px #ffd300;
+    background: linear-gradient(to bottom, #ffdb00 5%, #ff9d00 100%);
+    background-color: #ffcc01;
+    border-radius: 6px;
+    border: 1px solid #ff9f00;
+    display: inline-block;
+    cursor: pointer;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #c76758;
+}
+
+.play-btn button:hover {
+    background: linear-gradient(to bottom, #ff9d00 5%, #ffdb00 100%);
+    background-color: #ffd300;
+}
+
+#touchLeft {
+    position: absolute;
+    top: 25vh;
+    left: 4px;
+}
+
+#touchRight {
+    position: absolute;
+    top: 25vh;
+    right: 4px;
+}
+
+#touchUp {
+    position: absolute;
+    bottom: 4vh;
+    left: 25vw;
+}
+
+#touchThrow {
+    position: absolute;
+    bottom: 4vh;
+    left: 50vw;
+}
+
+.touchControl-responsive {
+    display: none;
+}
+
+@media (max-width: 1200px) {
+    body {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .wrapper {
+        transform: rotate(90deg);
+        transform-origin: bottom left;
+
+        position: absolute;
+        top: -100vw;
+        left: 0;
+
+        height: 100vw;
+        width: 100vh;
+
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .manual {
+        display: none;
+    }
+
+    .startscreen {
+        width: unset;
+        height: unset;
+    }
+
+    .startscreen img {
+        height: 100%;
+        width: 100vh;
+    }
+
+    .description {
+        position: absolute;
+        top: 0;
+        z-index: 3;
+        background-color: unset;
+        width: unset;
+    }
+
+    .start-button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .start-button button {
+        left: unset;
+        right: unset;
+        top: unset;
+    }
+
+    canvas {
+        height: 100% !important;
+        width: 100vh !important;
+    }
+
+    .play-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+    }
+
+    .play-btn button {
+        margin-bottom: 32px;
+    }
+
+    .sound {
+        position: absolute;
+        top: 12px;
+        right: 8px;
+    }
+
+    .touchControl-responsive {
+        display: unset;
+    }
+
 }

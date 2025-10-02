@@ -2,9 +2,65 @@ class MovableObject extends DrawableObject {
   speed = 0.15;
   otherDirection = false;
   speedY = 0; // how many pixels he falls
-  acceleration = 2; // how fast item accelerates
+  acceleration = 1; // how fast item accelerates
   energy = 100;
-  lastHit = 0;
+  lastCollision = 0;
+  bottleAmount = 0;
+  coinAmount = 0;
+  AUDIO_BOTTLE = new Audio('audio/bottle.mp3');
+  AUDIO_COIN = new Audio('audio/coin.mp3');
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy < 0) {
+      this.energy = 0;
+    } else {
+      this.lastCollision = new Date().getTime();
+    }
+  }
+
+  hitByEndboss() {
+    this.energy -= 20;
+    if (this.energy < 0) {
+      this.energy = 0;
+    } else {
+      this.lastCollision = new Date().getTime();
+    }
+  }
+
+  isHurt() {
+    let timepassed = new Date().getTime() - this.lastCollision;
+    timepassed = timepassed / 1000;
+    return timepassed < 0.5;
+  }
+
+  isDead() {
+    return this.energy == 0;
+  }
+
+  isColliding(mo) {
+    return (
+      this.x + this.width > mo.x &&
+      this.y + this.height > mo.y &&
+      this.x < mo.x &&
+      this.y + 80 < mo.y + mo.height
+    );
+  }
+
+  moveLeft() {
+    this.x -= this.speed;
+  }
+
+  moveRight() {
+    this.x += this.speed;
+  }
+
+  playAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+  }
 
   applyGravity() {
     setInterval(() => {
@@ -16,107 +72,30 @@ class MovableObject extends DrawableObject {
   }
 
   isAboveGround() {
-    // throwing bottle
-    if (this instanceof ThrowableObject) {
+    if (this instanceof ThrowableObject || this instanceof Endboss) {
+      return true;
+    } else if (this.isDead()) {
       return true;
     } else {
-      //141 falling spot on ground for jump
-      return this.y < 141;
+      return this.y < 250;
     }
-  }
-
-  //mO = movable object the parameter which is the enemy(chicken or Endboss) that the function gets checked against
-  isColliding(mO) {
-    this.getRealFrame();
-    mO.getRealFrame();
-    return (
-      this.rX + this.rW > mO.rX &&
-      this.rY + this.rH > mO.rY &&
-      this.rX < mO.rX + mO.rW &&
-      this.rY < mO.rY + mO.rH
-    );
-  }
-
-  hit() {
-    this.energy -= 5;
-    if (this.energy <= 0) {
-      this.energy = 0;
-    } else {
-      // point in time
-      this.lastHit = new Date().getTime();
-    }
-  }
-
-  isHurt() {
-    // difference in ms
-    let timePassed = new Date().getTime() - this.lastHit;
-    // difference in s
-    timePassed = timePassed / 1000;
-    return timePassed < 1;
-  }
-
-  isDead() {
-    return this.energy == 0;
-  }
-
-  // idle
-  lastAction = new Date().getTime();
-
-  setAction() {
-    this.lastAction = new Date().getTime();
-  }
-
-  isIdle() {
-    let now = new Date().getTime();
-    let timePassed = (now - this.lastAction) / 1000;
-    return timePassed > 1;
-  }
-
-  isLongIdle() {
-    let now = new Date().getTime();
-    let timePassed = (now - this.lastAction) / 1000;
-    return timePassed > 9;
   }
 
   jump() {
-    this.speedY = 30;
+    this.speedY = 20;
   }
 
-  // animate images e.g. walking
-  playAnimation(images) {
-    if (!images || images.length === 0) return;
-
-    let i = this.currentImage % images.length;
-    let path = images[i];
-
-    // Only assign if the image exists and is fully loaded
-    if (this.imageCache[path] && this.imageCache[path].complete) {
-      this.img = this.imageCache[path];
-      this.currentImage++; // only increment if image is ready
-    }
+  collectBottle() {
+    this.bottleAmount += 10;
+    this.AUDIO_BOTTLE.play();
   }
 
-  // for death, it stops at the last death image
-  playAnimationOnce(images) {
-    if (!images || images.length === 0) return;
-
-    let i = this.currentImage;
-    if (i < images.length) {
-      let path = images[i];
-      if (this.imageCache[path] && this.imageCache[path].complete) {
-        this.img = this.imageCache[path];
-        this.currentImage++;
-      }
-    }
+  reduceBottle() {
+    this.bottleAmount -= 10;
   }
 
-  moveRight() {
-    this.x += this.speed;
-    this.otherDirection = false;
-  }
-
-  moveLeft() {
-    this.x -= this.speed;
-    this.otherDirection = true;
+  collectCoin() {
+    this.coinAmount += 5;
+    this.AUDIO_COIN.play();
   }
 }

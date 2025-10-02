@@ -1,5 +1,5 @@
 class StatusBar extends DrawableObject {
-  IMAGES_STATUSBAR_HEALTH = [
+  IMAGES_LIFE = [
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png',
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png',
@@ -11,52 +11,34 @@ class StatusBar extends DrawableObject {
   percentage = 100;
   type;
 
-  constructor(type, x, y) {
+  constructor() {
     super();
-    this.type = type;
-    this.x = x;
-    this.y = y;
-    this.width = 200;
+    this.loadImages(this.IMAGES_LIFE);
+    this.x = 40;
+    this.y = 20;
+    this.width = 170;
     this.height = 50;
-
-    if (this.type === 'health') {
-      this.loadImages(this.IMAGES_STATUSBAR_HEALTH);
-      this.setPercentage(100);
-    } else if (this.type === 'bottle') {
-      this.loadImages(this.IMAGES_STATUSBAR_BOTTLE);
-      this.setPercentage(0);
-    } else if (this.type === 'coin') {
-      this.loadImages(this.IMAGES_STATUSBAR_COIN);
-      this.setPercentage(0);
-    }
+    this.setPercentage(100);
   }
 
   setPercentage(percentage) {
     this.percentage = percentage;
-
-    let images;
-    if (this.type === 'health') {
-      images = this.IMAGES_STATUSBAR_HEALTH;
-    } else if (this.type === 'bottle') {
-      images = this.IMAGES_STATUSBAR_BOTTLE;
-    } else if (this.type === 'coin') {
-      images = this.IMAGES_STATUSBAR_COIN;
-    }
-    let imagePath = images[this.resolveImageIndex()];
-    this.img = this.imageCache[imagePath];
+    let path = this.IMAGES_LIFE[this.lifeBarIndex()];
+    this.img = this.imageCache[path];
   }
 
-  resolveImageIndex() {
+  // resolveImageIndex()
+  lifeBarIndex() {
     // if this.percentage === 100 is true, run this case (index of status bar)
-    if (this.percentage > 80) {
+    if (this.percentage === 100) {
       return 5;
-    } else if (this.percentage > 60) {
+    } else if (this.percentage > 80) {
       return 4;
-    } else if (this.percentage > 40) {
+    } else if (this.percentage > 60) {
       return 3;
-    } else if (this.percentage > 20) {
+    } else if (this.percentage > 40) {
       return 2;
-    } else if (this.percentage > 0) {
+    } else if (this.percentage > 20) {
       return 1;
     } else {
       return 0;

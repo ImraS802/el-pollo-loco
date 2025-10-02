@@ -1,4 +1,6 @@
 class ThrowableObject extends MovableObject {
+  width = 70;
+  height = 70;
   IMAGES_ROTATING = [
     'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
     'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -16,58 +18,28 @@ class ThrowableObject extends MovableObject {
   ];
 
   constructor(x, y) {
-    super();
-    this.loadImage(this.IMAGES_ROTATING[0]);
+    super().loadImage(
+      'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png'
+    );
     this.loadImages(this.IMAGES_ROTATING);
     this.loadImages(this.IMAGES_SPLASHING);
-
     this.x = x;
     this.y = y;
-    this.width = 90;
-    this.height = 90;
-
+    this.applyGravity();
     this.throw();
   }
 
   throw() {
     this.speedY = 20;
-    this.applyGravity();
-
-    this.moveForwardInterval = setInterval(() => {
-      this.x += 5;
-      // check if it hits the ground
-      if (this.y > 280) {
-        this.splash();
-      }
-    }, 40);
-
-    // cycles through the rotation images
-    this.rotationInterval = setInterval(() => {
+    setInterval(() => {
+      this.x += 7;
+    }, 25);
+    setInterval(() => {
       this.playAnimation(this.IMAGES_ROTATING);
-    }, 200);
+    }, 100);
   }
 
-  splash() {
-    // stop movement + rotation
-    clearInterval(this.moveInterval);
-    clearInterval(this.rotationInterval);
-
-    // play splash animation
-    let i = 0;
-    let splashInterval = setInterval(() => {
-      this.loadImage(this.IMAGES_SPLASHING[i]);
-      i++;
-      if (i >= this.IMAGES_SPLASHING.length) {
-        clearInterval(splashInterval);
-
-        // remove bottle from world after splash
-        if (this.world) {
-          const index = this.world.throwableObject.indexOf(this);
-          if (index > -1) {
-            this.world.throwableObject.splice(index, 1);
-          }
-        }
-      }
-    }, 80);
-  }
+  // splash() {
+  //   setInterval(() => {}, interval);
+  // }
 }

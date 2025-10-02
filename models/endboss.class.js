@@ -1,15 +1,16 @@
 class Endboss extends MovableObject {
-  width = 350;
-  height = 400;
-  y = 455 - this.height; // standing on ground
-  x = 2400; // starting position
-
-  offset = {
-    top: 100,
-    right: 70,
-    bottom: 20,
-    left: 50,
-  };
+  y = 145;
+  height = 300;
+  width = 250;
+  dead = false;
+  lastTimePressedD = 0;
+  currentImage = 0;
+  energyEndboss = 100;
+  characterEscaped = false;
+  bottleAvailable = false;
+  characterNearEndboss = false;
+  killedCharacter = false;
+  lastCollisionEndboss = 0;
 
   IMAGES_ALERT = [
     'img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -22,7 +23,7 @@ class Endboss extends MovableObject {
     'img/4_enemie_boss_chicken/2_alert/G12.png',
   ];
 
-  IMAGES_WALK = [
+  IMAGES_WALKING = [
     'img/4_enemie_boss_chicken/1_walk/G1.png',
     'img/4_enemie_boss_chicken/1_walk/G2.png',
     'img/4_enemie_boss_chicken/1_walk/G3.png',
@@ -52,44 +53,113 @@ class Endboss extends MovableObject {
     'img/4_enemie_boss_chicken/5_dead/G26.png',
   ];
 
-  constructor(world) {
+  AUDIO_SCREAM = new Audio('audio/scream.mp3');
+  AUDIO_HURT = new Audio('audio/endboss_hurt.mp3');
+
+  constructor() {
     super();
-    this.world = world; // give endboss access to world
     this.loadImage(this.IMAGES_ALERT[0]);
     this.loadImages(this.IMAGES_ALERT);
-    this.loadImages(this.IMAGES_WALK);
+    this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
-
-    this.speed = 0.2 + Math.random() * 0.3; // random speed
+    this.x = 6500;
+    this.speed = 2;
+    this.animate();
+    this.endbossBar = new EndbossStatusBar(this.x + 100, this.y - 10);
+    // this.speed = 0.2 + Math.random() * 0.3; // random speed
   }
 
   animate() {
     setInterval(() => {
-      if (!this.hasStarted) {
-        this.playAnimation(this.IMAGES_ALERT);
-
-        // wake up trigger
-        if (this.world.character && this.world.character.x > 1800) {
-          this.hasStarted = true;
-        }
-      } else {
-        this.moveLeft();
+      if (this.characterNearEndboss && this.x > 6000) {
         this.otherDirection = false;
+        this.moveLeft();
+        this.endbossBar.x = this.x + 100;
       }
-    }, 2000 / 60);
+      if (this.characterEscaped) {
+        this.speed = 5;
+        this.otherDirection = true;
+        this.moveRight();
+      }
+    }, 1000 / 60);
 
     setInterval(() => {
-      this.playAnimation(this.IMAGES_WALK);
+      if (this.endbossIsHurt()) {
+        this.playAnimation(this.IMAGES_HURT);
+        this.AUDIO_HURT.play();
+        if (!this.endbossIsDead()) {
+          setTimeout(() => {
+            this.playAnimation(this.IMAGES_ATTACK);
+            this.AUDIO_SCREAM.play();
+            this.x -= 20;
+            this.endbossBar.x = this.x + 100;
+          }, 2000);
+        }
+      } else if (this.endbossIsDead()) {
+        this.playAnimation(this.IMAGES_DEAD);
+        this.AUDIO_SCREAM.pause();
+        setTimeout(() => {
+          this.applyGravity();
+        }, 2000);
+        setTimeout(() => {
+          this.dead = true;
+        }, 2000);
+      } else if (
+        !this.bottleAvailable &&
+        this.x <= 6000 &&
+        !this.killedCharacter &&
+        !this.characterEscaped
+      ) {
+        this.playAnimation(this.IMAGES_ATTACK);
+        this.AUDIO_SCREAM.play();
+        this.x -= 25;
+        this.endbossBar.x = this.x + 100;
+      } else if (this.killedCharacter) {
+        this.playAnimation(this.IMAGES_ALERT);
+        this.AUDIO_SCREAM.pause();
+      } else {
+        if (
+          (this.characterNearEndboss && this.x > 6000) ||
+          this.characterEscaped
+        ) {
+          this.playAnimation(this.IMAGES_WALKING);
+          this.AUDIO_SCREAM.play();
+        } else if (!this.pressedD() && this.x <= 6000 && this.bottleAvailable) {
+          this.playAnimation(this.IMAGES_ATTACK);
+          this.AUDIO_SCREAM.play();
+          this.x -= 20;
+          this.endbossBar.x = this.x + 100;
+        } else if (this.x <= 6000) {
+          this.playAnimation(this.IMAGES_ALERT);
+        }
+      }
     }, 200);
   }
 
-  shouldMove() {
-    return !this.isDead();
+  hitEndboss() {
+    this.energyEndboss -= 3;
+    if (this.energyEndboss < 0) {
+      this.energyEndboss = 0;
+    } else {
+      this.lastCollisionEndboss = new Date().getTime();
+    }
   }
 
-  isMoving() {
-    return this.speed > 0 && this.otherDirection === false;
+  endbossIsHurt() {
+    let timepassed = new Date().getTime() - this.lastCollisionEndboss;
+    timepassed = timepassed / 1000;
+    return timepassed < 0.5;
+  }
+
+  endbossIsDead() {
+    return this.energyEndboss == 0;
+  }
+
+  pressedD() {
+    let timepassed = new Date().getTime() - this.lastTimePressedD;
+    timepassed = timepassed / 1000;
+    return timepassed < 6;
   }
 }

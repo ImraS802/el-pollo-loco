@@ -7,31 +7,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="./img/assets/favicon.png" type="image/ico" />
     <link rel="stylesheet" href="style.css">
-    <script src="./models/drawable_object.class.js"></script>
-    <script src="./models/movable_object.class.js"></script>
-    <script src="./models/character.class.js"></script>
-    <script src="./models/chicken.class.js"></script>
-    <script src="./models/chicks.class.js"></script>
-    <script src="./models/cloud.class.js"></script>
-    <script src="./models/throwable_object.class.js"></script>
-    <script src="./models/bottle.class.js"></script>
-    <script src="./models/coin.class.js"></script>
-    <script src="./models/status_bar.class.js"></script>
-    <script src="./models/background_object.class.js"></script>
-    <script src="./models/keyboard.class.js"></script>
-    <script src="./models/endboss.class.js"></script>
-    <script src="./models/level.class.js"></script>
-    <script src="./levels/level1.js"></script>
-    <script src="./models/world.class.js"></script>
-    <script src="./js/script.js"></script>
+    <script src="models/world.class.js"></script>
+    <script src="models/drawable-object.class.js"></script>
+    <script src="models/status-bar.class.js"></script>
+    <script src="models/bottle-bar.class.js"></script>
+    <script src="models/coin-bar.class.js"></script>
+    <script src="models/endboss-status-bar.class.js"></script>
+    <script src="models/movable-object.class.js"></script>
+    <script src="models/character.class.js"></script>
+    <script src="models/chicken.class.js"></script>
+    <script src="models/chick.class.js"></script>
+    <script src="models/cloud.class.js"></script>
+    <script src="models/background-object.class.js"></script>
+    <script src="models/keyboard-object.class.js"></script>
+    <script src="models/level.class.js"></script>
+    <script src="models/endboss.class.js"></script>
+    <script src="models/throwable-object.class.js"></script>
+    <script src="models/bottle.class.js"></script>
+    <script src="models/coin.class.js"></script>
+    <script src="models/game-over.class.js"></script>
+    <script src="levels/level1.js"></script>
+    <script src="js/script.js"></script>
 
     <title>El Pollo Loco</title>
 </head>
 
 <body onload="init()">
-    <h1>El Pollo Loco</h1>
-    <main>
-        <div class="canvas_wrapper">
+    <!-- <h1>El Pollo Loco</h1>
+    <main> -->
+    <div class="wrapper">
+        <div class="description" id="description">
+            <div>Help Pepe </div>
+            <div class="book" onclick="openStory()">
+                <img src="icons/story.png">
+            </div>
+        </div>
+        <div class="d-none story" id="story">
+            <p>
+            </p>
+            <button onclick="closeStory()">CLOSE BOOK</button>
+        </div>
+
+        <div class="sound">
+            <div class="mute d-none" id="mute1" onclick="muteMusic()">
+                <div>music</div> <img id="music" src="icons/speaker.png">
+            </div>
+            <div class="mute d-none" id="mute2" onclick="muteSound()">
+                <div>sound</div> <img id="sound" src="icons/speaker.png">
+            </div>
+        </div>
+
+        <div class="startscreen" id="startscreen">
+            <img src="img/9_intro_outro_screens/start/startscreen_2.png">
+            <div class="start-button">
+                <button onclick="startGame()">Start Game</button>
+            </div>
+        </div>
+
+        <div class="d-none touchControl-responsive" id="touchControl">
+            <div id="touchLeft"><img src="icons\left.png"></div>
+            <div id="touchRight"><img src="icons\right.png"></div>
+            <div id="touchUp"><img src="icons\jump.png"></div>
+            <div id="touchThrow"><img src="icons\shoot.png"></div>
+        </div>
+
+        <canvas class="d-none" id="canvas" width="720" height="480">
+        </canvas>
+
+        <div class="manual">
+            <div>RUN: arrow right/left | JUMP: space bar | THROW: D</div>
+            <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png"></div>
+        </div>
+
+        <div class="d-none play-btn" id="playAgain">
+            <button onclick="playAgain()">Play Again</button>
+        </div>
+        <div class="d-none play-btn" id="tryAgain">
+            <button onclick="playAgain()">Try Again</button>
+        </div>
+    </div>
+
+
+
+
+    <!-- <div class="canvas_wrapper">
             <div class="canvas_frame">
                 <canvas id="canvas" width="720" height="480"></canvas>
             </div>
@@ -53,8 +112,9 @@
                 <span class="d_key">d</span>
                 <span class="instructions">Throw</span>
             </div>
-        </div>
-    </main>
+        </div> -->
+
+    <!-- </main> -->
 </body>
 
 </html>
