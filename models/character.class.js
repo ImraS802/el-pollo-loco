@@ -1,11 +1,4 @@
 class Character extends MovableObject {
-  offset = {
-    top: 120,
-    right: 80,
-    bottom: 10,
-    left: 50,
-  };
-
   IMAGES_WALKING = [
     'img/2_character_pepe/2_walk/W-21.png',
     'img/2_character_pepe/2_walk/W-22.png',
@@ -80,7 +73,11 @@ class Character extends MovableObject {
   ];
 
   world;
-  speed = 6;
+  height = 240;
+  width = 170;
+  x = 120;
+  y = 100;
+  speed = 5;
   dead = false;
   AUDIO_WALKING = new Audio('audio/running.mp3');
   AUDIO_HURTING = new Audio('audio/hurt.mp3');
@@ -133,7 +130,7 @@ class Character extends MovableObject {
       if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
         this.AUDIO_HURTING.play();
-        this.AUDIO_HURTING.volume = 0.2;
+        this.AUDIO_HURTING.volume = 0.1;
       } else if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
         setTimeout(() => {

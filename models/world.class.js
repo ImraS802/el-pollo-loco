@@ -31,7 +31,7 @@ class World {
     this.AUDIO_GAMEOVER.pause();
     this.AUDIO_GAMEOVER.muted = false;
     this.AUDIO_BACKGROUND.play();
-    this.AUDIO_BACKGROUND.volume = 0.03;
+    this.AUDIO_BACKGROUND.volume = 0.1;
     this.AUDIO_BACKGROUND.muted = false;
     this.AUDIO_CHICKEN.muted = false;
     this.character.AUDIO_WALKING.muted = false;
@@ -275,7 +275,7 @@ class World {
     for (let i = 0; i < chicken.length - 1; i++) {
       if (this.chickenisNear(chicken, i) && !this.gameOver.gameFinished) {
         this.AUDIO_CHICKEN.play();
-        this.AUDIO_CHICKEN.volume = 0.3;
+        this.AUDIO_CHICKEN.volume = 0.1;
       }
     }
   }
@@ -294,7 +294,7 @@ class World {
       this.gameOver.showEndscreen();
       this.AUDIO_BACKGROUND.pause();
       this.AUDIO_GAMEOVER.play();
-      this.AUDIO_GAMEOVER.volume = 0.2;
+      this.AUDIO_GAMEOVER.volume = 0.1;
       this.AUDIO_GAMEOVER.loop = false;
     }
   }

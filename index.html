@@ -33,60 +33,80 @@
 </head>
 
 <body onload="init()">
-    <!-- <h1>El Pollo Loco</h1>
-    <main> -->
-    <div class="wrapper">
-        <div class="description" id="description">
-            <div>Help Pepe </div>
-            <div class="book" onclick="openStory()">
-                <img src="icons/story.png">
+    <h1>El Pollo Loco</h1>
+    <main>
+        <div class="container">
+            <div class="description" id="description">
+                <div>Instructions </div>
+                <div class="book" onclick="openStory()">
+                    <img src="icons/info.png">
+                </div>
             </div>
-        </div>
-        <div class="d-none story" id="story">
-            <p>
-            </p>
-            <button onclick="closeStory()">CLOSE BOOK</button>
-        </div>
-
-        <div class="sound">
-            <div class="mute d-none" id="mute1" onclick="muteMusic()">
-                <div>music</div> <img id="music" src="icons/speaker.png">
+            <div class="d-none story" id="story">
+                <p>
+                </p>
+                <button onclick="closeStory()">CLOSE BOOK</button>
             </div>
-            <div class="mute d-none" id="mute2" onclick="muteSound()">
-                <div>sound</div> <img id="sound" src="icons/speaker.png">
+
+            <div class="sound">
+                <div class="mute d-none" id="mute1" onclick="muteMusic()">
+                    <div>music</div> <img id="music" src="icons/speaker.png">
+                </div>
+                <div class="mute d-none" id="mute2" onclick="muteSound()">
+                    <div>sound</div> <img id="sound" src="icons/speaker.png">
+                </div>
             </div>
-        </div>
 
-        <div class="startscreen" id="startscreen">
-            <img src="img/9_intro_outro_screens/start/startscreen_2.png">
-            <div class="start-button">
-                <button onclick="startGame()">Start Game</button>
+            <div class="startscreen" id="startscreen">
+                <img src="img/9_intro_outro_screens/start/startscreen_2.png">
+                <div class="start-button">
+                    <button onclick="startGame()">Start Game</button>
+                </div>
             </div>
-        </div>
 
-        <div class="d-none touchControl-responsive" id="touchControl">
-            <div id="touchLeft"><img src="icons\left.png"></div>
-            <div id="touchRight"><img src="icons\right.png"></div>
-            <div id="touchUp"><img src="icons\jump.png"></div>
-            <div id="touchThrow"><img src="icons\shoot.png"></div>
-        </div>
+            <div class="d-none touchControl-responsive" id="touchControl">
+                <div id="touchLeft"><img src="icons\left.png"></div>
+                <div id="touchRight"><img src="icons\right.png"></div>
+                <div id="touchUp"><img src="icons\jump.png"></div>
+                <div id="touchThrow"><img src="icons\shoot.png"></div>
+            </div>
 
-        <canvas class="d-none" id="canvas" width="720" height="480">
-        </canvas>
+            <div class="canvas_wrapper">
+                <div class="canvas_frame">
+                    <canvas class="d-none" id="canvas" width="720" height="480">
+                    </canvas>
+                </div>
+            </div>
 
-        <div class="manual">
-            <div>RUN: arrow right/left | JUMP: space bar | THROW: D</div>
-            <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png"></div>
-        </div>
+            <div class="keyboard_mapping">
+                <div class="key">
+                    <img class="arrow" src="./img/assets/arrow_left.svg" alt="arrow left">
+                    <span class="instructions">Left</span>
+                </div>
+                <div class="key">
+                    <img class="arrow" src="./img/assets/arrow_right.svg" alt="arrow right">
+                    <span class="instructions">Right</span>
+                </div>
+                <div class="key">
+                    <img class="arrow" src="./img/assets/arrow_upward.svg" alt="arrow upward">
+                    <span class="instructions">Jump</span>
+                </div>
+                <div class="key">
+                    <span class="d_key">d</span>
+                    <span class="instructions">Throw</span>
+                </div>
+                <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
+                </div>
 
-        <div class="d-none play-btn" id="playAgain">
-            <button onclick="playAgain()">Play Again</button>
-        </div>
-        <div class="d-none play-btn" id="tryAgain">
-            <button onclick="playAgain()">Try Again</button>
-        </div>
-    </div>
 
+                <div class="d-none play-btn" id="playAgain">
+                    <button onclick="playAgain()">Play Again</button>
+                </div>
+                <div class="d-none play-btn" id="tryAgain">
+                    <button onclick="playAgain()">Try Again</button>
+                </div>
+            </div>
+    </main>
 
 
 
@@ -114,7 +134,6 @@
             </div>
         </div> -->
 
-    <!-- </main> -->
 </body>
 
 </html>

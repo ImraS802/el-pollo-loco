@@ -77,7 +77,7 @@ class MovableObject extends DrawableObject {
     } else if (this.isDead()) {
       return true;
     } else {
-      return this.y < 250;
+      return this.y < 180;
     }
   }
 
