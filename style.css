@@ -26,10 +26,6 @@ main {
 }
 
 /*
-
-
-
-
     
 body {
     display: flex;
@@ -105,20 +101,20 @@ canvas {
     color: white;
 }
 
-.canvas_wrapper {
+.canvas-wrapper {
     display: inline-block;
     border-radius: 20px;
     overflow: hidden;
 }
 
-.canvas_frame {
+.canvas-frame {
     display: inline-block;
     border: 40px solid transparent;
     border-image: url('img/assets/wood_frame.jpg') 20 round;
     border-radius: 20px;
 }
 
-.canvas_frame canvas {
+.canvas-frame canvas {
     display: block;
 }
 
@@ -129,32 +125,34 @@ canvas {
 }
 
 .startscreen img {
-    /*object-fit: cover;*/
     height: 480px;
     width: 720px;
 }
 
-.start-button button {
+.start-button-center {
     position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 1;
+}
+
+.start-button button {
     top: 48px;
     left: 280px;
-    z-index: 1;
+    margin: 0;
     cursor: pointer;
     height: 56px;
-    outline: none;
     color: #a0220a;
-    font-family: 'Rubik Bubbles';
+    font-family: "Rye", Arial, Helvetica, sans-serif;
     font-size: 32px;
-    box-shadow: inset 0px 1px 0px 0px #ffd300;
-    background: linear-gradient(to bottom, #ffdb00 5%, #ff9d00 100%);
-    background-color: #ffcc01;
-    border-radius: 6px;
-    border: 1px solid #ff9f00;
-    display: inline-block;
+    background: linear-gradient(to bottom, #ffc71f 5%, #ff9600 100%);
+    border-radius: 10px;
+    border: none;
     cursor: pointer;
     padding: 6px 24px;
-    text-decoration: none;
-    text-shadow: 0px 1px 0px #c76758;
 }
 
 .start-button button:hover {
@@ -185,9 +183,7 @@ canvas {
 
 .manual {
     position: relative;
-    /*background-color: #4191295c;*/
     background-color: #679b16;
-    /*color: black;*/
     font-size: 24px;
     width: 720px;
     height: 40px;
@@ -208,11 +204,11 @@ canvas {
 }
 
 .description {
-    width: 720px;
-    /*background-color: #4191295c;*/
-    background-color: #ffcc01;
-    /*color: black;*/
-    font-size: 18px;
+    /* font-family: 'Rubik Bubbles'; */
+    font-family: "Rye", Arial, Helvetica, sans-serif;
+    ;
+    color: #c6662f;
+    font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -221,7 +217,7 @@ canvas {
     position: relative;
 }
 
-.book {
+.information {
     margin-left: 12px;
     cursor: pointer;
     display: flex;
@@ -229,27 +225,19 @@ canvas {
     align-items: center;
 }
 
-.book img {
-    object-fit: cover;
-    height: 24px;
-    width: 24px;
-    transition: all 225ms ease-in-out;
+.information:hover {
+    content: url('icons/info-hover.png');
+    height: auto;
 }
 
-.book img:hover {
-    height: 32px;
-    width: 32px;
-    transition: all 225ms ease-in-out;
-}
-
-.story {
+.info-text {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: #fde287e0;
-    color: #a0220a;
+    color: black;
     display: flex;
     text-align: center;
     justify-content: center;
@@ -259,29 +247,25 @@ canvas {
     padding: 64px;
 }
 
-.story button {
+.info-text button {
     position: absolute;
     bottom: 80px;
     height: 48px;
     outline: none;
-    color: #a0220a;
+    color: white;
     font-family: 'Rubik Bubbles';
     font-size: 24px;
-    box-shadow: inset 0px 1px 0px 0px #d9fbbe;
-    background: linear-gradient(to bottom, #b8e356 5%, #a5cc52 100%);
-    background-color: #b8e356;
-    border-radius: 6px;
-    border: 1px solid #83c41a;
+    background-color: #8a4934;
+    border-radius: 10px;
+    border: 4px solid white;
     display: inline-block;
     cursor: pointer;
     padding: 6px 24px;
     text-decoration: none;
-    text-shadow: 0px 1px 0px #86ae47;
 }
 
-.story button:hover {
-    background: linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
-    background-color: #a5cc52;
+.info-text button:hover {
+    background-color: #c6662f;
 }
 
 .d-none {
@@ -300,7 +284,7 @@ canvas {
     cursor: pointer;
     height: 56px;
     outline: none;
-    color: #a0220a;
+    color: white;
     font-family: 'Rubik Bubbles';
     font-size: 32px;
     box-shadow: inset 0px 1px 0px 0px #ffd300;
