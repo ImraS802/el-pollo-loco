@@ -53,8 +53,8 @@ class Endboss extends MovableObject {
     'img/4_enemie_boss_chicken/5_dead/G26.png',
   ];
 
+  AUDIO_HURT = new Audio('audio/endboss-hurt.mp3');
   AUDIO_SCREAM = new Audio('audio/scream.mp3');
-  AUDIO_HURT = new Audio('audio/endboss_hurt.mp3');
 
   constructor() {
     super();

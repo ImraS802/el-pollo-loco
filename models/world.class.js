@@ -16,7 +16,7 @@ class World {
     'audio/ambient-desert-atmosphere-with-dry-wind-sounds-1-377883.mp3'
   );
   AUDIO_CHICKEN = new Audio('audio/chicken.mp3');
-  AUDIO_GAMEOVER = new Audio('audio/game_over.mp3');
+  AUDIO_GAMEOVER = new Audio('audio/game-over.mp3');
 
   constructor(canvas, keyboard, gameOver) {
     this.ctx = canvas.getContext('2d');
@@ -142,8 +142,8 @@ class World {
           this.character.isColliding(enemy) &&
           this.character.isAboveGround()
         ) {
-          this.chickenDied(enemy);
-          this.removeChicken(enemy);
+          this.chickenDead(enemy);
+          this.deleteChicken(enemy);
         }
       }
     });
@@ -249,17 +249,6 @@ class World {
     });
   }
 
-  chickenDied(enemy) {
-    enemy.chickenAlive = false;
-  }
-
-  removeChicken(enemy) {
-    setTimeout(() => {
-      let position = this.level.enemies.indexOf(enemy);
-      this.level.enemies.splice(position, 1);
-    }, 2000);
-  }
-
   escapedEndboss() {
     return this.character.x > this.endBoss.x;
   }
@@ -278,9 +267,26 @@ class World {
     }
   }
 
+  chickenDead(enemy) {
+    enemy.chickenAlive = false;
+  }
+
+  deleteChicken(enemy) {
+    setTimeout(() => {
+      let position = this.level.enemies.indexOf(enemy);
+      this.level.enemies.splice(position, 1);
+    }, 2000);
+  }
+
   checkCharacterPassedEndboss() {
     if (this.escapedEndboss()) {
       this.endBoss.characterEscaped = true;
+    }
+  }
+
+  checkIfCharacterIsDead() {
+    if (this.character.dead) {
+      this.endBoss.killedCharacter = true;
     }
   }
 
@@ -294,12 +300,6 @@ class World {
       this.AUDIO_GAMEOVER.play();
       this.AUDIO_GAMEOVER.volume = 0.1;
       this.AUDIO_GAMEOVER.loop = false;
-    }
-  }
-
-  checkIfCharacterIsDead() {
-    if (this.character.dead) {
-      this.endBoss.killedCharacter = true;
     }
   }
 }
