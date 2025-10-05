@@ -3,7 +3,7 @@ class Endboss extends MovableObject {
   height = 300;
   width = 250;
   dead = false;
-  lastTimePressedD = 0;
+  lastTimepressKeyD = 0;
   currentImage = 0;
   energyEndboss = 100;
   characterEscaped = false;
@@ -65,10 +65,9 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.x = 6500;
-    this.speed = 2;
+    this.speed = 0.4;
     this.animate();
     this.endbossBar = new EndbossStatusBar(this.x + 100, this.y - 10);
-    // this.speed = 0.2 + Math.random() * 0.3; // random speed
   }
 
   animate() {
@@ -126,7 +125,11 @@ class Endboss extends MovableObject {
         ) {
           this.playAnimation(this.IMAGES_WALKING);
           this.AUDIO_SCREAM.play();
-        } else if (!this.pressedD() && this.x <= 6000 && this.bottleAvailable) {
+        } else if (
+          !this.pressKeyD() &&
+          this.x <= 6000 &&
+          this.bottleAvailable
+        ) {
           this.playAnimation(this.IMAGES_ATTACK);
           this.AUDIO_SCREAM.play();
           this.x -= 20;
@@ -136,6 +139,12 @@ class Endboss extends MovableObject {
         }
       }
     }, 200);
+  }
+
+  pressKeyD() {
+    let timepassed = new Date().getTime() - this.lastTimePressKeyD;
+    timepassed = timepassed / 1000;
+    return timepassed < 6;
   }
 
   hitEndboss() {
@@ -155,11 +164,5 @@ class Endboss extends MovableObject {
 
   endbossIsDead() {
     return this.energyEndboss == 0;
-  }
-
-  pressedD() {
-    let timepassed = new Date().getTime() - this.lastTimePressedD;
-    timepassed = timepassed / 1000;
-    return timepassed < 6;
   }
 }

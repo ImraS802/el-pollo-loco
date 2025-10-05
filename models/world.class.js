@@ -62,7 +62,6 @@ class World {
     this.addObjectsToMap(this.level.coins);
 
     this.ctx.translate(-this.camera_x, 0);
-    //-----space for fixed objects-----
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleBar);
     this.addToMap(this.coinBar);
@@ -81,37 +80,6 @@ class World {
     });
   }
 
-  addObjectsToMap(objects) {
-    objects.forEach((o) => {
-      this.addToMap(o);
-    });
-  }
-
-  addToMap(mo) {
-    if (mo.otherDirection) {
-      this.flipImage(mo);
-    }
-
-    mo.draw(this.ctx);
-    mo.drawFrame(this.ctx);
-
-    if (mo.otherDirection) {
-      this.flimImageBack(mo);
-    }
-  }
-
-  flipImage(mo) {
-    this.ctx.save();
-    this.ctx.translate(mo.width, 0);
-    this.ctx.scale(-1, 1);
-    mo.x = mo.x * -1;
-  }
-
-  flimImageBack(mo) {
-    mo.x = mo.x * -1;
-    this.ctx.restore();
-  }
-
   run() {
     setInterval(() => {
       this.throwBottle();
@@ -128,6 +96,37 @@ class World {
       this.checkIfCharacterIsDead();
       this.checkIfGameOver();
     }, 200);
+  }
+
+  addObjectsToMap(objects) {
+    objects.forEach((o) => {
+      this.addToMap(o);
+    });
+  }
+
+  addToMap(mo) {
+    if (mo.otherDirection) {
+      this.flipImage(mo);
+    }
+
+    mo.draw(this.ctx);
+    mo.drawFrame(this.ctx);
+
+    if (mo.otherDirection) {
+      this.flipImageBack(mo);
+    }
+  }
+
+  flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.width, 0);
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
+  }
+
+  flipImageBack(mo) {
+    mo.x = mo.x * -1;
+    this.ctx.restore();
   }
 
   checkCollision() {
@@ -171,7 +170,6 @@ class World {
         this.character.y + 80
       );
       this.throwableObjects.push(bottle);
-      this.AUDIO_THROWING.play();
       this.character.reduceBottle();
       this.bottleBar.setPercentage(this.character.bottleAmount);
     }
@@ -191,7 +189,7 @@ class World {
     this.level.coins.splice(index, 1);
   }
 
-  //check if character is at the end of the game, where he meets endboss
+  // calculate if character is at the end of the game meeting endboss
   calculateCharacterPosition() {
     if (this.character.x > this.level.level_end_x - 100) {
       this.endBoss.characterNearEndboss = true;
@@ -223,6 +221,16 @@ class World {
       this.character.x + this.character.width <
         this.endBoss.x + this.endBoss.width
     );
+  }
+
+  checkChickenPosition() {
+    let chicken = this.level.enemies;
+    for (let i = 0; i < chicken.length - 1; i++) {
+      if (this.chickenisNear(chicken, i) && !this.gameOver.gameFinished) {
+        this.AUDIO_CHICKEN.play();
+        this.AUDIO_CHICKEN.volume = 0.1;
+      }
+    }
   }
 
   chickenisNear(chicken, i) {
@@ -258,7 +266,7 @@ class World {
 
   timePassedSinceThrowEvent() {
     if (this.keyboard.KEY_D) {
-      this.endBoss.lastTimePressedD = new Date().getTime();
+      this.endBoss.lastTimePressKeyD = new Date().getTime();
     }
   }
 
@@ -267,16 +275,6 @@ class World {
       this.endBoss.bottleAvailable = false;
     } else {
       this.endBoss.bottleAvailable = true;
-    }
-  }
-
-  checkChickenPosition() {
-    let chicken = this.level.enemies;
-    for (let i = 0; i < chicken.length - 1; i++) {
-      if (this.chickenisNear(chicken, i) && !this.gameOver.gameFinished) {
-        this.AUDIO_CHICKEN.play();
-        this.AUDIO_CHICKEN.volume = 0.1;
-      }
     }
   }
 

@@ -57,7 +57,9 @@
                     <div>sound</div> <img id="sound" src="icons/speaker.png">
                 </div>
             </div>
+
             <div class="canvas-wrapper">
+                <!-- <div class="canvas-frame"> -->
                 <div class="startscreen" id="startscreen">
                     <img src="img/9_intro_outro_screens/start/startscreen_2.png">
                     <div class="start-button-center">
@@ -66,6 +68,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- </div> -->
             </div>
 
             <div class="d-none touchControl-responsive" id="touchControl">
@@ -76,13 +79,13 @@
             </div>
 
             <div class="canvas-wrapper">
-                <div class="canvas-frame">
-                    <canvas class="d-none" id="canvas" width="720" height="480">
-                    </canvas>
-                </div>
+                <!-- <div class="canvas-frame"> -->
+                <canvas class="d-none" id="canvas" width="720" height="480">
+                </canvas>
+                <!-- </div> -->
             </div>
 
-            <div class="keyboard_mapping">
+            <div class="keyboard-mapping">
                 <div class="key">
                     <img class="arrow" src="./img/assets/arrow_left.svg" alt="arrow left">
                     <span class="instructions">Left</span>
@@ -101,42 +104,16 @@
                 </div>
                 <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
                 </div>
-
-
-                <div class="d-none play-btn" id="playAgain">
-                    <button onclick="playAgain()">Play Again</button>
-                </div>
-                <div class="d-none play-btn" id="tryAgain">
-                    <button onclick="playAgain()">Try Again</button>
-                </div>
             </div>
+
+            <div class="d-none play-btn" id="playAgain">
+                <button onclick="playAgain()">Play Again</button>
+            </div>
+            <div class="d-none play-btn" id="tryAgain">
+                <button onclick="playAgain()">Try Again</button>
+            </div>
+
     </main>
-
-
-
-    <!-- <div class="canvas_wrapper">
-            <div class="canvas_frame">
-                <canvas id="canvas" width="720" height="480"></canvas>
-            </div>
-        </div>
-        <div class="keyboard_mapping">
-            <div class="key">
-                <img class="arrow" src="./img/assets/arrow_left.svg" alt="arrow left">
-                <span class="instructions">Left</span>
-            </div>
-            <div class="key">
-                <img class="arrow" src="./img/assets/arrow_right.svg" alt="arrow right">
-                <span class="instructions">Right</span>
-            </div>
-            <div class="key">
-                <img class="arrow" src="./img/assets/arrow_upward.svg" alt="arrow upward">
-                <span class="instructions">Jump</span>
-            </div>
-            <div class="key">
-                <span class="d_key">d</span>
-                <span class="instructions">Throw</span>
-            </div>
-        </div> -->
 
 </body>
 
