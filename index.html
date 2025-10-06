@@ -33,20 +33,26 @@
 </head>
 
 <body onload="init()">
+
     <h1>El Pollo Loco</h1>
+
     <main>
         <div class="container">
-            <div class="description" id="description">
-                <div>Instructions </div>
-                <div class="information" onclick="openInformation()">
-                    <img src="icons/info.png">
+            <div class="headline-positioning">
+                <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
                 </div>
-            </div>
-            <div class="d-none info-text" id="info">
-                <p>
-                    Pepe is ....
-                </p>
-                <button onclick="closeInformation()">Close</button>
+                <div class="description" id="description">
+                    <div>Instructions </div>
+                    <div class="information" onclick="openInformation()">
+                        <img src="icons/info.png">
+                    </div>
+                </div>
+                <div class="d-none info-text" id="info">
+                    <p>
+                        Pepe is ....
+                    </p>
+                    <button onclick="closeInformation()">Close</button>
+                </div>
             </div>
 
             <div class="sound">
@@ -97,8 +103,6 @@
                 <div class="key">
                     <span class="d_key">d</span>
                     <span class="instructions">Throw</span>
-                </div>
-                <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
                 </div>
             </div>
 
