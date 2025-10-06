@@ -189,10 +189,9 @@ class World {
     this.level.coins.splice(index, 1);
   }
 
-  // calculate if character is at the end of the game meeting endboss
   calculateCharacterPosition() {
     if (this.character.x > this.level.level_end_x - 100) {
-      this.endBoss.characterNearEndboss = true;
+      this.endBoss.characterCloseToEndboss = true;
     }
   }
 

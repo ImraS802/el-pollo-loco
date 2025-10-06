@@ -8,7 +8,7 @@ class Endboss extends MovableObject {
   energyEndboss = 100;
   characterEscaped = false;
   bottleAvailable = false;
-  characterNearEndboss = false;
+  characterCloseToEndboss = false;
   killedCharacter = false;
   lastCollisionEndboss = 0;
 
@@ -64,8 +64,8 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
-    this.x = 6500;
-    this.speed = 0.4;
+    this.x = 6200;
+    this.speed = 1.3;
     this.animate();
     this.endbossBar = new EndbossStatusBar(this.x + 100, this.y - 10);
     this.AUDIO_SCREAM.volume = 0.1;
@@ -73,15 +73,19 @@ class Endboss extends MovableObject {
 
   animate() {
     setInterval(() => {
-      if (this.characterNearEndboss && this.x > 6000) {
+      if (
+        this.characterCloseToEndboss &&
+        !this.characterEscaped &&
+        !this.dead
+      ) {
         this.otherDirection = false;
         this.moveLeft();
         this.endbossBar.x = this.x + 100;
       }
-      if (this.characterEscaped) {
-        this.speed = 5;
-        this.otherDirection = true;
-        this.moveRight();
+      if (this.characterEscaped && !this.dead) {
+        this.otherDirection = true; // face right
+        this.moveRight(); // continuous movement
+        this.endbossBar.x = this.x + 100;
       }
     }, 1000 / 60);
 
@@ -93,7 +97,7 @@ class Endboss extends MovableObject {
           setTimeout(() => {
             this.playAnimation(this.IMAGES_ATTACK);
             this.AUDIO_SCREAM.play();
-            this.x -= 20;
+            this.x -= this.speed;
             this.endbossBar.x = this.x + 100;
           }, 2000);
         }
@@ -114,14 +118,14 @@ class Endboss extends MovableObject {
       ) {
         this.playAnimation(this.IMAGES_ATTACK);
         this.AUDIO_SCREAM.play();
-        this.x -= 25;
+        this.x -= this.speed;
         this.endbossBar.x = this.x + 100;
       } else if (this.killedCharacter) {
         this.playAnimation(this.IMAGES_ALERT);
         this.AUDIO_SCREAM.pause();
       } else {
         if (
-          (this.characterNearEndboss && this.x > 6000) ||
+          (this.characterCloseToEndboss && this.x > 5500) ||
           this.characterEscaped
         ) {
           this.playAnimation(this.IMAGES_WALKING);
@@ -133,7 +137,7 @@ class Endboss extends MovableObject {
         ) {
           this.playAnimation(this.IMAGES_ATTACK);
           this.AUDIO_SCREAM.play();
-          this.x -= 20;
+          this.x -= this.speed;
           this.endbossBar.x = this.x + 100;
         } else if (this.x <= 6000) {
           this.playAnimation(this.IMAGES_ALERT);
