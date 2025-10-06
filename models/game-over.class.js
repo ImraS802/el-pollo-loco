@@ -3,8 +3,8 @@ class GameOver extends DrawableObject {
   height = 480;
   y = 0;
   x = 0;
-  lostGame = false;
   gameFinished = false;
+  lostGame = false;
 
   IMAGE_LOST = ['img/9_intro_outro_screens/game_over/oh no you lost!.png'];
   IMAGE_WON = ['img/You won, you lost/You Won B.png'];
@@ -16,10 +16,10 @@ class GameOver extends DrawableObject {
   showEndscreen() {
     if (this.lostGame) {
       this.loadImage(this.IMAGE_LOST);
-      document.getElementById('tryAgain').classList.remove('d-none');
+      document.getElementById('tryGameAgain').classList.remove('d-none');
     } else {
       this.loadImage(this.IMAGE_WON);
-      document.getElementById('playAgain').classList.remove('d-none');
+      document.getElementById('playGameAgain').classList.remove('d-none');
     }
   }
 }

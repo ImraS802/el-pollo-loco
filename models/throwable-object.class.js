@@ -38,8 +38,4 @@ class ThrowableObject extends MovableObject {
       this.playAnimation(this.IMAGES_ROTATING);
     }, 100);
   }
-
-  // splash() {
-  //   setInterval(() => {}, interval);
-  // }
 }

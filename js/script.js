@@ -13,8 +13,8 @@ function showStartScreen() {
   document.getElementById('startscreen').classList.remove('d-none');
   document.getElementById('description').classList.remove('d-none');
   document.getElementById('canvas').classList.add('d-none');
-  document.getElementById('playAgain').classList.add('d-none');
-  document.getElementById('tryAgain').classList.add('d-none');
+  document.getElementById('playGameAgain').classList.add('d-none');
+  document.getElementById('tryGameAgain').classList.add('d-none');
   document.getElementById('touchControl').classList.add('d-none');
 }
 
@@ -23,8 +23,8 @@ function startGame() {
   document.getElementById('description').classList.add('d-none');
   document.getElementById('canvas').classList.remove('d-none');
   document.getElementById('fullscreen').classList.remove('d-none');
-  document.getElementById('mute1').classList.remove('d-none');
-  document.getElementById('mute2').classList.remove('d-none');
+  document.getElementById('muteMusic').classList.remove('d-none');
+  document.getElementById('muteSound').classList.remove('d-none');
   document.getElementById('touchControl').classList.remove('d-none');
   canvas = document.getElementById('canvas');
   level1 = initLevel1();

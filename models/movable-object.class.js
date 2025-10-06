@@ -47,6 +47,15 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  collectBottle() {
+    this.bottleAmount += 10;
+    this.AUDIO_BOTTLE.play();
+  }
+
+  decreaseBottleStatus() {
+    this.bottleAmount -= 10;
+  }
+
   moveLeft() {
     this.x -= this.speed;
   }
@@ -82,16 +91,7 @@ class MovableObject extends DrawableObject {
   }
 
   jump() {
-    this.speedY = 20;
-  }
-
-  collectBottle() {
-    this.bottleAmount += 10;
-    this.AUDIO_BOTTLE.play();
-  }
-
-  decreaseBottleStatus() {
-    this.bottleAmount -= 10;
+    this.speedY = 18;
   }
 
   collectCoin() {

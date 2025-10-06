@@ -33,34 +33,28 @@
 </head>
 
 <body onload="init()">
-
     <h1>El Pollo Loco</h1>
-
     <main>
         <div class="container">
 
             <div class="fullscreen-sound-row">
                 <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
                 </div>
-
                 <div class="sound">
-                    <div class="mute d-none" id="mute1" onclick="muteMusic()">
+                    <div class="mute d-none" id="muteMusic" onclick="muteMusic()">
                         <div>Music</div> <img id="music" src="icons/speaker.png">
                     </div>
-                    <div class="mute d-none" id="mute2" onclick="muteSound()">
+                    <div class="mute d-none" id="muteSound" onclick="muteSound()">
                         <div>Sounds</div> <img id="sound" src="icons/speaker.png">
                     </div>
                 </div>
-
             </div>
-
             <div class="description" id="description">
                 <div>Instructions </div>
                 <div class="information" onclick="openInformation()">
                     <img src="icons/info.png">
                 </div>
             </div>
-
             <div class="d-none info-text" id="info">
                 <p>
                     El Pollo Loco is a fast-paced jump-and-run adventure game where you play as Pepe, a brave little
@@ -121,13 +115,12 @@
             </div>
         </div>
 
-        <div class="d-none play-btn" id="playAgain">
+        <div class="d-none play-btn" id="playGameAgain">
             <button onclick="playAgain()">Play Again</button>
         </div>
-        <div class="d-none play-btn" id="tryAgain">
+        <div class="d-none play-btn" id="tryGameAgain">
             <button onclick="playAgain()">Try Again</button>
         </div>
-
     </main>
 
 </body>
