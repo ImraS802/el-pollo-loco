@@ -93,6 +93,9 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.applyGravity();
+    this.currentImage = 0;
+    this.img = this.imageCache[this.IMAGES_STANDING[0]];
+    this.idleStartTime = new Date().getTime();
     this.animate();
   }
 
@@ -105,6 +108,7 @@ class Character extends MovableObject {
       ) {
         this.moveRight();
         this.otherDirection = false;
+        this.idleStartTime = new Date().getTime();
         if (!this.isAboveGround()) {
           this.AUDIO_WALKING.play();
         }
@@ -113,6 +117,7 @@ class Character extends MovableObject {
       if (this.world.keyboard.KEY_LEFT && this.x > 0) {
         this.moveLeft();
         this.otherDirection = true;
+        this.idleStartTime = new Date().getTime();
         if (!this.isAboveGround()) {
           this.AUDIO_WALKING.play();
         }
@@ -120,6 +125,7 @@ class Character extends MovableObject {
 
       if (this.world.keyboard.KEY_SPACE && !this.isAboveGround()) {
         this.jump();
+        this.idleStartTime = new Date().getTime();
         this.AUDIO_JUMPING.play();
       }
 
@@ -127,6 +133,7 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
+      const idleTime = (new Date().getTime() - this.idleStartTime) / 1000;
       if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
         this.AUDIO_HURTING.play();
@@ -142,7 +149,7 @@ class Character extends MovableObject {
       } else {
         if (this.world.keyboard.KEY_RIGHT || this.world.keyboard.KEY_LEFT) {
           this.playAnimation(this.IMAGES_WALKING);
-        } else if (this.world.keyboard.KEY_PRESS !== true) {
+        } else if (idleTime > 5) {
           let i = this.currentImage % this.IMAGES_SLEEPING.length;
           let path = this.IMAGES_SLEEPING[i];
           this.img = this.imageCache[path];
