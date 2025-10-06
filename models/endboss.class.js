@@ -68,6 +68,7 @@ class Endboss extends MovableObject {
     this.speed = 0.4;
     this.animate();
     this.endbossBar = new EndbossStatusBar(this.x + 100, this.y - 10);
+    this.AUDIO_SCREAM.volume = 0.1;
   }
 
   animate() {

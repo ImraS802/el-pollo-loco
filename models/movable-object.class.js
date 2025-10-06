@@ -90,7 +90,7 @@ class MovableObject extends DrawableObject {
     this.AUDIO_BOTTLE.play();
   }
 
-  reduceBottle() {
+  decreaseBottleStatus() {
     this.bottleAmount -= 10;
   }
 

@@ -27,7 +27,6 @@ class StatusBar extends DrawableObject {
     this.img = this.imageCache[path];
   }
 
-  // resolveImageIndex()
   lifeBarIndex() {
     // if this.percentage === 100 is true, run this case (index of status bar)
     if (this.percentage === 100) {

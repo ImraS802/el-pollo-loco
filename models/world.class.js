@@ -170,7 +170,7 @@ class World {
         this.character.y + 80
       );
       this.throwableObjects.push(bottle);
-      this.character.reduceBottle();
+      this.character.decreaseBottleStatus();
       this.bottleBar.setPercentage(this.character.bottleAmount);
     }
   }
@@ -223,23 +223,6 @@ class World {
     );
   }
 
-  checkChickenPosition() {
-    let chicken = this.level.enemies;
-    for (let i = 0; i < chicken.length - 1; i++) {
-      if (this.chickenisNear(chicken, i) && !this.gameOver.gameFinished) {
-        this.AUDIO_CHICKEN.play();
-        this.AUDIO_CHICKEN.volume = 0.1;
-      }
-    }
-  }
-
-  chickenisNear(chicken, i) {
-    return (
-      this.character.x > chicken[i].x - 200 &&
-      this.character.x + this.character.width < chicken[i].x + chicken[i].width
-    );
-  }
-
   checkCollisionBottleEndboss() {
     this.throwableObjects.forEach((bottle) => {
       if (this.isCollidingBottle(bottle)) {
@@ -269,6 +252,23 @@ class World {
 
   chickenDead(enemy) {
     enemy.chickenAlive = false;
+  }
+
+  checkChickenPosition() {
+    let chicken = this.level.enemies;
+    for (let i = 0; i < chicken.length - 1; i++) {
+      if (this.chickenisClose(chicken, i) && !this.gameOver.gameFinished) {
+        this.AUDIO_CHICKEN.play();
+        this.AUDIO_CHICKEN.volume = 0.1;
+      }
+    }
+  }
+
+  chickenisClose(chicken, i) {
+    return (
+      this.character.x > chicken[i].x - 200 &&
+      this.character.x + this.character.width < chicken[i].x + chicken[i].width
+    );
   }
 
   deleteChicken(enemy) {
