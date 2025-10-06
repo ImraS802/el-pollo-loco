@@ -28,7 +28,7 @@ body {
 
 h1 {
     margin-top: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 0;
     font-family: "Rye", Arial, Helvetica, sans-serif;
     font-size: 52px;
     color: #c6662f;
@@ -135,18 +135,18 @@ canvas {
 }
 
 .sound img {
-    object-fit: cover;
     height: 32px;
     width: 32px;
     cursor: pointer;
 }
 
 .sound {
-    position: absolute;
-    top: 48px;
-    right: 0;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    margin-right: 40px;
+    font-family: "Rubik Bubbles", Arial, Helvetica, sans-serif;
 }
 
 .mute {
@@ -155,35 +155,19 @@ canvas {
     flex-direction: column-reverse;
 }
 
-.manual {
-    position: relative;
-    font-size: 24px;
-    font-size: 24px;
-    width: 720px;
-    height: 40px;
-    text-align: center;
-}
-
 .fullscreen img {
     height: 20px;
     width: 20px;
     cursor: pointer;
-}
-
-.headline-positioning {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 12px;
     margin-left: 40px;
-    margin-bottom: 10px;
 }
 
-/* .fullscreen {
-    position: absolute;
-    top: 8px;
-    right: 12px;
-} */
+.fullscreen-sound-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
 
 .fullscreen {
     position: relative;
@@ -225,36 +209,41 @@ canvas {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #fde287e0;
+    background-color: #f5ce5be5;
     color: black;
     display: flex;
+    flex-direction: column;
     text-align: center;
     justify-content: center;
     align-items: center;
     z-index: 2;
     font-size: 24px;
     padding: 64px;
+    font-family: 'Rye';
 }
 
 .info-text button {
-    position: absolute;
-    bottom: 80px;
-    height: 48px;
-    outline: none;
-    color: white;
-    font-family: 'Rubik Bubbles';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a0220a;
+    font-family: 'Rye';
     font-size: 24px;
-    background-color: #8a4934;
+    background: linear-gradient(to bottom, #ffc71f 5%, #ff9600 100%);
     border-radius: 10px;
     border: 4px solid white;
-    display: inline-block;
     cursor: pointer;
-    padding: 6px 24px;
-    text-decoration: none;
+    padding: 10px 60px;
+    margin-top: 40px;
 }
 
 .info-text button:hover {
     background-color: #c6662f;
+}
+
+.close-text {
+    text-align: center;
+    width: 100%;
 }
 
 .d-none {
