@@ -49,7 +49,6 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
@@ -60,20 +59,16 @@ class World {
     this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.coins);
-
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleBar);
     this.addToMap(this.coinBar);
-
     if (this.gameOver.gameFinished) {
       this.addToMap(this.gameOver);
     }
     this.ctx.translate(this.camera_x, 0);
-
     this.addToMap(this.character);
     this.ctx.translate(-this.camera_x, 0);
-
     let self = this;
     requestAnimationFrame(function () {
       self.draw();
@@ -130,7 +125,7 @@ class World {
   }
 
   checkCollision() {
-    this.level.enemies.forEach((enemy, index) => {
+    this.level.enemies.forEach((enemy) => {
       if (enemy.chickenAlive) {
         if (
           this.character.isColliding(enemy) &&

@@ -66,84 +66,115 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.x = 6200;
     this.speed = 1.3;
-    this.animate();
     this.endbossBar = new EndbossStatusBar(this.x + 100, this.y - 10);
     this.AUDIO_SCREAM.volume = 0.1;
+    this.animate();
   }
 
   animate() {
+    this.handleMovement();
+    this.handleBehavior();
+  }
+
+  handleMovement() {
     setInterval(() => {
       if (
         this.characterCloseToEndboss &&
         !this.characterEscaped &&
         !this.dead
       ) {
-        this.otherDirection = false;
-        this.moveLeft();
-        this.endbossBar.x = this.x + 100;
-      }
-      if (this.characterEscaped && !this.dead) {
-        this.otherDirection = true; // face right
-        this.moveRight(); // continuous movement
-        this.endbossBar.x = this.x + 100;
+        this.moveEndbossLeft();
+      } else if (this.characterEscaped && !this.dead) {
+        this.moveEndbossRight();
       }
     }, 1000 / 60);
+  }
 
+  moveEndbossLeft() {
+    this.otherDirection = false;
+    this.moveLeft();
+    this.updateEndbossBar();
+  }
+
+  moveEndbossRight() {
+    this.otherDirection = true;
+    this.moveRight();
+    this.updateEndbossBar();
+  }
+
+  handleBehavior() {
     setInterval(() => {
       if (this.endbossIsHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-        this.AUDIO_HURT.play();
-        if (!this.endbossIsDead()) {
-          setTimeout(() => {
-            this.playAnimation(this.IMAGES_ATTACK);
-            this.AUDIO_SCREAM.play();
-            this.x -= this.speed;
-            this.endbossBar.x = this.x + 100;
-          }, 2000);
-        }
+        this.performHurtBehavior();
       } else if (this.endbossIsDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-        this.AUDIO_SCREAM.pause();
-        setTimeout(() => {
-          this.applyGravity();
-        }, 2000);
-        setTimeout(() => {
-          this.dead = true;
-        }, 2000);
-      } else if (
-        !this.bottleAvailable &&
-        this.x <= 6000 &&
-        !this.killedCharacter &&
-        !this.characterEscaped
-      ) {
+        this.performDeathBehavior();
+      } else if (this.shouldAttackWithoutBottle()) {
+        this.performAttack();
+      } else if (this.killedCharacter) {
+        this.performAlert();
+      } else {
+        this.performIdleOrAttack();
+      }
+    }, 200);
+  }
+
+  performHurtBehavior() {
+    this.playAnimation(this.IMAGES_HURT);
+    this.AUDIO_HURT.play();
+    if (!this.endbossIsDead()) {
+      setTimeout(() => {
         this.playAnimation(this.IMAGES_ATTACK);
         this.AUDIO_SCREAM.play();
         this.x -= this.speed;
-        this.endbossBar.x = this.x + 100;
-      } else if (this.killedCharacter) {
-        this.playAnimation(this.IMAGES_ALERT);
-        this.AUDIO_SCREAM.pause();
-      } else {
-        if (
-          (this.characterCloseToEndboss && this.x > 5500) ||
-          this.characterEscaped
-        ) {
-          this.playAnimation(this.IMAGES_WALKING);
-          this.AUDIO_SCREAM.play();
-        } else if (
-          !this.pressKeyD() &&
-          this.x <= 6000 &&
-          this.bottleAvailable
-        ) {
-          this.playAnimation(this.IMAGES_ATTACK);
-          this.AUDIO_SCREAM.play();
-          this.x -= this.speed;
-          this.endbossBar.x = this.x + 100;
-        } else if (this.x <= 6000) {
-          this.playAnimation(this.IMAGES_ALERT);
-        }
-      }
-    }, 200);
+        this.updateEndbossBar();
+      }, 2000);
+    }
+  }
+
+  performDeathBehavior() {
+    this.playAnimation(this.IMAGES_DEAD);
+    this.AUDIO_SCREAM.pause();
+    setTimeout(() => this.applyGravity(), 2000);
+    setTimeout(() => (this.dead = true), 2000);
+  }
+
+  shouldAttackWithoutBottle() {
+    return (
+      !this.bottleAvailable &&
+      this.x <= 6000 &&
+      !this.killedCharacter &&
+      !this.characterEscaped
+    );
+  }
+
+  performAttack() {
+    this.playAnimation(this.IMAGES_ATTACK);
+    this.AUDIO_SCREAM.play();
+    this.x -= this.speed;
+    this.updateEndbossBar();
+  }
+
+  performAlert() {
+    this.playAnimation(this.IMAGES_ALERT);
+    this.AUDIO_SCREAM.pause();
+  }
+
+  performIdleOrAttack() {
+    if (
+      (this.characterCloseToEndboss && this.x > 5500) ||
+      this.characterEscaped
+    ) {
+      this.playAnimation(this.IMAGES_WALKING);
+      this.AUDIO_SCREAM.play();
+    } else if (!this.pressKeyD() && this.x <= 6000 && this.bottleAvailable) {
+      this.performAttack();
+    } else if (this.x <= 6000) {
+      this.playAnimation(this.IMAGES_ALERT);
+    }
+  }
+
+  updateEndbossBar() {
+    this.endbossBar.x = this.x + 100;
   }
 
   pressKeyD() {
