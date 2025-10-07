@@ -77,20 +77,36 @@ class World {
 
   run() {
     setInterval(() => {
-      this.throwBottle();
-      this.checkCollision();
-      this.checkCollisonBottle();
-      this.checkCollisonCoin();
-      this.calculateCharacterPosition();
-      this.checkCollisionBottleEndboss();
-      this.checkBottleAvailable();
-      this.checkCollisionEndboss();
-      this.timePassedSinceThrowEvent();
-      this.checkChickenPosition();
-      this.checkCharacterPassedEndboss();
-      this.checkIfCharacterIsDead();
-      this.checkIfGameOver();
+      this.updateCharacterActions();
+      this.updateStateObjects();
+      this.updateEndbossInteractions();
+      this.updateGameState();
     }, 200);
+  }
+
+  updateCharacterActions() {
+    this.throwBottle();
+    this.calculateCharacterPosition();
+    this.timePassedSinceThrowEvent();
+    this.checkChickenPosition();
+  }
+
+  updateStateObjects() {
+    this.checkCollisonBottle();
+    this.checkCollisonCoin();
+    this.checkBottleAvailable();
+  }
+
+  updateEndbossInteractions() {
+    this.checkCollision();
+    this.checkCollisionEndboss();
+    this.checkCollisionBottleEndboss();
+    this.checkCharacterPassedEndboss();
+    this.checkIfCharacterIsDead();
+  }
+
+  updateGameState() {
+    this.checkIfGameOver();
   }
 
   addObjectsToMap(objects) {
