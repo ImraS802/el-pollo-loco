@@ -78,7 +78,7 @@ class World {
   run() {
     setInterval(() => {
       this.updateCharacterActions();
-      this.updateStateObjects();
+      this.updateStateCollectedObjects();
       this.updateEndbossInteractions();
       this.updateGameState();
     }, 200);
@@ -91,7 +91,7 @@ class World {
     this.checkChickenPosition();
   }
 
-  updateStateObjects() {
+  updateStateCollectedObjects() {
     this.checkCollisonBottle();
     this.checkCollisonCoin();
     this.checkBottleAvailable();
