@@ -4,8 +4,6 @@ let keyboard = new KeyboardObject();
 let gameOver = new GameOver();
 
 function init() {
-  // canvas = document.getElementById('canvas');
-  // world = new World(canvas, keyboard);
   showStartScreen();
 }
 
@@ -115,34 +113,46 @@ function muteMusic() {
 }
 
 function muteSound() {
-  if (world.AUDIO_CHICKEN.muted == false) {
-    document.getElementById('sound').src = 'icons/mute.png';
-    world.AUDIO_CHICKEN.muted = true;
-    world.AUDIO_THROWING.muted = true;
-    world.character.AUDIO_WALKING.muted = true;
-    world.character.AUDIO_HURTING.muted = true;
-    world.character.AUDIO_JUMPING.muted = true;
-    world.endBoss.AUDIO_SCREAM.muted = true;
-    world.endBoss.AUDIO_HURT.muted = true;
-    world.character.AUDIO_BOTTLE.muted = true;
-    world.character.AUDIO_COIN.muted = true;
+  if (world.AUDIO_CHICKEN.muted === false) {
+    muteAllSounds();
   } else {
-    document.getElementById('sound').src = 'icons/speaker.png';
-    world.AUDIO_CHICKEN.muted = false;
-    world.AUDIO_THROWING.muted = false;
-    world.character.AUDIO_WALKING.muted = false;
-    world.character.AUDIO_HURTING.muted = false;
-    world.character.AUDIO_JUMPING.muted = false;
-    world.endBoss.AUDIO_SCREAM.muted = false;
-    world.endBoss.AUDIO_HURT.muted = false;
-    world.character.AUDIO_BOTTLE.muted = false;
-    world.character.AUDIO_COIN.muted = false;
+    unmuteAllSounds();
   }
+}
+
+function muteAllSounds() {
+  document.getElementById('sound').src = 'icons/mute.png';
+  toggleCharacterSounds(true);
+  toggleWorldSounds(true);
+  toggleEndbossSounds(true);
+}
+
+function unmuteAllSounds() {
+  document.getElementById('sound').src = 'icons/speaker.png';
+  toggleCharacterSounds(false);
+  toggleWorldSounds(false);
+  toggleEndbossSounds(false);
+}
+
+function toggleWorldSounds(state) {
+  world.AUDIO_CHICKEN.muted = state;
+}
+
+function toggleCharacterSounds(state) {
+  world.character.AUDIO_WALKING.muted = state;
+  world.character.AUDIO_HURTING.muted = state;
+  world.character.AUDIO_JUMPING.muted = state;
+  world.character.AUDIO_BOTTLE.muted = state;
+  world.character.AUDIO_COIN.muted = state;
+}
+
+function toggleEndbossSounds(state) {
+  world.endBoss.AUDIO_SCREAM.muted = state;
+  world.endBoss.AUDIO_HURT.muted = state;
 }
 
 // mobile
 function touchControl() {
-  // moving right
   document
     .getElementById('touchRight')
     .addEventListener('touchstart', function (e) {
@@ -157,7 +167,6 @@ function touchControl() {
       keyboard.KEY_RIGHT = false;
     });
 
-  // moving left
   document
     .getElementById('touchLeft')
     .addEventListener('touchstart', function (e) {
@@ -172,7 +181,6 @@ function touchControl() {
       keyboard.KEY_LEFT = false;
     });
 
-  // jumping
   document
     .getElementById('touchUp')
     .addEventListener('touchstart', function (e) {
@@ -185,7 +193,6 @@ function touchControl() {
     keyboard.KEY_SPACE = false;
   });
 
-  // throwing
   document
     .getElementById('touchThrow')
     .addEventListener('touchstart', function (e) {
