@@ -39,18 +39,6 @@
         <p>Please rotate your device to landscape mode to play the game!</p>
     </div>
 
-    <div class="fullscreen-sound-row">
-        <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
-        </div>
-        <div class="sound">
-            <div class="mute d-none" id="muteMusic" onclick="muteMusic()">
-                <div>Music</div> <img id="music" src="icons/speaker.png">
-            </div>
-            <div class="mute d-none" id="muteSound" onclick="muteSound()">
-                <div>Sounds</div> <img id="sound" src="icons/speaker.png">
-            </div>
-        </div>
-    </div>
     <div class="description" id="description">
         <div>Instructions </div>
         <div class="information" onclick="openInformation()">
@@ -91,12 +79,29 @@
         <div id="touchLeft"><img src="icons\left.png"></div>
         <div id="touchRight"><img src="icons\right.png"></div>
         <div id="touchUp"><img src="icons\jump.png"></div>
-        <div id="touchThrow"><img src="icons\shoot.png"></div>
+        <div id="touchThrow"><img src="icons\throw.png"></div>
     </div>
 
     <div class="canvas-wrapper">
         <canvas class="d-none" id="canvas" width="720" height="480">
         </canvas>
+
+        <div class="fullscreen-sound-row">
+            <div class="sound">
+                <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
+                </div>
+                <div class="mute d-none" id="muteMusic" onclick="muteMusic()">
+                    <img id="music" src="icons/speaker.png">
+                    <div>Music</div>
+                </div>
+
+                <div class="mute d-none" id="muteSound" onclick="muteSound()">
+                    <img id="sound" src="icons/speaker.png">
+                    <div>Sounds</div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <div class="d-none play-btn" id="playGameAgain">

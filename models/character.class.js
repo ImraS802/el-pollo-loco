@@ -116,7 +116,7 @@ class Character extends MovableObject {
 
       if (this.world.keyboard.KEY_LEFT && this.x > 0) this.moveCharacterLeft();
 
-      if (this.world.keyboard.KEY_SPACE && !this.isAboveGround())
+      if (this.world.keyboard.KEY_UP && !this.isAboveGround())
         this.jumpCharacter();
 
       this.world.camera_x = -this.x + 100;
