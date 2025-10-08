@@ -83,6 +83,12 @@ class Character extends MovableObject {
   AUDIO_HURTING = new Audio('audio/hurt.mp3');
   AUDIO_JUMPING = new Audio('audio/jump.mp3');
 
+  /**
+   * Creates an instance of the character.
+   *
+   * Loads all required character images (standing, walking, jumping, hurt, dead, sleeping),
+   * applies gravity, initializes animation state, and starts the animation loops.
+   */
   constructor() {
     super();
     this.loadImage('img/2_character_pepe/2_walk/W-21.png');
@@ -99,34 +105,51 @@ class Character extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts the main animation and movement handling loops.
+   *
+   * This method initializes two independent timed loops:
+   * one for handling character movement and one for updating animations.
+   */
   animate() {
     this.handleMovement();
     this.handleAnimations();
   }
 
+  /**
+   * Handles player movement based on keyboard input.
+   *
+   * Moves the character left, right, or makes it jump.
+   * Also updates camera position to follow the character.
+   *
+   * @fires Character#moveCharacterRight
+   * @fires Character#moveCharacterLeft
+   * @fires Character#jumpCharacter
+   */
   handleMovement() {
     setInterval(() => {
       this.AUDIO_WALKING.pause();
-
       if (
         this.world.keyboard.KEY_RIGHT &&
         this.x < this.world.level.level_end_x
       )
         this.moveCharacterRight();
-
       if (this.world.keyboard.KEY_LEFT && this.x > 0) this.moveCharacterLeft();
-
       if (this.world.keyboard.KEY_UP && !this.isAboveGround())
         this.jumpCharacter();
-
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
   }
 
+  /**
+   * Handles animation updates depending on character state.
+   *
+   * Switches between standing, walking, jumping, hurt, or dead animations
+   * depending on user input and internal status flags.
+   */
   handleAnimations() {
     setInterval(() => {
       const idleTime = (new Date().getTime() - this.idleStartTime) / 1000;
-
       if (this.isHurt()) return this.playHurtAnimation();
       if (this.isDead()) return this.playDeadAnimation();
       if (this.isAboveGround()) return this.playAnimation(this.IMAGES_JUMPING);
@@ -134,6 +157,9 @@ class Character extends MovableObject {
     }, 100);
   }
 
+  /**
+   * Moves the character to the right and plays walking sound if on the ground.
+   */
   moveCharacterRight() {
     this.moveRight();
     this.otherDirection = false;
@@ -141,6 +167,9 @@ class Character extends MovableObject {
     if (!this.isAboveGround()) this.AUDIO_WALKING.play();
   }
 
+  /**
+   * Moves the character to the left and plays walking sound if on the ground.
+   */
   moveCharacterLeft() {
     this.moveLeft();
     this.otherDirection = true;
@@ -148,24 +177,41 @@ class Character extends MovableObject {
     if (!this.isAboveGround()) this.AUDIO_WALKING.play();
   }
 
+  /**
+   * Makes the character jump and plays the jump sound.
+   */
   jumpCharacter() {
     this.jump();
     this.idleStartTime = new Date().getTime();
     this.AUDIO_JUMPING.play();
   }
 
+  /**
+   * Plays the hurt animation and sound.
+   * Reduces volume to prevent sound distortion.
+   */
   playHurtAnimation() {
     this.playAnimation(this.IMAGES_HURT);
     this.AUDIO_HURTING.play();
     this.AUDIO_HURTING.volume = 0.1;
   }
 
+  /**
+   * Plays the death animation and sets the character state to dead.
+   * Applies gravity after a delay to make the fall look natural.
+   */
   playDeadAnimation() {
     this.playAnimation(this.IMAGES_DEAD);
     setTimeout(() => this.applyGravity(), 2000);
     this.dead = true;
   }
 
+  /**
+   * Chooses between idle, walking, or sleeping animation
+   * based on the character's idle time and movement input.
+   *
+   * @param {number} idleTime - The number of seconds since the last movement.
+   */
   playIdleOrWalkAnimation(idleTime) {
     if (this.world.keyboard.KEY_RIGHT || this.world.keyboard.KEY_LEFT) {
       this.playAnimation(this.IMAGES_WALKING);
@@ -176,6 +222,14 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Plays a looping animation from the given image array.
+   *
+   * Cycles through all frames in the provided image list and updates
+   * the displayed image accordingly.
+   *
+   * @param {string[]} images - The array of image paths to loop through.
+   */
   playLoopingAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];

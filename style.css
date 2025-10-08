@@ -28,6 +28,7 @@ body {
 }
 
 h1 {
+    text-align: center;
     margin-top: 4px;
     margin-bottom: 0;
     font-family: "Rye", Arial, Helvetica, sans-serif;
@@ -289,20 +290,20 @@ canvas {
 
 #touchLeft {
     position: absolute;
-    top: 25vh;
+    top: 50vh;
     left: 4px;
 }
 
 #touchRight {
     position: absolute;
-    top: 25vh;
+    top: 50vh;
     right: 4px;
 }
 
 #touchUp {
     position: absolute;
     bottom: 4vh;
-    left: 25vw;
+    left: 35vw;
 }
 
 #touchThrow {
@@ -314,6 +315,8 @@ canvas {
 .touchControl-responsive {
     display: none;
 }
+
+/* impressum */
 
 .impressum {
     display: flex;
@@ -332,6 +335,49 @@ canvas {
 .impressum a:hover {
     color: #884631;
     transform: scale(1.2);
+}
+
+.content_limitation_one {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.padding_impressum {
+    padding: 20px 120px 60px 120px;
+    max-width: 1440px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.legal_link_style {
+    color: #1b53ba;
+}
+
+.impr {
+    padding: 0 0 20px 0;
+}
+
+.contact {
+    text-align: left;
+    padding-top: 40px;
+}
+
+.credits {
+    padding-top: 20px;
+}
+
+a.credit_links {
+    color: #1b53ba;
+    text-decoration: none;
+    padding-bottom: 40px;
+}
+
+.credit_links:hover {
+    color: #105ce9;
+    text-decoration: underline;
 }
 
 /* responsive section */
@@ -382,11 +428,15 @@ canvas {
     }
 
     .startscreen {
-        height: 100%;
-        width: 100%;
+        height: 100vh;
+        width: 100vw;
     }
 
     .description {
+        display: none;
+    }
+
+    #fullscreen {
         display: none;
     }
 
@@ -394,8 +444,9 @@ canvas {
         display: none;
     }
 
-    #touchControl {
+    .touchControl-responsive {
         display: block;
+        z-index: 7;
     }
 
     .keyboard-mapping {

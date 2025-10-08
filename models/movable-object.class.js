@@ -10,6 +10,9 @@ class MovableObject extends DrawableObject {
   AUDIO_BOTTLE = new Audio('audio/bottle.mp3');
   AUDIO_COIN = new Audio('audio/coin.mp3');
 
+  /**
+   * Decreases the object's energy by 5 and records the collision time.
+   */
   hit() {
     this.energy -= 5;
     if (this.energy < 0) {
@@ -19,6 +22,9 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Decreases the object's energy by 20 (used when hit by the Endboss) and records the collision time.
+   */
   hitByEndboss() {
     this.energy -= 20;
     if (this.energy < 0) {
@@ -28,16 +34,29 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Checks if the object is currently hurt.
+   * @returns {boolean} True if the object was hit within the last 0.5 seconds.
+   */
   isHurt() {
     let timepassed = new Date().getTime() - this.lastCollision;
     timepassed = timepassed / 1000;
     return timepassed < 0.5;
   }
 
+  /**
+   * Checks if the object is dead.
+   * @returns {boolean} True if the object's energy is 0.
+   */
   isDead() {
     return this.energy == 0;
   }
 
+  /**
+   * Checks if the object is colliding with another MovableObject.
+   * @param {MovableObject} mo - Another movable object to check collision against.
+   * @returns {boolean} True if the objects are colliding.
+   */
   isColliding(mo) {
     return (
       this.x + this.width > mo.x &&
@@ -47,23 +66,39 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * Collects a bottle and increases the bottle amount.
+   */
   collectBottle() {
     this.bottleAmount += 10;
     this.AUDIO_BOTTLE.play();
   }
 
+  /**
+   * Decreases the bottle amount by 10.
+   */
   decreaseBottleStatus() {
     this.bottleAmount -= 10;
   }
 
+  /**
+   * Moves the object to the left based on its speed.
+   */
   moveLeft() {
     this.x -= this.speed;
   }
 
+  /**
+   * Moves the object to the right based on its speed.
+   */
   moveRight() {
     this.x += this.speed;
   }
 
+  /**
+   * Plays an animation by cycling through an array of images.
+   * @param {string[]} images - Array of image paths to play in sequence.
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -71,6 +106,9 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
+  /**
+   * Applies gravity to the object, making it fall if above the ground.
+   */
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -80,6 +118,10 @@ class MovableObject extends DrawableObject {
     }, 1000 / 25);
   }
 
+  /**
+   * Checks if the object is above the ground.
+   * @returns {boolean} True if the object is in the air or cannot fall further.
+   */
   isAboveGround() {
     if (this instanceof ThrowableObject || this instanceof Endboss) {
       return true;
@@ -90,10 +132,16 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Makes the object jump by setting the vertical speed.
+   */
   jump() {
     this.speedY = 18;
   }
 
+  /**
+   * Collects a coin and increases the coin amount.
+   */
   collectCoin() {
     this.coinAmount += 5;
     this.AUDIO_COIN.play();

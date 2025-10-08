@@ -17,6 +17,12 @@ class ThrowableObject extends MovableObject {
     'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
   ];
 
+  /**
+   * Creates a new ThrowableObject instance at a specified position.
+   * Loads the rotating and splashing images, applies gravity, and starts the throw animation.
+   * @param {number} x - The initial horizontal position of the object.
+   * @param {number} y - The initial vertical position of the object.
+   */
   constructor(x, y) {
     super().loadImage(
       'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png'
@@ -29,6 +35,11 @@ class ThrowableObject extends MovableObject {
     this.throw();
   }
 
+  /**
+   * Initiates the throw behavior of the object.
+   * Sets an upward speed, moves the object horizontally over time,
+   * and plays the rotation animation while in the air.
+   */
   throw() {
     this.speedY = 20;
     setInterval(() => {

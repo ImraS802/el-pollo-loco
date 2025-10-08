@@ -56,6 +56,10 @@ class Endboss extends MovableObject {
   AUDIO_HURT = new Audio('audio/endboss-hurt.mp3');
   AUDIO_SCREAM = new Audio('audio/scream.mp3');
 
+  /**
+   * Initializes the Endboss, loads images and audio, sets initial position and speed,
+   * and starts animations.
+   */
   constructor() {
     super();
     this.loadImage(this.IMAGES_ALERT[0]);
@@ -71,11 +75,17 @@ class Endboss extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts the Endboss behavior: movement and other behaviors.
+   */
   animate() {
     this.handleMovement();
     this.handleBehavior();
   }
 
+  /**
+   * Handles horizontal movement of the Endboss based on character proximity and state.
+   */
   handleMovement() {
     setInterval(() => {
       if (
@@ -90,18 +100,27 @@ class Endboss extends MovableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * Moves the Endboss to the left and updates its status bar.
+   */
   moveEndbossLeft() {
     this.otherDirection = false;
     this.moveLeft();
     this.updateEndbossBar();
   }
 
+  /**
+   * Moves the Endboss to the right and updates its status bar.
+   */
   moveEndbossRight() {
     this.otherDirection = true;
     this.moveRight();
     this.updateEndbossBar();
   }
 
+  /**
+   * Handles Endboss behaviors such as hurt, death, attack, or idle based on game state.
+   */
   handleBehavior() {
     setInterval(() => {
       if (this.endbossIsHurt()) {
@@ -118,6 +137,9 @@ class Endboss extends MovableObject {
     }, 200);
   }
 
+  /**
+   * Plays hurt animation and sound, then continues attack if not dead.
+   */
   performHurtBehavior() {
     this.playAnimation(this.IMAGES_HURT);
     this.AUDIO_HURT.play();
@@ -131,6 +153,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Plays death animation, stops screaming audio, applies gravity, and sets dead flag.
+   */
   performDeathBehavior() {
     this.playAnimation(this.IMAGES_DEAD);
     this.AUDIO_SCREAM.pause();
@@ -138,6 +163,10 @@ class Endboss extends MovableObject {
     setTimeout(() => (this.dead = true), 2000);
   }
 
+  /**
+   * Determines whether the Endboss should attack without a bottle available.
+   * @returns {boolean} True if conditions for attacking without bottle are met.
+   */
   shouldAttackWithoutBottle() {
     return (
       !this.bottleAvailable &&
@@ -147,6 +176,9 @@ class Endboss extends MovableObject {
     );
   }
 
+  /**
+   * Performs attack animation and updates position and status bar.
+   */
   performAttack() {
     this.playAnimation(this.IMAGES_ATTACK);
     this.AUDIO_SCREAM.play();
@@ -154,11 +186,17 @@ class Endboss extends MovableObject {
     this.updateEndbossBar();
   }
 
+  /**
+   * Performs alert animation and pauses scream audio.
+   */
   performAlert() {
     this.playAnimation(this.IMAGES_ALERT);
     this.AUDIO_SCREAM.pause();
   }
 
+  /**
+   * Performs idle or walking animation based on character position and bottle availability.
+   */
   performIdleOrAttack() {
     if (
       (this.characterCloseToEndboss && this.x > 5500) ||
@@ -173,16 +211,26 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Updates the Endboss status bar position to follow the Endboss.
+   */
   updateEndbossBar() {
     this.endbossBar.x = this.x + 100;
   }
 
+  /**
+   * Checks whether the player has pressed the "D" key recently.
+   * @returns {boolean} True if "D" key was pressed within last 6 seconds.
+   */
   pressKeyD() {
     let timepassed = new Date().getTime() - this.lastTimePressKeyD;
     timepassed = timepassed / 1000;
     return timepassed < 6;
   }
 
+  /**
+   * Reduces the Endboss's energy by 3 points when hit.
+   */
   hitEndboss() {
     this.energyEndboss -= 3;
     if (this.energyEndboss < 0) {
@@ -192,12 +240,20 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Checks if the Endboss was recently hurt.
+   * @returns {boolean} True if hurt within last 0.5 seconds.
+   */
   endbossIsHurt() {
     let timepassed = new Date().getTime() - this.lastCollisionEndboss;
     timepassed = timepassed / 1000;
     return timepassed < 0.5;
   }
 
+  /**
+   * Checks if the Endboss is dead.
+   * @returns {boolean} True if energy is 0.
+   */
   endbossIsDead() {
     return this.energyEndboss == 0;
   }

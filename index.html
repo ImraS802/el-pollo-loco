@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<html translate="no">
+<html lang="en" translate="no">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./img/assets/favicon.png" type="image/ico" />
+    <link rel="icon" href="./img/assets/favicon.png" type="image/png" />
     <link rel="stylesheet" href="style.css">
     <script src="models/world.class.js"></script>
     <script src="models/drawable-object.class.js"></script>
@@ -33,104 +32,104 @@
 </head>
 
 <body onload="init()">
-    <div class="container"></div>
-    <h1>El Pollo Loco</h1>
-    <div id="rotateOverlay">
-        <p>Please rotate your device to landscape mode to play the game!</p>
-    </div>
-
-    <div class="description" id="description">
-        <div>Instructions </div>
-        <div class="information" onclick="openInformation()">
-            <img src="icons/info.png">
+    <div class="container">
+        <h1>El Pollo Loco</h1>
+        <div id="rotateOverlay">
+            <p>Please rotate your device to landscape mode to play the game!</p>
         </div>
-    </div>
-    <div class="d-none info-text" id="info">
-        <p>
-            El Pollo Loco is a fast-paced jump-and-run adventure game where you play as Pepe, a brave little
-            hero on a mission to defeat crazy chickens and collect treasures. Players explore a colorful
-            Mexican-inspired world filled with obstacles, coins, and surprises. <br> Use the
-            <strong>left</strong> and <strong>right
-                arrow
-                keys</strong> to move Pepe in the corresponding direction, the <strong>up arrow key</strong> to
-            jump, and
-            press the <strong>key d</strong> to
-            throw
-            bottles at enemies. <br> Your goal is to survive, collect as many items as possible, and defeat the
-            powerful Endboss Chicken to restore peace to the chaotic chicken world. <br> With vibrant graphics,
-            smooth controls, and fun sound effects, El Pollo Loco delivers a classic platforming experience full
-            of action and humor.
-        </p>
-        <button onclick="closeInformation()"><span class="close-text">Close</span></button>
-    </div>
 
-    <div class="canvas-wrapper">
-        <div class="startscreen" id="startscreen">
-            <img src="img/9_intro_outro_screens/start/startscreen_2.png">
-            <div class="start-button-center">
-                <div class="start-button">
-                    <button onclick="startGame()">Start Game</button>
+        <div class="description" id="description">
+            <div>Instructions </div>
+            <div class="information" onclick="openInformation()">
+                <img src="icons/info.png">
+            </div>
+        </div>
+        <div class="d-none info-text" id="info">
+            <p>
+                El Pollo Loco is a fast-paced jump-and-run adventure game where you play as Pepe, a brave little
+                hero on a mission to defeat crazy chickens and collect treasures. Players explore a colorful
+                Mexican-inspired world filled with obstacles, coins, and surprises. <br> Use the
+                <strong>left</strong> and <strong>right
+                    arrow
+                    keys</strong> to move Pepe in the corresponding direction, the <strong>up arrow key</strong> to
+                jump, and
+                press the <strong>key d</strong> to
+                throw
+                bottles at enemies. <br> Your goal is to survive, collect as many items as possible, and defeat the
+                powerful Endboss Chicken to restore peace to the chaotic chicken world. <br> With vibrant graphics,
+                smooth controls, and fun sound effects, El Pollo Loco delivers a classic platforming experience full
+                of action and humor.
+            </p>
+            <button onclick="closeInformation()"><span class="close-text">Close</span></button>
+        </div>
+
+        <div class="canvas-wrapper">
+            <div class="startscreen" id="startscreen">
+                <img src="img/9_intro_outro_screens/start/startscreen_2.png">
+                <div class="start-button-center">
+                    <div class="start-button">
+                        <button onclick="startGame()">Start Game</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="d-none touchControl-responsive" id="touchControl">
-        <div id="touchLeft"><img src="icons\left.png"></div>
-        <div id="touchRight"><img src="icons\right.png"></div>
-        <div id="touchUp"><img src="icons\jump.png"></div>
-        <div id="touchThrow"><img src="icons\throw.png"></div>
-    </div>
+        <div class="d-none touchControl-responsive" id="touchControl">
+            <div id="touchLeft"><img src="icons\left.png"></div>
+            <div id="touchRight"><img src="icons\right.png"></div>
+            <div id="touchUp"><img src="icons\jump.png"></div>
+            <div id="touchThrow"><img src="icons\throw.png"></div>
+        </div>
 
-    <div class="canvas-wrapper">
-        <canvas class="d-none" id="canvas" width="720" height="480">
-        </canvas>
+        <div class="canvas-wrapper">
+            <canvas class="d-none" id="canvas" width="720" height="480">
+            </canvas>
 
-        <div class="fullscreen-sound-row">
-            <div class="sound">
-                <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
+            <div class="fullscreen-sound-row">
+                <div class="sound">
+                    <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
+                    </div>
+                    <div class="mute d-none" id="muteMusic" onclick="muteMusic()">
+                        <img id="music" src="icons/speaker.png">
+                        <div>Music</div>
+                    </div>
+
+                    <div class="mute d-none" id="muteSound" onclick="muteSound()">
+                        <img id="sound" src="icons/speaker.png">
+                        <div>Sounds</div>
+                    </div>
+
                 </div>
-                <div class="mute d-none" id="muteMusic" onclick="muteMusic()">
-                    <img id="music" src="icons/speaker.png">
-                    <div>Music</div>
-                </div>
-
-                <div class="mute d-none" id="muteSound" onclick="muteSound()">
-                    <img id="sound" src="icons/speaker.png">
-                    <div>Sounds</div>
-                </div>
-
             </div>
         </div>
-    </div>
 
-    <div class="d-none play-btn" id="playGameAgain">
-        <button onclick="playAgain()">Play Again</button>
-    </div>
-    <div class="d-none play-btn" id="tryGameAgain">
-        <button onclick="playAgain()">Try Again</button>
-    </div>
-    <div class="keyboard-mapping">
-        <div class="key">
-            <img class="arrow" src="./img/assets/arrow_left.svg" alt="arrow left">
-            <span class="instructions">Left</span>
+        <div class="d-none play-btn" id="playGameAgain">
+            <button onclick="playAgain()">Play Again</button>
         </div>
-        <div class="key">
-            <img class="arrow" src="./img/assets/arrow_right.svg" alt="arrow right">
-            <span class="instructions">Right</span>
+        <div class="d-none play-btn" id="tryGameAgain">
+            <button onclick="playAgain()">Try Again</button>
         </div>
-        <div class="key">
-            <img class="arrow" src="./img/assets/arrow_upward.svg" alt="arrow upward">
-            <span class="instructions">Jump</span>
+        <div class="keyboard-mapping">
+            <div class="key">
+                <img class="arrow" src="./img/assets/arrow_left.svg" alt="arrow left">
+                <span class="instructions">Left</span>
+            </div>
+            <div class="key">
+                <img class="arrow" src="./img/assets/arrow_right.svg" alt="arrow right">
+                <span class="instructions">Right</span>
+            </div>
+            <div class="key">
+                <img class="arrow" src="./img/assets/arrow_upward.svg" alt="arrow upward">
+                <span class="instructions">Jump</span>
+            </div>
+            <div class="key">
+                <span class="d_key">d</span>
+                <span class="instructions">Throw</span>
+            </div>
         </div>
-        <div class="key">
-            <span class="d_key">d</span>
-            <span class="instructions">Throw</span>
+        <div class="impressum">
+            <a href="impressum.html" target="_blank" rel="noopener noreferrer">Impressum</a>
         </div>
-    </div>
-    <div class="impressum">
-        <a href="impressum.html" target="_blank" rel="noopener noreferrer">Impressum</a>
-    </div>
     </div>
 
 </body>

@@ -12,6 +12,12 @@ class Chick extends MovableObject {
 
   IMAGES_DEAD = ['img/3_enemies_chicken/chicken_small/2_dead/dead.png'];
 
+  /**
+   * Creates a new chick instance with randomized position and speed.
+   *
+   * Loads walking and dead animations, initializes the starting image,
+   * and begins movement and animation intervals.
+   */
   constructor() {
     super().loadImage('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
     this.x = 350 + Math.random() * 5900;
@@ -21,13 +27,35 @@ class Chick extends MovableObject {
     this.speed = 0.15 + Math.random() * 0.25;
   }
 
+  /**
+   * Initializes both movement and animation loops for the chick.
+   */
   animate() {
+    this.startMovement();
+    this.startAnimationLoop();
+  }
+
+  /**
+   * Starts the movement loop for the chick.
+   *
+   * Moves the chick continuously to the left while it is alive.
+   * Runs at approximately 60 frames per second.
+   */
+  startMovement() {
     setInterval(() => {
       if (this.chickenAlive) {
         this.moveLeft();
       }
     }, 1000 / 60);
+  }
 
+  /**
+   * Starts the animation loop for the chick.
+   *
+   * Updates the displayed image every 100ms, switching between
+   * walking and dead animations based on the chick’s state.
+   */
+  startAnimationLoop() {
     setInterval(() => {
       if (this.chickenAlive) {
         this.playAnimation(this.IMAGES_WALKING);

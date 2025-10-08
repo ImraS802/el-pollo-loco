@@ -185,12 +185,12 @@ function touchControl() {
     .getElementById('touchUp')
     .addEventListener('touchstart', function (e) {
       e.preventDefault();
-      keyboard.KEY_SPACE = true;
+      keyboard.KEY_UP = true;
     });
 
   document.getElementById('touchUp').addEventListener('touchend', function (e) {
     e.preventDefault();
-    keyboard.KEY_SPACE = false;
+    keyboard.KEY_UP = false;
   });
 
   document

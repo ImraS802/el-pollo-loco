@@ -1,6 +1,6 @@
 {
   "source": {
-    "include": ["./person.js", "./classes/student.class.js"]
+    "include": ["./js/script.js", "./models/background-object.class.js"]
   },
   "opts": {
     "destination": "./out"

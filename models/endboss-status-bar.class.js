@@ -10,6 +10,12 @@ class EndbossStatusBar extends DrawableObject {
 
   percentage = 100;
 
+  /**
+   * Creates an Endboss status bar at a specific position.
+   *
+   * @param {number} x - The horizontal position of the status bar.
+   * @param {number} y - The vertical position of the status bar.
+   */
   constructor(x, y) {
     super();
     this.loadImages(this.IMAGES_LIFE);
@@ -20,12 +26,22 @@ class EndbossStatusBar extends DrawableObject {
     this.setPercentage(100);
   }
 
+  /**
+   * Sets the current life percentage and updates the displayed image.
+   *
+   * @param {number} percentage - The life percentage (0–100).
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     let path = this.IMAGES_LIFE[this.lifeBarIndex()];
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Determines the index of the image to display based on current life.
+   *
+   * @returns {number} Index in IMAGES_LIFE corresponding to current percentage.
+   */
   lifeBarIndex() {
     if (this.percentage == 100) {
       return 5;
