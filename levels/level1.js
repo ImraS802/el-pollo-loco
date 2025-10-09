@@ -1,5 +1,18 @@
 let level1;
 
+/**
+ * Initializes and returns the first level configuration for the game.
+ *
+ * This function dynamically creates enemies, clouds, bottles, coins, and background layers,
+ * then assembles them into a new {@link Level} instance.
+ *
+ * @function
+ * @returns {Level} The fully constructed level instance containing all objects for Level 1.
+ *
+ * @example
+ * Initialize the first level and assign it globally
+ * level1 = initLevel1();
+ */
 function initLevel1() {
   let enemies = [];
   let clouds = [];
@@ -8,7 +21,11 @@ function initLevel1() {
   let x = 0;
   let y = 0;
 
-  // enemies
+  // ---------------- ENEMIES ----------------
+  /**
+   * Create 12 chickens and 7 chicks as part of the enemies array,
+   * and add one Endboss at the end of the level.
+   */
   for (let i = 0; i < 12; i++) {
     enemies.push(new Chicken());
   }
@@ -19,26 +36,43 @@ function initLevel1() {
 
   enemies.push(new Endboss());
 
+  // ---------------- CLOUDS ----------------
+  /**
+   * Generate 15 cloud objects, each spaced roughly 700px apart with random offsets.
+   */
   for (let i = 0; i < 15; i++) {
     let x = i * 700 + Math.random() * 100;
     clouds.push(new Cloud(x));
   }
 
-  for (let i = 0; i < 10; i++) {
+  // ---------------- BOTTLES ----------------
+  /**
+   * Create 10 bottle objects scattered randomly across the level range.
+   */
+  for (let i = 0; i < 15; i++) {
     let x = 450 + Math.random() * 5200;
     bottles.push(new Bottle(x));
   }
 
+  // ---------------- COINS ----------------
+  /**
+   * Create 20 coins placed randomly in both x and y coordinates for variety.
+   */
   for (let i = 0; i < 20; i++) {
     let x = 500 + Math.random() * 5300;
     let y = 100 + Math.random() * 200;
     coins.push(new Coin(x, y));
   }
 
+  // ---------------- BACKGROUND ----------------
+  /**
+   * Returns a new Level instance configured with all enemies, clouds, backgrounds, bottles, and coins.
+   */
   return new Level(
     enemies,
     clouds,
 
+    // Air + Background Layers repeating pattern across level width
     [
       new BackgroundObject('img/5_background/layers/air.png', -719, 0),
       new BackgroundObject(

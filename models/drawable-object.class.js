@@ -41,7 +41,7 @@ class DrawableObject {
 
   /**
    * Draws a blue bounding box around the object for debugging purposes.
-   * Only draws for Character, Chicken, Endboss, or ThrowableObject instances.
+   * Only draws for Character, Chicken, Chick, Coin, Endboss, or ThrowableObject instances.
    *
    * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
    */
@@ -49,13 +49,21 @@ class DrawableObject {
     if (
       this instanceof Character ||
       this instanceof Chicken ||
+      this instanceof Chick ||
+      this instanceof Coin ||
       this instanceof Endboss ||
       this instanceof ThrowableObject
     ) {
+      const o = this.offset || {top: 0, left: 0, right: 0, bottom: 0};
       ctx.beginPath();
       ctx.lineWidth = '5';
       ctx.strokeStyle = 'blue';
-      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.rect(
+        this.x + o.left,
+        this.y + o.top,
+        this.width - o.left - o.right,
+        this.height - o.top - o.bottom
+      );
     }
   }
 }

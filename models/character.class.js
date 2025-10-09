@@ -98,6 +98,12 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
+    this.offset = {
+      top: 100,
+      right: 60,
+      bottom: 10,
+      left: 40,
+    };
     this.applyGravity();
     this.currentImage = 0;
     this.img = this.imageCache[this.IMAGES_STANDING[0]];

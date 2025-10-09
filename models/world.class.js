@@ -1,7 +1,7 @@
 class World {
   character = new Character();
   level = level1;
-  ctx; // canvas
+  ctx;
   canvas;
   keyboard;
   camera_x = 0;
@@ -55,9 +55,50 @@ class World {
     this.character.world = this;
   }
 
+  // draw() {
+  //   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  //   this.ctx.translate(this.camera_x, 0);
+  //   this.addObjectsToMap(this.level.backgroundObjects);
+  //   this.addObjectsToMap(this.level.clouds);
+  //   this.addObjectsToMap(this.level.enemies);
+  //   if (!this.endBoss.dead) {
+  //     this.addToMap(this.endBoss.endbossBar);
+  //   }
+  //   this.addObjectsToMap(this.throwableObjects);
+  //   this.addObjectsToMap(this.level.bottles);
+  //   this.addObjectsToMap(this.level.coins);
+  //   this.ctx.translate(-this.camera_x, 0);
+  //   this.addToMap(this.statusBar);
+  //   this.addToMap(this.bottleBar);
+  //   this.addToMap(this.coinBar);
+  //   if (this.gameOver.gameFinished) {
+  //     this.addToMap(this.gameOver);
+  //   }
+  //   this.ctx.translate(this.camera_x, 0);
+  //   this.addToMap(this.character);
+  //   this.ctx.translate(-this.camera_x, 0);
+  //   let self = this;
+  //   requestAnimationFrame(function () {
+  //     self.draw();
+  //   });
+  // }
+
   /** Draws all objects in the game world and handles camera translation. */
   draw() {
+    this.clearCanvas();
+    this.drawWorld();
+    this.drawUI();
+    this.drawCharacter();
+    requestAnimationFrame(() => this.draw());
+  }
+
+  /** Clears the canvas before drawing the next frame. */
+  clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  /** Draws all background, enemies, and objects in the world. */
+  drawWorld() {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
@@ -69,19 +110,23 @@ class World {
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.coins);
     this.ctx.translate(-this.camera_x, 0);
+  }
+
+  /** Draws the fixed UI elements such as status bars and game over screen. */
+  drawUI() {
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleBar);
     this.addToMap(this.coinBar);
     if (this.gameOver.gameFinished) {
       this.addToMap(this.gameOver);
     }
+  }
+
+  /** Draws the main character after reapplying the camera transform. */
+  drawCharacter() {
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.ctx.translate(-this.camera_x, 0);
-    let self = this;
-    requestAnimationFrame(function () {
-      self.draw();
-    });
   }
 
   /** Starts the main game loop, updating character actions, collected objects, endboss interactions, and game state. */

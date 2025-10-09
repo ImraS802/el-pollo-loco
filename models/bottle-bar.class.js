@@ -32,7 +32,7 @@ class BottleBar extends DrawableObject {
    * @param {number} percentage - The new bottle fill percentage (0–100).
    *
    * @example
-   * // Set the bottle bar to 80%
+   * Set the bottle bar to 80%
    * bottleBar.setPercentage(80);
    */
   setPercentage(percentage) {

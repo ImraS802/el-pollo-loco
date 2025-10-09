@@ -3,10 +3,16 @@ let world;
 let keyboard = new KeyboardObject();
 let gameOver = new GameOver();
 
+/**
+ * Initializes the game by displaying the start screen.
+ */
 function init() {
   showStartScreen();
 }
 
+/**
+ * Displays the start screen and hides other UI elements.
+ */
 function showStartScreen() {
   document.getElementById('startscreen').classList.remove('d-none');
   document.getElementById('description').classList.remove('d-none');
@@ -16,6 +22,11 @@ function showStartScreen() {
   document.getElementById('touchControl').classList.add('d-none');
 }
 
+/**
+ * Starts the main game by initializing the world, level, and controls.
+ *
+ * Loads the canvas, sets up event listeners, and begins gameplay.
+ */
 function startGame() {
   document.getElementById('startscreen').classList.add('d-none');
   document.getElementById('description').classList.add('d-none');
@@ -30,6 +41,10 @@ function startGame() {
   touchControl();
 }
 
+/**
+ * Handles keyboard keydown events to set movement and action flags.
+ * @param {KeyboardEvent} event - The keyboard event.
+ */
 window.addEventListener('keydown', (event) => {
   switch (event.key) {
     case 'ArrowLeft':
@@ -60,6 +75,10 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
+/**
+ * Handles keyboard keyup events to release movement and action flags.
+ * @param {KeyboardEvent} event - The keyboard event.
+ */
 window.addEventListener('keyup', (event) => {
   switch (event.key) {
     case 'ArrowLeft':
@@ -84,22 +103,37 @@ window.addEventListener('keyup', (event) => {
   }
 });
 
+/**
+ * Opens the information modal or overlay.
+ */
 function openInformation() {
   document.getElementById('info').classList.remove('d-none');
 }
 
+/**
+ * Closes the information modal or overlay.
+ */
 function closeInformation() {
   document.getElementById('info').classList.add('d-none');
 }
 
+/**
+ * Reloads the page to restart the game.
+ */
 function playAgain() {
   location.reload();
 }
 
+/**
+ * Activates fullscreen mode for the game canvas.
+ */
 function goFullScreen() {
   canvas.requestFullscreen();
 }
 
+/**
+ * Toggles background and game-over music on or off.
+ */
 function muteMusic() {
   if (world.AUDIO_BACKGROUND.muted == false) {
     world.AUDIO_BACKGROUND.muted = true;
@@ -112,6 +146,9 @@ function muteMusic() {
   }
 }
 
+/**
+ * Toggles all game sound effects on or off.
+ */
 function muteSound() {
   if (world.AUDIO_CHICKEN.muted === false) {
     muteAllSounds();
@@ -120,6 +157,9 @@ function muteSound() {
   }
 }
 
+/**
+ * Mutes all in-game sounds including character, world, and endboss.
+ */
 function muteAllSounds() {
   document.getElementById('sound').src = 'icons/mute.png';
   toggleCharacterSounds(true);
@@ -127,6 +167,9 @@ function muteAllSounds() {
   toggleEndbossSounds(true);
 }
 
+/**
+ * Unmutes all in-game sounds including character, world, and endboss.
+ */
 function unmuteAllSounds() {
   document.getElementById('sound').src = 'icons/speaker.png';
   toggleCharacterSounds(false);
@@ -134,10 +177,18 @@ function unmuteAllSounds() {
   toggleEndbossSounds(false);
 }
 
+/**
+ * Toggles sound effects for world-level sounds (e.g., chicken noises).
+ * @param {boolean} state - Whether to mute (`true`) or unmute (`false`) the sounds.
+ */
 function toggleWorldSounds(state) {
   world.AUDIO_CHICKEN.muted = state;
 }
 
+/**
+ * Toggles sound effects for the character (walking, jumping, collecting).
+ * @param {boolean} state - Whether to mute (`true`) or unmute (`false`) the sounds.
+ */
 function toggleCharacterSounds(state) {
   world.character.AUDIO_WALKING.muted = state;
   world.character.AUDIO_HURTING.muted = state;
@@ -146,12 +197,20 @@ function toggleCharacterSounds(state) {
   world.character.AUDIO_COIN.muted = state;
 }
 
+/**
+ * Toggles sound effects for the endboss.
+ * @param {boolean} state - Whether to mute (`true`) or unmute (`false`) the sounds.
+ */
 function toggleEndbossSounds(state) {
   world.endBoss.AUDIO_SCREAM.muted = state;
   world.endBoss.AUDIO_HURT.muted = state;
 }
 
-// mobile
+/**
+ * Sets up touch-based controls for mobile devices.
+ *
+ * Handles directional movement and throwing bottles using touchstart and touchend events.
+ */
 function touchControl() {
   document
     .getElementById('touchRight')

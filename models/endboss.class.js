@@ -12,6 +12,13 @@ class Endboss extends MovableObject {
   killedCharacter = false;
   lastCollisionEndboss = 0;
 
+  offset = {
+    top: 80,
+    right: 50,
+    bottom: 10,
+    left: 30,
+  };
+
   IMAGES_ALERT = [
     'img/4_enemie_boss_chicken/2_alert/G5.png',
     'img/4_enemie_boss_chicken/2_alert/G6.png',
@@ -220,12 +227,12 @@ class Endboss extends MovableObject {
 
   /**
    * Checks whether the player has pressed the "D" key recently.
-   * @returns {boolean} True if "D" key was pressed within last 6 seconds.
+   * @returns {boolean} True if "D" key was pressed within last 5 seconds.
    */
   pressKeyD() {
     let timepassed = new Date().getTime() - this.lastTimePressKeyD;
     timepassed = timepassed / 1000;
-    return timepassed < 6;
+    return timepassed < 5;
   }
 
   /**
