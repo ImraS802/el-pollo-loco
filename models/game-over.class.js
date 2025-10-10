@@ -18,19 +18,10 @@ class GameOver extends DrawableObject {
   }
 
   /**
-   * Displays the appropriate end screen image depending on whether the player lost or won.
-   * Also reveals the corresponding "Try Again" or "Play Again" button in the DOM.
+   * Displays the game over screen overlay.
+   * Shows either the "won" or "lost" image based on the game outcome.
+   * Ensures that the endscreen is only shown once per game over event.
    */
-  //   showEndscreen() {
-  //     if (this.lostGame) {
-  //       this.loadImage(this.IMAGE_LOST);
-  //       document.getElementById('tryGameAgain').classList.remove('d-none');
-  //     } else {
-  //       this.loadImage(this.IMAGE_WON);
-  //       document.getElementById('playGameAgain').classList.remove('d-none');
-  //     }
-  //   }
-
   showEndscreen() {
     if (this.endscreenShown) return;
     this.endscreenShown = true;
@@ -49,6 +40,10 @@ class GameOver extends DrawableObject {
     }
   }
 
+  /**
+   * Hides the game over screen overlay and resets button visibility.
+   * Resets the internal endscreenShown flag to allow future displays.
+   */
   hideEndscreen() {
     this.endscreenShown = false;
     document.getElementById('gameOverOverlay').classList.add('d-none');
