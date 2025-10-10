@@ -3,13 +3,16 @@ class Endboss extends MovableObject {
   height = 300;
   width = 250;
   dead = false;
-  lastTimepressKeyD = 0;
   currentImage = 0;
   energyEndboss = 100;
   characterEscaped = false;
-  bottleAvailable = false;
   characterCloseToEndboss = false;
   killedCharacter = false;
+  bottleAvailable = false;
+  attacking = false;
+  hurt = false;
+  isMoving = false;
+  lastTimePressKeyD = 0;
   lastCollisionEndboss = 0;
 
   offset = {
@@ -86,24 +89,31 @@ class Endboss extends MovableObject {
    * Starts the Endboss behavior: movement and other behaviors.
    */
   animate() {
-    this.handleMovement();
-    this.handleBehavior();
-  }
-
-  /**
-   * Handles horizontal movement of the Endboss based on character proximity and state.
-   */
-  handleMovement() {
+    let frameCounter = 0;
     setInterval(() => {
-      if (
-        this.characterCloseToEndboss &&
-        !this.characterEscaped &&
-        !this.dead
-      ) {
-        this.moveEndbossLeft();
-      } else if (this.characterEscaped && !this.dead) {
-        this.moveEndbossRight();
+      if (this.dead) return;
+      if (this.characterCloseToEndboss && !this.characterEscaped) {
+        this.otherDirection = false;
+        this.moveLeft();
+      } else if (this.characterEscaped) {
+        this.otherDirection = true;
+        this.moveRight();
       }
+      frameCounter++;
+      if (frameCounter % 12 === 0) {
+        if (this.endbossIsDead()) {
+          this.performDeathBehavior();
+        } else if (this.endbossIsHurt()) {
+          this.performHurtBehavior();
+        } else if (this.shouldAttack()) {
+          this.performAttack();
+        } else if (this.killedCharacter) {
+          this.performAlert();
+        } else {
+          this.performIdleOrWalk();
+        }
+      }
+      this.updateEndbossBar();
     }, 1000 / 60);
   }
 
@@ -126,38 +136,16 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Handles Endboss behaviors such as hurt, death, attack, or idle based on game state.
-   */
-  handleBehavior() {
-    setInterval(() => {
-      if (this.endbossIsHurt()) {
-        this.performHurtBehavior();
-      } else if (this.endbossIsDead()) {
-        this.performDeathBehavior();
-      } else if (this.shouldAttackWithoutBottle()) {
-        this.performAttack();
-      } else if (this.killedCharacter) {
-        this.performAlert();
-      } else {
-        this.performIdleOrAttack();
-      }
-    }, 200);
-  }
-
-  /**
    * Plays hurt animation and sound, then continues attack if not dead.
    */
   performHurtBehavior() {
+    this.hurt = true;
     this.playAnimation(this.IMAGES_HURT);
-    this.AUDIO_HURT.play();
-    if (!this.endbossIsDead()) {
-      setTimeout(() => {
-        this.playAnimation(this.IMAGES_ATTACK);
-        this.AUDIO_SCREAM.play();
-        this.x -= this.speed;
-        this.updateEndbossBar();
-      }, 2000);
-    }
+    safePlayAudio(this.AUDIO_HURT);
+    setTimeout(() => {
+      this.hurt = false;
+      this.attacking = true;
+    }, 2000);
   }
 
   /**
@@ -165,9 +153,18 @@ class Endboss extends MovableObject {
    */
   performDeathBehavior() {
     this.playAnimation(this.IMAGES_DEAD);
+    this.dead = true;
     this.AUDIO_SCREAM.pause();
     setTimeout(() => this.applyGravity(), 2000);
-    setTimeout(() => (this.dead = true), 2000);
+  }
+
+  shouldAttack() {
+    return (
+      !this.bottleAvailable &&
+      this.x <= 6000 &&
+      !this.killedCharacter &&
+      !this.characterEscaped
+    );
   }
 
   /**
@@ -187,10 +184,9 @@ class Endboss extends MovableObject {
    * Performs attack animation and updates position and status bar.
    */
   performAttack() {
+    this.attacking = true;
     this.playAnimation(this.IMAGES_ATTACK);
-    this.AUDIO_SCREAM.play();
-    this.x -= this.speed;
-    this.updateEndbossBar();
+    safePlayAudio(this.AUDIO_SCREAM);
   }
 
   /**
@@ -199,6 +195,18 @@ class Endboss extends MovableObject {
   performAlert() {
     this.playAnimation(this.IMAGES_ALERT);
     this.AUDIO_SCREAM.pause();
+  }
+
+  performIdleOrWalk() {
+    if (
+      (this.characterCloseToEndboss && this.x > 5500) ||
+      this.characterEscaped
+    ) {
+      this.playAnimation(this.IMAGES_WALKING);
+      safePlayAudio(this.AUDIO_SCREAM);
+    } else if (this.x <= 6000 && this.bottleAvailable) {
+      this.playAnimation(this.IMAGES_ALERT);
+    }
   }
 
   /**
@@ -210,9 +218,10 @@ class Endboss extends MovableObject {
       this.characterEscaped
     ) {
       this.playAnimation(this.IMAGES_WALKING);
-      this.AUDIO_SCREAM.play();
+      safePlayAudio(this.AUDIO_SCREAM);
     } else if (!this.pressKeyD() && this.x <= 6000 && this.bottleAvailable) {
-      this.performAttack();
+      this.playAnimation(this.IMAGES_ATTACK); // only animation
+      safePlayAudio(this.AUDIO_SCREAM);
     } else if (this.x <= 6000) {
       this.playAnimation(this.IMAGES_ALERT);
     }

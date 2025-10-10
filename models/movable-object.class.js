@@ -74,7 +74,7 @@ class MovableObject extends DrawableObject {
    */
   collectBottle() {
     this.bottleAmount += 10;
-    this.AUDIO_BOTTLE.play();
+    safePlayAudio(this.AUDIO_BOTTLE);
   }
 
   /**
@@ -147,6 +147,6 @@ class MovableObject extends DrawableObject {
    */
   collectCoin() {
     this.coinAmount += 5;
-    this.AUDIO_COIN.play();
+    safePlayAudio(this.AUDIO_COIN);
   }
 }

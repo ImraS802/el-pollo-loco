@@ -170,7 +170,7 @@ class Character extends MovableObject {
     this.moveRight();
     this.otherDirection = false;
     this.idleStartTime = new Date().getTime();
-    if (!this.isAboveGround()) this.AUDIO_WALKING.play();
+    if (!this.isAboveGround()) safePlayAudio(this.AUDIO_WALKING);
   }
 
   /**
@@ -180,7 +180,7 @@ class Character extends MovableObject {
     this.moveLeft();
     this.otherDirection = true;
     this.idleStartTime = new Date().getTime();
-    if (!this.isAboveGround()) this.AUDIO_WALKING.play();
+    if (!this.isAboveGround()) safePlayAudio(this.AUDIO_WALKING);
   }
 
   /**
@@ -189,7 +189,7 @@ class Character extends MovableObject {
   jumpCharacter() {
     this.jump();
     this.idleStartTime = new Date().getTime();
-    this.AUDIO_JUMPING.play();
+    safePlayAudio(this.AUDIO_JUMPING);
   }
 
   /**
@@ -198,7 +198,7 @@ class Character extends MovableObject {
    */
   playHurtAnimation() {
     this.playAnimation(this.IMAGES_HURT);
-    this.AUDIO_HURTING.play();
+    safePlayAudio(this.AUDIO_HURTING);
     this.AUDIO_HURTING.volume = 0.1;
   }
 

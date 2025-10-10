@@ -5,6 +5,7 @@ class GameOver extends DrawableObject {
   x = 0;
   gameFinished = false;
   lostGame = false;
+  endscreenShown = false;
 
   IMAGE_LOST = ['img/9_intro_outro_screens/game_over/oh no you lost!.png'];
   IMAGE_WON = ['img/You won, you lost/You Won B.png'];
@@ -20,13 +21,38 @@ class GameOver extends DrawableObject {
    * Displays the appropriate end screen image depending on whether the player lost or won.
    * Also reveals the corresponding "Try Again" or "Play Again" button in the DOM.
    */
+  //   showEndscreen() {
+  //     if (this.lostGame) {
+  //       this.loadImage(this.IMAGE_LOST);
+  //       document.getElementById('tryGameAgain').classList.remove('d-none');
+  //     } else {
+  //       this.loadImage(this.IMAGE_WON);
+  //       document.getElementById('playGameAgain').classList.remove('d-none');
+  //     }
+  //   }
+
   showEndscreen() {
+    if (this.endscreenShown) return;
+    this.endscreenShown = true;
+    const overlay = document.getElementById('gameOverOverlay');
+    const tryBtn = document.getElementById('tryGameAgain');
+    const playBtn = document.getElementById('playGameAgain');
+    overlay.classList.remove('d-none');
+    tryBtn.classList.add('d-none');
+    playBtn.classList.add('d-none');
     if (this.lostGame) {
       this.loadImage(this.IMAGE_LOST);
-      document.getElementById('tryGameAgain').classList.remove('d-none');
+      tryBtn.classList.remove('d-none');
     } else {
       this.loadImage(this.IMAGE_WON);
-      document.getElementById('playGameAgain').classList.remove('d-none');
+      playBtn.classList.remove('d-none');
     }
+  }
+
+  hideEndscreen() {
+    this.endscreenShown = false;
+    document.getElementById('gameOverOverlay').classList.add('d-none');
+    document.getElementById('tryGameAgain').classList.add('d-none');
+    document.getElementById('playGameAgain').classList.add('d-none');
   }
 }

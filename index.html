@@ -75,8 +75,8 @@
         </div>
 
         <div class="d-none touchControl-responsive" id="touchControl">
-            <div id="touchLeft"><img src="icons\left.png"></div>
-            <div id="touchRight"><img src="icons\right.png"></div>
+            <div id="touchLeft"><img id="leftTouchArrow" src="icons\left.png"></div>
+            <div id="touchRight"><img id="rightTouchArrow" src="icons\right.png"></div>
             <div id="touchUp"><img src="icons\jump.png"></div>
             <div id="touchThrow"><img src="icons\throw.png"></div>
         </div>
@@ -103,12 +103,15 @@
             </div>
         </div>
 
-        <div class="d-none play-btn" id="playGameAgain">
-            <button onclick="playAgain()">Play Again</button>
+        <div id="gameOverOverlay">
+            <div class="d-none play-btn" id="playGameAgain">
+                <button onclick="startGame()">Play Again</button>
+            </div>
+            <div class="d-none play-btn" id="tryGameAgain">
+                <button onclick="startGame()">Try Again</button>
+            </div>
         </div>
-        <div class="d-none play-btn" id="tryGameAgain">
-            <button onclick="playAgain()">Try Again</button>
-        </div>
+
         <div class="keyboard-mapping">
             <div class="key">
                 <img class="arrow" src="./img/assets/arrow_left.svg" alt="arrow left">

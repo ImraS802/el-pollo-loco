@@ -37,51 +37,24 @@ class World {
     this.run();
     this.AUDIO_GAMEOVER.pause();
     this.AUDIO_GAMEOVER.muted = false;
-    this.AUDIO_BACKGROUND.play();
     this.AUDIO_BACKGROUND.volume = 0.1;
     this.AUDIO_BACKGROUND.muted = false;
+    this.AUDIO_BACKGROUND.loop = true;
+    safePlayAudio(this.AUDIO_BACKGROUND);
     this.AUDIO_CHICKEN.muted = false;
     this.character.AUDIO_WALKING.muted = false;
     this.character.AUDIO_HURTING.muted = false;
     this.character.AUDIO_JUMPING.muted = false;
-    this.endBoss.AUDIO_SCREAM.muted = false;
-    this.endBoss.AUDIO_HURT.muted = false;
     this.character.AUDIO_BOTTLE.muted = false;
     this.character.AUDIO_COIN.muted = false;
+    this.endBoss.AUDIO_SCREAM.muted = false;
+    this.endBoss.AUDIO_HURT.muted = false;
   }
 
   /** Sets the world reference for the main character. */
   setWorld() {
     this.character.world = this;
   }
-
-  // draw() {
-  //   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  //   this.ctx.translate(this.camera_x, 0);
-  //   this.addObjectsToMap(this.level.backgroundObjects);
-  //   this.addObjectsToMap(this.level.clouds);
-  //   this.addObjectsToMap(this.level.enemies);
-  //   if (!this.endBoss.dead) {
-  //     this.addToMap(this.endBoss.endbossBar);
-  //   }
-  //   this.addObjectsToMap(this.throwableObjects);
-  //   this.addObjectsToMap(this.level.bottles);
-  //   this.addObjectsToMap(this.level.coins);
-  //   this.ctx.translate(-this.camera_x, 0);
-  //   this.addToMap(this.statusBar);
-  //   this.addToMap(this.bottleBar);
-  //   this.addToMap(this.coinBar);
-  //   if (this.gameOver.gameFinished) {
-  //     this.addToMap(this.gameOver);
-  //   }
-  //   this.ctx.translate(this.camera_x, 0);
-  //   this.addToMap(this.character);
-  //   this.ctx.translate(-this.camera_x, 0);
-  //   let self = this;
-  //   requestAnimationFrame(function () {
-  //     self.draw();
-  //   });
-  // }
 
   /** Draws all objects in the game world and handles camera translation. */
   draw() {
@@ -309,8 +282,10 @@ class World {
   /** Checks if the character collides with the endboss and updates health. */
   checkCollisionEndboss() {
     if (this.isCollidingEndboss()) {
-      this.character.hitByEndboss();
-      this.statusBar.setPercentage(this.character.energy);
+      this.character.energy = 0;
+      this.character.dead = true;
+      this.statusBar.setPercentage(0);
+      this.checkIfGameOver();
     }
   }
 
@@ -370,7 +345,7 @@ class World {
     let chicken = this.level.enemies;
     for (let i = 0; i < chicken.length - 1; i++) {
       if (this.chickenisClose(chicken, i) && !this.gameOver.gameFinished) {
-        this.AUDIO_CHICKEN.play();
+        safePlayAudio(this.AUDIO_CHICKEN);
         this.AUDIO_CHICKEN.volume = 0.1;
       }
     }
@@ -413,13 +388,14 @@ class World {
 
   /** Checks if the game is over (either character or endboss dead) and shows end screen. */
   checkIfGameOver() {
+    if (this.gameOver.gameFinished) return;
     if (this.character.dead || this.endBoss.dead) {
       this.gameOver.gameFinished = true;
       this.gameOver.lostGame =
         this.character.dead && !this.endBoss.dead ? true : false;
       this.gameOver.showEndscreen();
       this.AUDIO_BACKGROUND.pause();
-      this.AUDIO_GAMEOVER.play();
+      safePlayAudio(this.AUDIO_GAMEOVER);
       this.AUDIO_GAMEOVER.volume = 0.1;
       this.AUDIO_GAMEOVER.loop = false;
     }

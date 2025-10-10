@@ -4,6 +4,27 @@ let keyboard = new KeyboardObject();
 let gameOver = new GameOver();
 
 /**
+ * Safely attempts to play an HTMLAudioElement.
+ * Prevents AbortError when playback is interrupted or blocked.
+ * @param {HTMLAudioElement} audio
+ */
+function safePlayAudio(audio) {
+  if (!audio) return;
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {})
+      .catch((err) => {
+        if (err.name === 'AbortError') {
+          console.debug('Audio play aborted (ignored).');
+        } else {
+          console.warn('Audio play error:', err);
+        }
+      });
+  }
+}
+
+/**
  * Initializes the game by displaying the start screen.
  */
 function init() {
@@ -28,6 +49,9 @@ function showStartScreen() {
  * Loads the canvas, sets up event listeners, and begins gameplay.
  */
 function startGame() {
+  gameOver?.hideEndscreen?.();
+  document.getElementById('tryGameAgain').classList.add('d-none');
+  document.getElementById('playGameAgain').classList.add('d-none');
   document.getElementById('startscreen').classList.add('d-none');
   document.getElementById('description').classList.add('d-none');
   document.getElementById('canvas').classList.remove('d-none');
@@ -36,6 +60,9 @@ function startGame() {
   document.getElementById('muteSound').classList.remove('d-none');
   document.getElementById('touchControl').classList.remove('d-none');
   canvas = document.getElementById('canvas');
+  gameOver = new GameOver();
+  gameOver.gameFinished = false;
+  gameOver.lostGame = false;
   level1 = initLevel1();
   world = new World(canvas, keyboard, gameOver);
   touchControl();
@@ -118,7 +145,7 @@ function closeInformation() {
 }
 
 /**
- * Reloads the page to restart the game.
+ * Reloads the page to restart the game and unmutes sound and music.
  */
 function playAgain() {
   location.reload();
@@ -139,10 +166,12 @@ function muteMusic() {
     world.AUDIO_BACKGROUND.muted = true;
     world.AUDIO_GAMEOVER.muted = true;
     document.getElementById('music').src = 'icons/mute.png';
+    localStorage.setItem('musicMuted', 'true');
   } else {
     world.AUDIO_BACKGROUND.muted = false;
     world.AUDIO_GAMEOVER.muted = false;
     document.getElementById('music').src = 'icons/speaker.png';
+    localStorage.setItem('musicMuted', 'false');
   }
 }
 
@@ -152,8 +181,10 @@ function muteMusic() {
 function muteSound() {
   if (world.AUDIO_CHICKEN.muted === false) {
     muteAllSounds();
+    localStorage.setItem('soundMuted', 'true');
   } else {
     unmuteAllSounds();
+    localStorage.setItem('soundMuted', 'false');
   }
 }
 
