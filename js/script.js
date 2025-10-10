@@ -44,9 +44,25 @@ function showStartScreen() {
 }
 
 /**
- * Starts the main game by initializing the world, level, and controls.
+ * Initializes and starts the game.
  *
- * Loads the canvas, sets up event listeners, and begins gameplay.
+ * This function performs the following actions:
+ * 1. Hides the game over screen if it is visible.
+ * 2. Hides the "Try Again" and "Play Again" buttons.
+ * 3. Hides the start screen and description panel.
+ * 4. Displays the game canvas and relevant UI elements for gameplay:
+ *    - Fullscreen button
+ *    - Music mute button
+ *    - Sound mute button
+ *    - Touch control overlay (if applicable)
+ * 5. Initializes the canvas element for drawing the game world.
+ * 6. Creates a new GameOver instance and resets game over states.
+ * 7. Initializes the first level (level1) of the game.
+ * 8. Creates a new World instance with the canvas, keyboard, and GameOver instance.
+ * 9. Initializes touch controls for mobile devices.
+ *
+ * @function
+ * @global
  */
 function startGame() {
   gameOver?.hideEndscreen?.();

@@ -20,21 +20,34 @@ class World {
 
   /**
    * Creates a new game world instance.
-   * Initializes the canvas, keyboard input, audio, and game objects.
    * @param {HTMLCanvasElement} canvas - The canvas element for rendering the game.
-   * @param {Object} keyboard - The keyboard input handler.
-   * @param {GameOver} gameOver - The game over screen object.
+   * @param {Object} keyboard - Keyboard input handler.
+   * @param {GameOver} gameOver - Game over screen instance.
    */
   constructor(canvas, keyboard, gameOver) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.gameOver = gameOver;
+    this.initWorld();
+    this.initAudio();
+    this.startGameLoop();
+  }
+
+  /**
+   * Initializes game objects, sets references, and draws initial state.
+   */
+  initWorld() {
     this.draw();
     this.setWorld();
     this.checkCollision();
     this.checkCollisonBottle();
-    this.run();
+  }
+
+  /**
+   * Configures and starts background and sound effects.
+   */
+  initAudio() {
     this.AUDIO_GAMEOVER.pause();
     this.AUDIO_GAMEOVER.muted = false;
     this.AUDIO_BACKGROUND.volume = 0.1;
@@ -49,6 +62,13 @@ class World {
     this.character.AUDIO_COIN.muted = false;
     this.endBoss.AUDIO_SCREAM.muted = false;
     this.endBoss.AUDIO_HURT.muted = false;
+  }
+
+  /**
+   * Starts the main game loop and repeated updates.
+   */
+  startGameLoop() {
+    this.run();
   }
 
   /** Sets the world reference for the main character. */
