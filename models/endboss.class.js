@@ -220,7 +220,7 @@ class Endboss extends MovableObject {
       this.playAnimation(this.IMAGES_WALKING);
       safePlayAudio(this.AUDIO_SCREAM);
     } else if (!this.pressKeyD() && this.x <= 6000 && this.bottleAvailable) {
-      this.playAnimation(this.IMAGES_ATTACK); // only animation
+      this.playAnimation(this.IMAGES_ATTACK);
       safePlayAudio(this.AUDIO_SCREAM);
     } else if (this.x <= 6000) {
       this.playAnimation(this.IMAGES_ALERT);

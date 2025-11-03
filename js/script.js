@@ -81,6 +81,7 @@ function startGame() {
   gameOver.lostGame = false;
   level1 = initLevel1();
   world = new World(canvas, keyboard, gameOver);
+  applySavedAudioSettings();
   touchControl();
 }
 
@@ -251,6 +252,25 @@ function toggleCharacterSounds(state) {
 function toggleEndbossSounds(state) {
   world.endBoss.AUDIO_SCREAM.muted = state;
   world.endBoss.AUDIO_HURT.muted = state;
+}
+
+/**
+ * Applies saved audio mute settings from localStorage when the game starts.
+ */
+function applySavedAudioSettings() {
+  const musicMuted = localStorage.getItem('musicMuted') === 'true';
+  const soundMuted = localStorage.getItem('soundMuted') === 'true';
+  world.AUDIO_BACKGROUND.muted = musicMuted;
+  world.AUDIO_GAMEOVER.muted = musicMuted;
+  document.getElementById('music').src = musicMuted
+    ? 'icons/mute.png'
+    : 'icons/speaker.png';
+  toggleCharacterSounds(soundMuted);
+  toggleWorldSounds(soundMuted);
+  toggleEndbossSounds(soundMuted);
+  document.getElementById('sound').src = soundMuted
+    ? 'icons/mute.png'
+    : 'icons/speaker.png';
 }
 
 /**

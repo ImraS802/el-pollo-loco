@@ -242,4 +242,11 @@ class Character extends MovableObject {
     this.img = this.imageCache[path];
     this.currentImage++;
   }
+
+  die() {
+    this.energy = 0;
+    this.dead = true;
+    this.playDeathAnimation();
+    stopGame();
+  }
 }

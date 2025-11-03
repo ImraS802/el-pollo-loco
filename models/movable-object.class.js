@@ -1,8 +1,8 @@
 class MovableObject extends DrawableObject {
   speed = 0.15;
   otherDirection = false;
-  speedY = 0; // how many pixels he falls
-  acceleration = 1; // how fast item accelerates
+  speedY = 0;
+  acceleration = 1;
   energy = 100;
   lastCollision = 0;
   bottleAmount = 0;

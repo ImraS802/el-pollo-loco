@@ -209,19 +209,15 @@ class World {
   /** Checks collisions between the main character and enemies. */
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
-      if (enemy.chickenAlive) {
-        if (
-          this.character.isColliding(enemy) &&
-          !this.character.isAboveGround()
-        ) {
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
-        } else if (
-          this.character.isColliding(enemy) &&
-          this.character.isAboveGround()
-        ) {
+      if (!enemy.chickenAlive) return;
+      if (this.character.isColliding(enemy)) {
+        if (this.character.speedY < 0) {
           this.chickenDead(enemy);
           this.deleteChicken(enemy);
+          this.character.speedY = 0;
+        } else if (!this.character.isAboveGround()) {
+          this.character.hit();
+          this.statusBar.setPercentage(this.character.energy);
         }
       }
     });
