@@ -1,244 +1,211 @@
-let level1;
-
 /**
- * Initializes and returns the first level configuration for the game.
+ * Factory function that creates and returns a new instance of a predefined level.
+ * This function defines the initial state of the game world by instantiating and
+ * positioning all game objects, including enemies, environment elements, and collectibles.
+ * It is used to initialize the level at the start of the game or to reset it.
  *
- * This function dynamically creates enemies, clouds, bottles, coins, and background layers,
- * then assembles them into a new {@link Level} instance.
+ * The `Level` constructor is populated with arrays of:
+ * - Enemies: An Endboss, several Chickens, and SmallChickens.
+ * - Clouds: A series of clouds for the sky.
+ * - BackgroundObjects: Multiple layers for a parallax scrolling effect.
+ * - Bottles: Collectible bottle items.
+ * - Coins: Collectible coin items.
  *
- * @function
- * @returns {Level} The fully constructed level instance containing all objects for Level 1.
- *
- * @example
- * Initialize the first level and assign it globally
- * level1 = initLevel1();
+ * @returns {Level} A new Level object containing all the defined game elements.
  */
-function initLevel1() {
-  let enemies = [];
-  let clouds = [];
-  let bottles = [];
-  let coins = [];
-  let x = 0;
-  let y = 0;
-
-  // ---------------- ENEMIES ----------------
-  /**
-   * Create 12 chickens and 7 chicks as part of the enemies array,
-   * and add one Endboss at the end of the level.
-   */
-  for (let i = 0; i < 12; i++) {
-    enemies.push(new Chicken());
-  }
-
-  for (let i = 0; i < 7; i++) {
-    enemies.push(new Chick());
-  }
-
-  enemies.push(new Endboss());
-
-  // ---------------- CLOUDS ----------------
-  /**
-   * Generate 15 cloud objects, each spaced roughly 700px apart with random offsets.
-   */
-  for (let i = 0; i < 15; i++) {
-    let x = i * 700 + Math.random() * 100;
-    clouds.push(new Cloud(x));
-  }
-
-  // ---------------- BOTTLES ----------------
-  /**
-   * Create 10 bottle objects scattered randomly across the level range.
-   */
-  for (let i = 0; i < 15; i++) {
-    let x = 450 + Math.random() * 5200;
-    bottles.push(new Bottle(x));
-  }
-
-  // ---------------- COINS ----------------
-  /**
-   * Create 20 coins placed randomly in both x and y coordinates for variety.
-   */
-  for (let i = 0; i < 20; i++) {
-    let x = 500 + Math.random() * 5300;
-    let y = 100 + Math.random() * 200;
-    coins.push(new Coin(x, y));
-  }
-
-  // ---------------- BACKGROUND ----------------
-  /**
-   * Returns a new Level instance configured with all enemies, clouds, backgrounds, bottles, and coins.
-   */
+function resetLevel() {
   return new Level(
-    enemies,
-    clouds,
-
-    // Air + Background Layers repeating pattern across level width
     [
-      new BackgroundObject('img/5_background/layers/air.png', -719, 0),
+      new Endboss(),
+      new Chicken(),
+      new Chicken(),
+      new Chicken(),
+      new Chicken(),
+      new Chicken(),
+      new Chicken(),
+      new Chicken(),
+      new Chicken(),
+      new Chicken(),
+      new SmallChicken(),
+      new SmallChicken(),
+      new SmallChicken(),
+      new SmallChicken(),
+      new SmallChicken(),
+      new SmallChicken(),
+      new SmallChicken(),
+      new SmallChicken(),
+    ],
+    [
+      new Cloud(210),
+      new Cloud(430),
+      new Cloud(670),
+      new Cloud(820),
+      new Cloud(1170),
+      new Cloud(1350),
+      new Cloud(1580),
+      new Cloud(1900),
+      new Cloud(2150),
+      new Cloud(2430),
+      new Cloud(2670),
+      new Cloud(2820),
+      new Cloud(3160),
+      new Cloud(3410),
+      new Cloud(3670),
+      new Cloud(3820),
+      new Cloud(4060),
+      new Cloud(4250),
+      new Cloud(4460),
+      new Cloud(4710),
+      new Cloud(4970),
+      new Cloud(5130),
+      new Cloud(5460),
+      new Cloud(5750),
+      new Cloud(5980),
+    ],
+    [
       new BackgroundObject(
-        'img/5_background/layers/3_third_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/air.png',
         -719,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/2_second_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/3_third_layer/2.png',
         -719,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/1_first_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/2_second_layer/2.png',
         -719,
-        0
+      ),
+      new BackgroundObject(
+        'img_pollo_loco/img/5_background/layers/1_first_layer/2.png',
+        -719,
       ),
 
-      new BackgroundObject('img/5_background/layers/air.png', 0, 0),
-      new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 0, 0),
+      new BackgroundObject('img_pollo_loco/img/5_background/layers/air.png', 0),
       new BackgroundObject(
-        'img/5_background/layers/2_second_layer/1.png',
+        'img_pollo_loco/img/5_background/layers/3_third_layer/1.png',
         0,
-        0
       ),
-      new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0, 0),
-
-      new BackgroundObject('img/5_background/layers/air.png', 719, 0),
       new BackgroundObject(
-        'img/5_background/layers/3_third_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/2_second_layer/1.png',
+        0,
+      ),
+      new BackgroundObject(
+        'img_pollo_loco/img/5_background/layers/1_first_layer/1.png',
+        0,
+      ),
+
+      new BackgroundObject(
+        'img_pollo_loco/img/5_background/layers/air.png',
         719,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/2_second_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/3_third_layer/2.png',
         719,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/1_first_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/2_second_layer/2.png',
         719,
-        0
+      ),
+      new BackgroundObject(
+        'img_pollo_loco/img/5_background/layers/1_first_layer/2.png',
+        719,
       ),
 
-      new BackgroundObject('img/5_background/layers/air.png', 719 * 2, 0),
       new BackgroundObject(
-        'img/5_background/layers/3_third_layer/1.png',
+        'img_pollo_loco/img/5_background/layers/air.png',
         719 * 2,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/2_second_layer/1.png',
+        'img_pollo_loco/img/5_background/layers/3_third_layer/1.png',
         719 * 2,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/1_first_layer/1.png',
+        'img_pollo_loco/img/5_background/layers/2_second_layer/1.png',
         719 * 2,
-        0
+      ),
+      new BackgroundObject(
+        'img_pollo_loco/img/5_background/layers/1_first_layer/1.png',
+        719 * 2,
       ),
 
-      new BackgroundObject('img/5_background/layers/air.png', 719 * 3, 0),
       new BackgroundObject(
-        'img/5_background/layers/3_third_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/air.png',
         719 * 3,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/2_second_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/3_third_layer/2.png',
         719 * 3,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/1_first_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/2_second_layer/2.png',
         719 * 3,
-        0
+      ),
+      new BackgroundObject(
+        'img_pollo_loco/img/5_background/layers/1_first_layer/2.png',
+        719 * 3,
       ),
 
-      new BackgroundObject('img/5_background/layers/air.png', 719 * 4, 0),
       new BackgroundObject(
-        'img/5_background/layers/3_third_layer/1.png',
+        'img_pollo_loco/img/5_background/layers/air.png',
         719 * 4,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/2_second_layer/1.png',
+        'img_pollo_loco/img/5_background/layers/3_third_layer/1.png',
         719 * 4,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/1_first_layer/1.png',
+        'img_pollo_loco/img/5_background/layers/2_second_layer/1.png',
         719 * 4,
-        0
+      ),
+      new BackgroundObject(
+        'img_pollo_loco/img/5_background/layers/1_first_layer/1.png',
+        719 * 4,
       ),
 
-      new BackgroundObject('img/5_background/layers/air.png', 719 * 5, 0),
       new BackgroundObject(
-        'img/5_background/layers/3_third_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/air.png',
         719 * 5,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/2_second_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/3_third_layer/2.png',
         719 * 5,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/1_first_layer/2.png',
+        'img_pollo_loco/img/5_background/layers/2_second_layer/2.png',
         719 * 5,
-        0
-      ),
-
-      new BackgroundObject('img/5_background/layers/air.png', 719 * 6, 0),
-      new BackgroundObject(
-        'img/5_background/layers/3_third_layer/1.png',
-        719 * 6,
-        0
       ),
       new BackgroundObject(
-        'img/5_background/layers/2_second_layer/1.png',
-        719 * 6,
-        0
-      ),
-      new BackgroundObject(
-        'img/5_background/layers/1_first_layer/1.png',
-        719 * 6,
-        0
-      ),
-
-      new BackgroundObject('img/5_background/layers/air.png', 719 * 7, 0),
-      new BackgroundObject(
-        'img/5_background/layers/3_third_layer/2.png',
-        719 * 7,
-        0
-      ),
-      new BackgroundObject(
-        'img/5_background/layers/2_second_layer/2.png',
-        719 * 7,
-        0
-      ),
-      new BackgroundObject(
-        'img/5_background/layers/1_first_layer/2.png',
-        719 * 7,
-        0
-      ),
-
-      new BackgroundObject('img/5_background/layers/air.png', 719 * 8, 0),
-      new BackgroundObject(
-        'img/5_background/layers/3_third_layer/1.png',
-        719 * 8,
-        0
-      ),
-      new BackgroundObject(
-        'img/5_background/layers/2_second_layer/1.png',
-        719 * 8,
-        0
-      ),
-      new BackgroundObject(
-        'img/5_background/layers/1_first_layer/1.png',
-        719 * 8,
-        0
+        'img_pollo_loco/img/5_background/layers/1_first_layer/2.png',
+        719 * 5,
       ),
     ],
-
-    bottles,
-
-    coins
+    [
+      new Bottle(510, 370),
+      new Bottle(800, 370),
+      new Bottle(1120, 370),
+      new Bottle(1530, 370),
+      new Bottle(1860, 370),
+      new Bottle(2240, 370),
+      new Bottle(2400, 370),
+      new Bottle(2620, 370),
+      new Bottle(2870, 370),
+      new Bottle(3050, 370),
+      new Bottle(3200, 370),
+      new Bottle(3490, 370),
+    ],
+    [
+      new Coin(600, 140),
+      new Coin(1100, 230),
+      new Coin(1580, 270),
+      new Coin(1860, 170),
+      new Coin(2150, 240),
+      new Coin(2400, 170),
+      new Coin(2660, 230),
+      new Coin(2900, 140),
+      new Coin(3200, 220),
+      new Coin(3380, 180),
+    ],
   );
 }
+
+let level1 = resetLevel();

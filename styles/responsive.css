@@ -1,0 +1,121 @@
+/* =======================================
+   Mobile Portrait & Small Screens
+======================================= */
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+
+    .end-screen {
+        transform: translate(0%, -68px);
+    }
+}
+
+/* =======================================
+   Small Tablets / Mobile Landscape
+======================================= */
+
+@media only screen and (max-width: 1024px) and (max-height: 768px) {
+    #game-over-screen img {
+        height: 70vh;
+    }
+}
+
+@media only screen and (max-width: 1180px) and (max-height: 820px) {
+    #start-image {
+        height: 100%;
+    }
+
+    #game-over-screen img {
+        height: 60vh;
+    }
+}
+
+/* =======================================
+   Show Buttons on Smaller Devices
+======================================= */
+
+@media only screen and (max-width: 1200px) {
+    .mobile-button-container button {
+        display: flex;
+    }
+}
+
+/* =======================================
+   Tablets & Small Laptops (Landscape)
+======================================= */
+
+@media only screen and (min-width: 666px) and (max-width: 1024px) and (orientation: landscape) {
+    h1 {
+        display: none;
+    }
+
+    #start-image {
+        height: 100%;
+    }
+
+    #game-over-screen img {
+        height: 110vh;
+        width: 100vw;
+    }
+
+    #top-buttons {
+        top: 20px;
+    }
+}
+
+/* =======================================
+   Very Small Devices (e.g. iPhone SE Landscape)
+======================================= */
+
+@media only screen and (max-device-width: 667px) and (max-device-height: 375px) and (orientation: landscape) {
+    #start-button {
+        right: 76px;
+        transform: none;
+    }
+
+    #top-left-buttons {
+        margin-left: 16px;
+    }
+}
+
+/* =======================================
+   Fixed Resolution: 1366x1024 Landscape
+======================================= */
+
+@media only screen and (width: 1366px) and (height: 1024px) and (orientation: landscape) {
+    .mobile-button-container button {
+        display: flex !important;
+    }
+
+    .mobile-button-container {
+        position: absolute;
+        bottom: 200px;
+        width: 70%;
+    }
+
+    #game-over-screen img {
+        height: 50vh;
+    }
+}
+
+/* =======================================
+   Large Screens (Desktops)
+======================================= */
+
+@media only screen and (min-width: 1200px) {
+    .mobile-button-container {
+        display: none;
+    }
+
+    #start-image {
+        height: 100%;
+    }
+}

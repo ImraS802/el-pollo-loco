@@ -1,17 +1,51 @@
+/**
+ * The Level class represents a level in the game.
+ * It contains enemies, background objects, collectible items, and the end position of the level.
+ */
 class Level {
+  /**
+   * A list of all enemies in the level.
+   * @type {MovableObject[]}
+   */
   enemies;
-  bottles;
-  backgroundObjects;
-  coins;
-  clouds;
-  level_end_x = 5650;
 
   /**
-   * @param {Array} enemies - Array of enemy objects present in the level.
-   * @param {Array} clouds - Array of cloud objects for background decoration.
-   * @param {Array} backgroundObjects - Array of static background objects.
-   * @param {Array} bottles - Array of collectible bottle objects.
-   * @param {Array} coins - Array of collectible coin objects.
+   * A list of all clouds in the level.
+   * @type {Cloud[]}
+   */
+  clouds;
+
+  /**
+   * A list of all background objects in the level.
+   * @type {BackgroundObject[]}
+   */
+  backgroundObjects;
+
+  /**
+   * A list of all bottles in the level that can be collected.
+   * @type {Bottle[]}
+   */
+  bottles;
+
+  /**
+   * A list of all coins in the level.
+   * @type {Coin[]}
+   */
+  coins;
+
+  /**
+   * The x-coordinate of the end of the level.
+   * @type {number}
+   */
+  level_end_x = 3600;
+
+  /**
+   * Creates an instance of a level with enemies, clouds, background objects, bottles, and coins.
+   * @param {MovableObject[]} enemies - A list of enemies in the level.
+   * @param {Cloud[]} clouds - A list of clouds in the level.
+   * @param {BackgroundObject[]} backgroundObjects - A list of background objects.
+   * @param {Bottle[]} bottles - A list of collectible bottles.
+   * @param {Coin[]} coins - A list of collectible coins.
    */
   constructor(enemies, clouds, backgroundObjects, bottles, coins) {
     this.enemies = enemies;
