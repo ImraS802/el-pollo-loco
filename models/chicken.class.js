@@ -1,71 +1,75 @@
-/**
- * The Chicken class represents an enemy opponent in the game.
- * The chicken moves from right to left and can be defeated.
- */
 class Chicken extends MovableObject {
-  height = 55;
-  width = 70;
-  y = 370;
+  height = 120;
+  width = 120;
+  y = 310;
+  chickenAlive = true;
 
   offset = {
-    x: 0,
-    y: 5,
-    width: 0,
-    height: 10,
+    top: 10,
+    right: 20,
+    bottom: 20,
+    left: 10,
   };
 
   IMAGES_WALKING = [
-    'img_pollo_loco/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
-    'img_pollo_loco/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
-    'img_pollo_loco/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
+    'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
+    'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
+    'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
   ];
 
-  IMAGES_DEAD = [
-    'img_pollo_loco/img/3_enemies_chicken/chicken_normal/2_dead/dead.png',
-  ];
-
-  isDead = false;
+  IMAGES_DEAD = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
 
   /**
-   * Creates an instance of the chicken with a random position and speed.
+   * Creates a new chicken instance with randomized position and speed.
+   *
+   * Loads walking and dead animations, initializes the default image,
+   * and starts both movement and animation loops.
    */
   constructor() {
-    super().loadImage(
-      'img_pollo_loco/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
-    );
+    super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+    this.x = 350 + Math.random() * 5900;
+    this.speed = 0.15 + Math.random() * 0.25;
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEAD);
-
-    this.x = 800 + Math.random() * 4000;
-    this.speed = 0.15 + Math.random() * 0.5;
-
     this.animate();
   }
 
   /**
-   * Activates the animations and movement of the chicken.
+   * Initializes both movement and animation loops for the chicken.
    */
   animate() {
-    setInterval(() => {
-      if (!this.isDead) {
-        this.moveLeft();
-      }
-    }, 1000 / 60);
-
-    setInterval(() => {
-      if (!this.isDead) {
-        this.playAnimation(this.IMAGES_WALKING);
-      }
-    }, 200);
+    this.startMovement();
+    this.startAnimationLoop();
   }
 
   /**
-   * Sets the chicken to the "dead" state, stops its movement, and plays the death animation.
+   * Starts the chicken’s continuous leftward movement.
+   *
+   * This loop runs at approximately 60 frames per second and
+   * only executes while the chicken is alive.
    */
-  kill() {
-    this.isDead = true;
-    this.speed = 0;
-    sounds.chickenDead.play();
-    this.playAnimation(this.IMAGES_DEAD);
+  startMovement() {
+    setInterval(() => {
+      if (this.chickenAlive) {
+        this.moveLeft();
+      }
+    }, 1000 / 60);
+  }
+
+  /**
+   * Starts the animation loop for the chicken.
+   *
+   * Updates the displayed image every 100 milliseconds,
+   * switching between walking and dead animations depending
+   * on the chicken’s state.
+   */
+  startAnimationLoop() {
+    setInterval(() => {
+      if (this.chickenAlive) {
+        this.playAnimation(this.IMAGES_WALKING);
+      } else {
+        this.playAnimation(this.IMAGES_DEAD);
+      }
+    }, 100);
   }
 }

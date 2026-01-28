@@ -1,46 +1,22 @@
-/**
- * The Bottle class represents a collectible or throwable bottle in the game.
- * It extends the DrawableObject class and can either lie on the ground or be thrown.
- */
 class Bottle extends DrawableObject {
-  IMAGES_BOTTLE = [
-    'img_pollo_loco/img/6_salsa_bottle/2_salsa_bottle_on_ground.png',
-    'img_pollo_loco/img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-  ];
-
-  offset = {
-    x: 10,
-    y: 10,
-    width: 20,
-    height: 20,
-  };
+  width = 70;
+  height = 70;
+  y = 355;
 
   /**
-   * Creates an instance of a bottle with a position and animation.
-   * @param {number} x - The x-position of the bottle.
-   * @param {number} y - The y-position of the bottle.
-   */
-  constructor(x, y) {
-    super().loadImage(
-      'img_pollo_loco/img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-    );
-    this.loadImages(this.IMAGES_BOTTLE);
-    this.x = x;
-    this.y = y;
-    this.width = 60;
-    this.height = 60;
-    this.startAnimation();
-  }
-
-  /**
-   * Starts the bottle animation.
-   * The animation updates every 400 milliseconds.
+   * Creates a new instance of a bottle.
    *
-   * @returns {void}
+   * Loads the bottle image and sets its horizontal position within the level.
+   *
+   * @param {number} x - The x-coordinate where the bottle should be placed on the ground.
+   *
+   * @example
+   * Create a bottle at position x = 1200
+   * const bottle = new Bottle(1200);
    */
-  startAnimation() {
-    setInterval(() => {
-      this.playAnimation(this.IMAGES_BOTTLE);
-    }, 400);
+  constructor(x) {
+    super();
+    this.loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
+    this.x = x;
   }
 }

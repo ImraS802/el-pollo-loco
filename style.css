@@ -14,16 +14,17 @@
 
 body {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    overflow: hidden;
-    background-image: url('./img_pollo_loco/img/10_project_img/home_screen.png');
-    background-position: center;
+    justify-content: center;
+    background-image: url('img/5_background/home_screen.png');
     background-size: cover;
-    font-family: 'rye', Arial, Helvetica, sans-serif;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    min-width: 100vw;
 }
 
 h1 {
@@ -36,78 +37,7 @@ h1 {
 }
 
 canvas {
-    position: absolute;
-    width: 720px;
-    height: 480px;
     background-color: black;
-    z-index: 1;
-    display: block;
-}
-
-#center-container {
-    display: flex;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-    max-width: 720px;
-    max-height: 480px;
-    position: relative;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-.canvas-wrapper {
-    position: relative;
-    display: inline-block;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-#start-screen {
-    position: absolute;
-    width: 720px;
-    height: 480px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 3;
-}
-
-#start-image {
-    width: 100%;
-    height: auto;
-}
-
-.end-screen {
-    position: absolute;
-    width: 720px;
-    height: 480px;
-    display: flex;
-    transform: translate(0%, -5%);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 20;
-}
-
-#game-over-screen img {
-    max-width: 100%;
-    width: 100vw;
-    height: 65vh;
-    object-fit: cover;
-}
-
-#you-win-screen img {
-    position: relative;
-    top: 15%;
-    max-width: 75%;
-    object-fit: contain;
-    margin-bottom: 180px;
-}
-
-.hidden {
-    display: none;
 }
 
 .keyboard-mapping {
@@ -185,7 +115,7 @@ canvas {
     z-index: 1;
 }
 
-.start-button1 button {
+.start-button button {
     top: 48px;
     left: 280px;
     margin: 0;
@@ -201,7 +131,7 @@ canvas {
     padding: 6px 24px;
 }
 
-.start-button1 button:hover {
+.start-button button:hover {
     background: linear-gradient(to bottom, #ff9d00 5%, #ffdb00 100%);
     background-color: #ffd300;
 }
@@ -678,9 +608,11 @@ a.credit_links {
     #gameOverOverlay {
         position: fixed;
         inset: 0;
+        /* shorthand for top:0; right:0; bottom:0; left:0 */
         display: flex;
         justify-content: center;
         align-items: center;
+        /* optional dim overlay */
         z-index: 9999;
     }
 

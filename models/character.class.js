@@ -73,211 +73,180 @@ class Character extends MovableObject {
   ];
 
   world;
+  height = 240;
+  width = 170;
+  x = 120;
+  y = 100;
+  speed = 5;
+  dead = false;
+  AUDIO_WALKING = new Audio('audio/running.mp3');
+  AUDIO_HURTING = new Audio('audio/hurt.mp3');
+  AUDIO_JUMPING = new Audio('audio/jump.mp3');
 
+  /**
+   * Creates an instance of the character.
+   *
+   * Loads all required character images (standing, walking, jumping, hurt, dead, sleeping),
+   * applies gravity, initializes animation state, and starts the animation loops.
+   */
   constructor() {
-    super().loadImage('img_pollo_loco/img/2_character_pepe/2_walk/W-21.png');
-    this.loadImages(this.IMAGES_IDLE);
-    this.loadImages(this.IMAGES_LONGIDLE);
+    super();
+    this.loadImage('img/2_character_pepe/2_walk/W-21.png');
+    this.loadImages(this.IMAGES_STANDING);
     this.loadImages(this.IMAGES_WALKING);
+    this.loadImages(this.IMAGES_SLEEPING);
     this.loadImages(this.IMAGES_JUMPING);
-    this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
+    this.loadImages(this.IMAGES_DEAD);
+    this.offset = {
+      top: 100,
+      right: 60,
+      bottom: 10,
+      left: 40,
+    };
     this.applyGravity();
+    this.currentImage = 0;
+    this.img = this.imageCache[this.IMAGES_STANDING[0]];
+    this.idleStartTime = new Date().getTime();
     this.animate();
   }
 
-  offset = {
-    x: 15,
-    y: 95,
-    width: 40,
-    height: 100,
-  };
-
   /**
-   * Initializes the character's animations and movement.
+   * Starts the main animation and movement handling loops.
+   *
+   * This method initializes two independent timed loops:
+   * one for handling character movement and one for updating animations.
    */
   animate() {
-    this.initMovement();
-    this.initAnimation();
+    this.handleMovement();
+    this.handleAnimations();
   }
 
   /**
-   * Selects and plays the appropriate idle animation based on inactivity duration.
+   * Handles player movement based on keyboard input.
+   *
+   * Moves the character left, right, or makes it jump.
+   * Also updates camera position to follow the character.
+   *
+   * @fires Character#moveCharacterRight
+   * @fires Character#moveCharacterLeft
+   * @fires Character#jumpCharacter
    */
-  chooseIdleAnimation() {
-    let timeSinceLastAction = Date.now() - this.lastActionTime;
-    if (timeSinceLastAction >= this.idleTimeout) {
-      this.playAnimation(this.IMAGES_LONGIDLE);
-    } else {
-      this.playAnimation(this.IMAGES_IDLE);
-    }
-  }
-
-  /**
-   * Starts character movement based on user input.
-   */
-  initMovement() {
+  handleMovement() {
     setInterval(() => {
-      sounds.walking.pause();
-      this.handleRightMovement();
-      this.handleLeftMovement();
-      this.handleJump();
-      this.updateCamera();
+      this.AUDIO_WALKING.pause();
+      if (
+        this.world.keyboard.KEY_RIGHT &&
+        this.x < this.world.level.level_end_x
+      )
+        this.moveCharacterRight();
+      if (this.world.keyboard.KEY_LEFT && this.x > 0) this.moveCharacterLeft();
+      if (this.world.keyboard.KEY_UP && !this.isAboveGround())
+        this.jumpCharacter();
+      this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
   }
 
   /**
-   * Initializes the animation cycles for the character.
-   */
-  initAnimation() {
-    setInterval(() => {
-      this.playDeadAnimation();
-      this.playHurtAnimation();
-      this.playJumpingAnimation();
-      this.playWalkingAnimation();
-      this.playIdleAnimation();
-    }, 200);
-  }
-
-  /**
-   * Moves the character to the left if the corresponding key is pressed.
-   */
-  handleLeftMovement() {
-    if (this.world.gameOver) return;
-    if (this.world.keyboard.LEFT && this.x > 0) {
-      this.moveLeft();
-      this.otherDirection = true;
-      sounds.walking.play();
-      this.lastActionTime = Date.now();
-    }
-  }
-
-  /**
-   * Makes the character jump if the corresponding key is pressed.
-   */
-  handleJump() {
-    if (this.world.gameOver) return;
-    if (this.world.keyboard.UP && !this.isAboveGround()) {
-      this.jump();
-      sounds.jump.play();
-      this.lastActionTime = Date.now();
-    }
-  }
-
-  /**
-   * Moves the character to the right if the corresponding key is pressed.
-   */
-  handleRightMovement() {
-    if (this.world.gameOver) return;
-    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-      this.moveRight();
-      this.otherDirection = false;
-      sounds.walking.play();
-      this.lastActionTime = Date.now();
-    }
-  }
-
-  /**
-   * Causes damage to the object by reducing energy by 5.
-   * Plays a hit sound and sets energy to 0 if it falls below zero.
-   * The hit can only occur once every 200 milliseconds to prevent multiple hits in a short time.
+   * Handles animation updates depending on character state.
    *
-   * @returns {void}
+   * Switches between standing, walking, jumping, hurt, or dead animations
+   * depending on user input and internal status flags.
    */
-  hit() {
-    const now = new Date().getTime();
-    if (now - this.lastHit > 200) {
-      this.energy -= 5;
-      sounds.hurt.play();
-
-      if (this.energy < 0) {
-        this.energy = 0;
-        sounds.dead.play();
-      }
-
-      this.lastHit = now;
-    }
+  handleAnimations() {
+    setInterval(() => {
+      const idleTime = (new Date().getTime() - this.idleStartTime) / 1000;
+      if (this.isHurt()) return this.playHurtAnimation();
+      if (this.isDead()) return this.playDeadAnimation();
+      if (this.isAboveGround()) return this.playAnimation(this.IMAGES_JUMPING);
+      this.playIdleOrWalkAnimation(idleTime);
+    }, 100);
   }
 
   /**
-   * Checks if the character is idle.
-   * @returns {boolean} - True if the character is idle.
+   * Moves the character to the right and plays walking sound if on the ground.
    */
-  isIdle() {
-    return (
-      !this.isDead() &&
-      !this.isHurt() &&
-      !this.isAboveGround() &&
-      !this.world.keyboard.RIGHT &&
-      !this.world.keyboard.LEFT
-    );
+  moveCharacterRight() {
+    this.moveRight();
+    this.otherDirection = false;
+    this.idleStartTime = new Date().getTime();
+    if (!this.isAboveGround()) safePlayAudio(this.AUDIO_WALKING);
   }
 
   /**
-   * Makes the object jump by increasing its vertical speed.
-   * @returns {void}
+   * Moves the character to the left and plays walking sound if on the ground.
    */
-  jump() {
-    this.speedY = 30;
+  moveCharacterLeft() {
+    this.moveLeft();
+    this.otherDirection = true;
+    this.idleStartTime = new Date().getTime();
+    if (!this.isAboveGround()) safePlayAudio(this.AUDIO_WALKING);
   }
 
   /**
-   * Plays the death animation if the character is dead.
+   * Makes the character jump and plays the jump sound.
    */
-  playDeadAnimation() {
-    if (this.isDead()) {
-      this.playAnimation(this.IMAGES_DEAD);
-    }
+  jumpCharacter() {
+    this.jump();
+    this.idleStartTime = new Date().getTime();
+    safePlayAudio(this.AUDIO_JUMPING);
   }
 
   /**
-   * Plays the hurt animation if the character is injured.
+   * Plays the hurt animation and sound.
+   * Reduces volume to prevent sound distortion.
    */
   playHurtAnimation() {
-    if (this.isHurt()) {
-      this.playAnimation(this.IMAGES_HURT);
-    }
+    this.playAnimation(this.IMAGES_HURT);
+    safePlayAudio(this.AUDIO_HURTING);
+    this.AUDIO_HURTING.volume = 0.1;
   }
 
   /**
-   * Plays the idle animation if the character is inactive.
+   * Plays the death animation and sets the character state to dead.
+   * Applies gravity after a delay to make the fall look natural.
    */
-  playIdleAnimation() {
-    if (this.world.gameOver) return;
-    if (this.isIdle()) {
-      if (Date.now() - this.lastActionTime >= this.idleTimeout) {
-        sounds.snore.play();
-      }
-      this.chooseIdleAnimation();
-    }
+  playDeadAnimation() {
+    this.playAnimation(this.IMAGES_DEAD);
+    setTimeout(() => this.applyGravity(), 2000);
+    this.dead = true;
   }
 
   /**
-   * Plays the jumping animation if the character is in the air.
+   * Chooses between idle, walking, or sleeping animation
+   * based on the character's idle time and movement input.
+   *
+   * @param {number} idleTime - The number of seconds since the last movement.
    */
-  playJumpingAnimation() {
-    if (this.isAboveGround()) {
-      this.playAnimation(this.IMAGES_JUMPING);
-    }
-  }
-
-  /**
-   * Plays the walking animation if the character is moving.
-   */
-  playWalkingAnimation() {
-    if (
-      !this.isHurt() &&
-      !this.isAboveGround() &&
-      (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)
-    ) {
+  playIdleOrWalkAnimation(idleTime) {
+    if (this.world.keyboard.KEY_RIGHT || this.world.keyboard.KEY_LEFT) {
       this.playAnimation(this.IMAGES_WALKING);
+    } else if (idleTime > 5) {
+      this.playLoopingAnimation(this.IMAGES_SLEEPING);
+    } else {
+      this.playLoopingAnimation(this.IMAGES_STANDING);
     }
   }
 
   /**
-   * Updates the camera position based on the character's position.
+   * Plays a looping animation from the given image array.
+   *
+   * Cycles through all frames in the provided image list and updates
+   * the displayed image accordingly.
+   *
+   * @param {string[]} images - The array of image paths to loop through.
    */
-  updateCamera() {
-    this.world.camera_x = -this.x + 100;
+  playLoopingAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+  }
+
+  die() {
+    this.energy = 0;
+    this.dead = true;
+    this.playDeathAnimation();
+    stopGame();
   }
 }

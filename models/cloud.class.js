@@ -1,32 +1,26 @@
-/**
- * The Cloud class represents a moving cloud in the game's background.
- * It extends the MovableObject class and continuously moves to the left.
- */
 class Cloud extends MovableObject {
+  y = 20;
   width = 500;
-  height = 250;
-
-  IMAGES = [
-    'img_pollo_loco/img/5_background/layers/4_clouds/1.png',
-    'img_pollo_loco/img/5_background/layers/4_clouds/2.png',
-  ];
+  height = 300;
 
   /**
-   * Creates an instance of a cloud with a random image and position.
-   * @param {number} x - The x-position of the cloud.
+   * Creates a new cloud instance at the specified horizontal position.
+   *
+   * Loads the cloud image and starts the movement animation loop.
+   *
+   * @param {number} x - The initial horizontal position of the cloud.
    */
   constructor(x) {
-    super();
-    let randomIndex = Math.floor(Math.random() * this.IMAGES.length);
-    let randomImage = this.IMAGES[randomIndex];
-    this.loadImage(randomImage);
+    super().loadImage('img/5_background/layers/4_clouds/1.png');
     this.x = x;
-    this.y = 0 + Math.random() * 100;
     this.animate();
   }
 
   /**
-   * Activates the movement of the cloud to the left.
+   * Starts the automatic horizontal movement of the cloud.
+   *
+   * The cloud moves left at a consistent rate to simulate
+   * background motion. The update runs approximately 60 times per second.
    */
   animate() {
     setInterval(() => {

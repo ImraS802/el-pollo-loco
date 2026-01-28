@@ -1,41 +1,40 @@
-/**
- * The Coin class represents a collectible coin in the game.
- * It extends the DrawableObject class and includes animations for rotating coins.
- */
-class Coin extends DrawableObject {
-  IMAGES_COIN = [
-    'img_pollo_loco/img/8_coin/coin_1.png',
-    'img_pollo_loco/img/8_coin/coin_2.png',
-  ];
+class Coin extends MovableObject {
+  width = 100;
+  height = 100;
 
-  offset = {
-    x: 30,
-    y: 30,
-    width: 60,
-    height: 60,
-  };
+  IMAGES_COINS = ['img/8_coin/coin_1.png', 'img/8_coin/coin_2.png'];
 
   /**
-   * Creates an instance of a coin with position and animation.
-   * @param {number} x - The x-position of the coin.
-   * @param {number} y - The y-position of the coin.
+   * Creates a new coin instance at the specified position.
+   *
+   * Loads the coin images and starts the animation loop.
+   *
+   * @param {number} x - The x-coordinate of the coin.
+   * @param {number} y - The y-coordinate of the coin.
    */
   constructor(x, y) {
-    super().loadImage('img_pollo_loco/img/8_coin/coin_1.png');
-    this.loadImages(this.IMAGES_COIN);
+    super().loadImage('img/8_coin/coin_1.png');
+    this.loadImages(this.IMAGES_COINS);
     this.x = x;
     this.y = y;
-    this.width = 100;
-    this.height = 100;
-    this.startAnimation();
+    this.offset = {
+      top: 30,
+      right: 30,
+      bottom: 30,
+      left: 30,
+    };
+    this.animate();
   }
 
   /**
-   * Starts the coin animation, switching between different images.
+   * Starts the coin's animation loop.
+   *
+   * The method alternates between the two coin images every 200 milliseconds
+   * to create a simple spinning effect.
    */
-  startAnimation() {
+  animate() {
     setInterval(() => {
-      this.playAnimation(this.IMAGES_COIN);
+      this.playAnimation(this.IMAGES_COINS);
     }, 200);
   }
 }
