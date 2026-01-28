@@ -207,23 +207,6 @@ class World {
   }
 
   /** Checks collisions between the main character and enemies. */
-  // checkCollision() {
-  //     this.level.enemies.forEach((enemy) => {
-  //       if (!enemy.chickenAlive) return;
-
-  //       if (this.character.isColliding(enemy)) {
-  //         if (this.character.isAboveGround() && this.character.speedY < 0) {
-  //           this.chickenDead(enemy);
-  //           this.deleteChicken(enemy);
-  //           this.character.speedY = 15;
-  //         } else {
-  //           this.character.hit();
-  //           this.statusBar.setPercentage(this.character.energy);
-  //         }
-  //       }
-  //     });
-  //   }
-
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
       if (!enemy.chickenAlive) return;
