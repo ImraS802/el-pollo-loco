@@ -608,24 +608,18 @@ a.credit_links {
     #gameOverOverlay {
         position: fixed;
         inset: 0;
-        /* shorthand for top:0; right:0; bottom:0; left:0 */
         display: flex;
         justify-content: center;
         align-items: center;
-        /* optional dim overlay */
         z-index: 9999;
-    }
-
-    #gameOverOverlay .play-btn {
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        pointer-events: none;
     }
 
     #gameOverOverlay .play-btn button {
-        margin-top: 400px;
+        margin-top: 0;
         border: 4px solid white;
+        pointer-events: auto;
+        transform: scale(0.8);
     }
 
 }
