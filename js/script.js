@@ -178,17 +178,30 @@ function goFullScreen() {
 /**
  * Toggles background and game-over music on or off.
  */
+// function muteMusic() {
+//   if (world.AUDIO_BACKGROUND.muted == false) {
+//     world.AUDIO_BACKGROUND.muted = true;
+//     world.AUDIO_GAMEOVER.muted = true;
+//     document.getElementById('music').src = 'icons/mute.png';
+//     localStorage.setItem('musicMuted', 'true');
+//   } else {
+//     world.AUDIO_BACKGROUND.muted = false;
+//     world.AUDIO_GAMEOVER.muted = false;
+//     document.getElementById('music').src = 'icons/speaker.png';
+//     localStorage.setItem('musicMuted', 'false');
+//   }
+// }
+
 function muteMusic() {
-  if (world.AUDIO_BACKGROUND.muted == false) {
-    world.AUDIO_BACKGROUND.muted = true;
-    world.AUDIO_GAMEOVER.muted = true;
-    document.getElementById('music').src = 'icons/mute.png';
-    localStorage.setItem('musicMuted', 'true');
-  } else {
-    world.AUDIO_BACKGROUND.muted = false;
-    world.AUDIO_GAMEOVER.muted = false;
-    document.getElementById('music').src = 'icons/speaker.png';
-    localStorage.setItem('musicMuted', 'false');
+  let isMuted = localStorage.getItem('musicMuted') === 'true';
+  isMuted = !isMuted;
+  localStorage.setItem('musicMuted', isMuted);
+  document.getElementById('music').src = isMuted
+    ? 'icons/mute.png'
+    : 'icons/speaker.png';
+  if (world && world.AUDIO_BACKGROUND) {
+    world.AUDIO_BACKGROUND.muted = isMuted;
+    world.AUDIO_GAMEOVER.muted = isMuted;
   }
 }
 
@@ -196,12 +209,13 @@ function muteMusic() {
  * Toggles all game sound effects on or off.
  */
 function muteSound() {
-  if (world.AUDIO_CHICKEN.muted === false) {
+  let isMuted = localStorage.getItem('soundMuted') === 'true';
+  isMuted = !isMuted;
+  localStorage.setItem('soundMuted', isMuted);
+  if (isMuted) {
     muteAllSounds();
-    localStorage.setItem('soundMuted', 'true');
   } else {
     unmuteAllSounds();
-    localStorage.setItem('soundMuted', 'false');
   }
 }
 
@@ -209,20 +223,28 @@ function muteSound() {
  * Mutes all in-game sounds including character, world, and endboss.
  */
 function muteAllSounds() {
-  document.getElementById('sound').src = 'icons/mute.png';
-  toggleCharacterSounds(true);
-  toggleWorldSounds(true);
-  toggleEndbossSounds(true);
+  const soundIcon = document.getElementById('sound');
+  if (soundIcon) soundIcon.src = 'icons/mute.png';
+
+  if (world) {
+    toggleCharacterSounds(true);
+    toggleWorldSounds(true);
+    toggleEndbossSounds(true);
+  }
 }
 
 /**
  * Unmutes all in-game sounds including character, world, and endboss.
  */
 function unmuteAllSounds() {
-  document.getElementById('sound').src = 'icons/speaker.png';
-  toggleCharacterSounds(false);
-  toggleWorldSounds(false);
-  toggleEndbossSounds(false);
+  const soundIcon = document.getElementById('sound');
+  if (soundIcon) soundIcon.src = 'icons/speaker.png';
+
+  if (world) {
+    toggleCharacterSounds(false);
+    toggleWorldSounds(false);
+    toggleEndbossSounds(false);
+  }
 }
 
 /**
@@ -260,17 +282,20 @@ function toggleEndbossSounds(state) {
 function applySavedAudioSettings() {
   const musicMuted = localStorage.getItem('musicMuted') === 'true';
   const soundMuted = localStorage.getItem('soundMuted') === 'true';
-  world.AUDIO_BACKGROUND.muted = musicMuted;
-  world.AUDIO_GAMEOVER.muted = musicMuted;
-  document.getElementById('music').src = musicMuted
-    ? 'icons/mute.png'
-    : 'icons/speaker.png';
-  toggleCharacterSounds(soundMuted);
-  toggleWorldSounds(soundMuted);
-  toggleEndbossSounds(soundMuted);
-  document.getElementById('sound').src = soundMuted
-    ? 'icons/mute.png'
-    : 'icons/speaker.png';
+
+  if (world) {
+    world.AUDIO_BACKGROUND.muted = musicMuted;
+    world.AUDIO_GAMEOVER.muted = musicMuted;
+    document.getElementById('music').src = musicMuted
+      ? 'icons/mute.png'
+      : 'icons/speaker.png';
+    toggleCharacterSounds(soundMuted);
+    toggleWorldSounds(soundMuted);
+    toggleEndbossSounds(soundMuted);
+    document.getElementById('sound').src = soundMuted
+      ? 'icons/mute.png'
+      : 'icons/speaker.png';
+  }
 }
 
 /**

@@ -191,36 +191,6 @@ function goFullScreen() {
 }
 
 /**
- * Toggles background and game-over music on or off.
- */
-function muteMusic() {
-  if (world.AUDIO_BACKGROUND.muted == false) {
-    world.AUDIO_BACKGROUND.muted = true;
-    world.AUDIO_GAMEOVER.muted = true;
-    document.getElementById('music').src = 'icons/mute.png';
-    localStorage.setItem('musicMuted', 'true');
-  } else {
-    world.AUDIO_BACKGROUND.muted = false;
-    world.AUDIO_GAMEOVER.muted = false;
-    document.getElementById('music').src = 'icons/speaker.png';
-    localStorage.setItem('musicMuted', 'false');
-  }
-}
-
-/**
- * Toggles all game sound effects on or off.
- */
-function muteSound() {
-  if (world.AUDIO_CHICKEN.muted === false) {
-    muteAllSounds();
-    localStorage.setItem('soundMuted', 'true');
-  } else {
-    unmuteAllSounds();
-    localStorage.setItem('soundMuted', 'false');
-  }
-}
-
-/**
  * Mutes all in-game sounds including character, world, and endboss.
  */
 function muteAllSounds() {
