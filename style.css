@@ -431,8 +431,6 @@ a.credit_links {
     text-decoration: underline;
 }
 
-/* responsive section */
-
 #rotateOverlay {
     position: fixed;
     inset: 0;
@@ -444,7 +442,7 @@ a.credit_links {
     text-align: center;
     font-family: 'Rye', sans-serif;
     font-size: 44px;
-    z-index: 5;
+    z-index: 99;
     padding: 0 50px;
 }
 
