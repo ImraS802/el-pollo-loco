@@ -581,28 +581,46 @@ a.credit_links {
         display: none;
     }
 
-    #touchLeft {
+    #touchLeft,
+    #touchRight {
         position: absolute;
-        top: 90vh;
-        left: 4px;
+        bottom: 20px;
+        /* Distance from bottom */
+        top: auto;
+        /* Reset the top: 90vh you had before */
+    }
+
+    #touchLeft {
+        left: 20px;
     }
 
     #touchRight {
+        left: 85px;
+        /* Spaced out from the left arrow */
+    }
+
+    #touchUp,
+    #touchThrow {
         position: absolute;
-        top: 90vh;
-        left: 70px;
+        bottom: 20px;
+        left: auto;
+        /* Reset previous left: 95vw */
     }
 
     #touchUp {
-        position: absolute;
-        bottom: 4vh;
-        left: 95vw;
+        right: 20px;
+        /* Align to the right edge */
     }
 
     #touchThrow {
-        position: absolute;
-        bottom: 4vh;
-        left: 90vw;
+        right: 85px;
+        /* Spaced out from the jump icon */
+    }
+
+    .touchControl-responsive img {
+        width: 45px;
+        height: auto;
+        /* Optional: makes them look more like a professional UI */
     }
 
     #gameOverOverlay {
