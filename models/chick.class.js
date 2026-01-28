@@ -25,6 +25,12 @@ class Chick extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.animate();
     this.speed = 0.15 + Math.random() * 1.0;
+    this.offset = {
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    };
   }
 
   /**
@@ -55,12 +61,13 @@ class Chick extends MovableObject {
    * Updates the displayed image every 100ms, switching between
    * walking and dead animations based on the chick’s state.
    */
+
   startAnimationLoop() {
     setInterval(() => {
       if (this.chickenAlive) {
         this.playAnimation(this.IMAGES_WALKING);
       } else {
-        this.playAnimation(this.IMAGES_DEAD);
+        this.img = this.imageCache[this.IMAGES_DEAD[0]];
       }
     }, 100);
   }

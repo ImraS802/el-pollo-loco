@@ -178,20 +178,6 @@ function goFullScreen() {
 /**
  * Toggles background and game-over music on or off.
  */
-// function muteMusic() {
-//   if (world.AUDIO_BACKGROUND.muted == false) {
-//     world.AUDIO_BACKGROUND.muted = true;
-//     world.AUDIO_GAMEOVER.muted = true;
-//     document.getElementById('music').src = 'icons/mute.png';
-//     localStorage.setItem('musicMuted', 'true');
-//   } else {
-//     world.AUDIO_BACKGROUND.muted = false;
-//     world.AUDIO_GAMEOVER.muted = false;
-//     document.getElementById('music').src = 'icons/speaker.png';
-//     localStorage.setItem('musicMuted', 'false');
-//   }
-// }
-
 function muteMusic() {
   let isMuted = localStorage.getItem('musicMuted') === 'true';
   isMuted = !isMuted;

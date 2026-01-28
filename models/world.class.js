@@ -13,7 +13,7 @@ class World {
   gameOver;
 
   AUDIO_BACKGROUND = new Audio(
-    'audio/ambient-desert-atmosphere-with-dry-wind-sounds-1-377883.mp3'
+    'audio/ambient-desert-atmosphere-with-dry-wind-sounds-1-377883.mp3',
   );
   AUDIO_CHICKEN = new Audio('audio/chicken.mp3');
   AUDIO_GAMEOVER = new Audio('audio/game-over.mp3');
@@ -207,17 +207,40 @@ class World {
   }
 
   /** Checks collisions between the main character and enemies. */
+  // checkCollision() {
+  //     this.level.enemies.forEach((enemy) => {
+  //       if (!enemy.chickenAlive) return;
+
+  //       if (this.character.isColliding(enemy)) {
+  //         if (this.character.isAboveGround() && this.character.speedY < 0) {
+  //           this.chickenDead(enemy);
+  //           this.deleteChicken(enemy);
+  //           this.character.speedY = 15;
+  //         } else {
+  //           this.character.hit();
+  //           this.statusBar.setPercentage(this.character.energy);
+  //         }
+  //       }
+  //     });
+  //   }
+
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
       if (!enemy.chickenAlive) return;
+
       if (this.character.isColliding(enemy)) {
-        if (this.character.speedY < 0) {
+        if (this.character.isAboveGround() && this.character.speedY < 0) {
           this.chickenDead(enemy);
           this.deleteChicken(enemy);
-          this.character.speedY = 0;
-        } else if (!this.character.isAboveGround()) {
+          this.character.speedY = 15;
+        } else {
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
+
+          if (this.character.isDead()) {
+            this.character.dead = true;
+            this.checkIfGameOver();
+          }
         }
       }
     });
@@ -247,7 +270,7 @@ class World {
     if (this.keyboard.KEY_D && this.bottleBar.percentage > 0) {
       let bottle = new ThrowableObject(
         this.character.x + 20,
-        this.character.y + 80
+        this.character.y + 80,
       );
       this.throwableObjects.push(bottle);
       this.character.decreaseBottleStatus();
@@ -397,7 +420,9 @@ class World {
 
   /** Checks if the character is dead and updates the endboss state. */
   checkIfCharacterIsDead() {
-    if (this.character.dead) {
+    if (this.character.energy <= 0) {
+      this.character.energy = 0;
+      this.character.dead = true;
       this.endBoss.killedCharacter = true;
     }
   }
