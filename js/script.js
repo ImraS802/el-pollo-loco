@@ -9,18 +9,8 @@ let gameOver = new GameOver();
  * @param {HTMLAudioElement} audio
  */
 function safePlayAudio(audio) {
-  if (!audio) return;
-  const playPromise = audio.play();
-  if (playPromise !== undefined) {
-    playPromise
-      .then(() => {})
-      .catch((err) => {
-        if (err.name === 'AbortError') {
-          console.debug('Audio play aborted (ignored).');
-        } else {
-          console.warn('Audio play error:', err);
-        }
-      });
+  if (audio) {
+    audio.play().catch(() => {});
   }
 }
 
