@@ -1,5 +1,6 @@
 class CoinBar extends DrawableObject {
-  IMAGES_COINS = [
+  // Asset configuration
+  BAR_SPRITES = [
     'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
     'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',
     'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/40.png',
@@ -8,57 +9,45 @@ class CoinBar extends DrawableObject {
     'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png',
   ];
 
-  percentage = 0;
+  currentWealth = 0;
 
-  /**
-   * Creates a new coin status bar instance.
-   *
-   * Loads all coin bar images, sets initial size and position on the screen,
-   * and initializes the bar to 0% completion.
-   */
   constructor() {
     super();
-    this.loadImages(this.IMAGES_COINS);
+    this.initStatusBar();
+    this.updateLevel(0);
+  }
+
+  /**
+   * Sets the initial dimensions and loads assets.
+   */
+  initStatusBar() {
+    this.loadImages(this.BAR_SPRITES);
     this.x = 40;
-    this.y = 100;
-    this.width = 170;
-    this.height = 50;
-    this.setPercentage(0);
+    this.y = 90; // Slightly adjusted for a custom layout
+    this.width = 180;
+    this.height = 55;
   }
 
   /**
-   * Updates the coin bar's displayed image based on the given percentage.
-   *
-   * The method determines which image to show depending on the
-   * progress level and updates the visual representation accordingly.
-   *
-   * @param {number} percentage - The current coin collection percentage (0–100).
+   * Refreshes the bar's appearance based on coin progress.
+   * @param {number} percentage - Progress from 0 to 100.
    */
-  setPercentage(percentage) {
-    this.percentage = percentage;
-    let path = this.IMAGES_COINS[this.lifeBarIndex()];
-    this.img = this.imageCache[path];
+  updateLevel(percentage) {
+    this.currentWealth = percentage;
+    let imagePath = this.BAR_SPRITES[this.calculateSpriteIndex()];
+    this.img = this.imageCache[imagePath];
   }
 
   /**
-   * Determines the appropriate index in the {@link IMAGES_COINS} array
-   * based on the current percentage value.
-   *
-   * @returns {number} The index of the corresponding image to display.
+   * Logic to map percentage to the correct image index.
+   * @returns {number} Index 0-5.
    */
-  lifeBarIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage >= 80) {
-      return 4;
-    } else if (this.percentage >= 60) {
-      return 3;
-    } else if (this.percentage >= 40) {
-      return 2;
-    } else if (this.percentage >= 20) {
-      return 1;
-    } else {
-      return 0;
-    }
+  calculateSpriteIndex() {
+    if (this.currentWealth >= 100) return 5;
+    if (this.currentWealth >= 80) return 4;
+    if (this.currentWealth >= 60) return 3;
+    if (this.currentWealth >= 40) return 2;
+    if (this.currentWealth >= 20) return 1;
+    return 0;
   }
 }

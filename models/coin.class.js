@@ -1,40 +1,44 @@
 class Coin extends MovableObject {
-  width = 100;
-  height = 100;
+  // Dimensions and Hitbox
+  width = 110;
+  height = 110;
+  hitbox = {top: 35, right: 35, bottom: 35, left: 35};
 
-  IMAGES_COINS = ['img/8_coin/coin_1.png', 'img/8_coin/coin_2.png'];
+  COIN_FRAMES = ['img/8_coin/coin_1.png', 'img/8_coin/coin_2.png'];
 
-  /**
-   * Creates a new coin instance at the specified position.
-   *
-   * Loads the coin images and starts the animation loop.
-   *
-   * @param {number} x - The x-coordinate of the coin.
-   * @param {number} y - The y-coordinate of the coin.
-   */
-  constructor(x, y) {
-    super().loadImage('img/8_coin/coin_1.png');
-    this.loadImages(this.IMAGES_COINS);
-    this.x = x;
-    this.y = y;
-    this.offset = {
-      top: 30,
-      right: 30,
-      bottom: 30,
-      left: 30,
-    };
-    this.animate();
+  constructor(posX, posY) {
+    super();
+    this.initCoinVisuals();
+    this.setSpawnPoint(posX, posY);
+    this.startGlimmerEffect();
   }
 
   /**
-   * Starts the coin's animation loop.
-   *
-   * The method alternates between the two coin images every 200 milliseconds
-   * to create a simple spinning effect.
+   * Pre-loads images and sets the initial sprite.
    */
-  animate() {
+  initCoinVisuals() {
+    this.loadImage(this.COIN_FRAMES[0]);
+    this.loadImages(this.COIN_FRAMES);
+  }
+
+  /**
+   * Defines the coordinate placement and collision offset.
+   * @param {number} x
+   * @param {number} y
+   */
+  setSpawnPoint(x, y) {
+    this.x = x;
+    this.y = y;
+    // Overwriting the inherited offset with our specific hitbox
+    this.offset = this.hitbox;
+  }
+
+  /**
+   * Cycles through the frames to create a spinning/glimmering animation.
+   */
+  startGlimmerEffect() {
     setInterval(() => {
-      this.playAnimation(this.IMAGES_COINS);
-    }, 200);
+      this.playAnimation(this.COIN_FRAMES);
+    }, 250);
   }
 }

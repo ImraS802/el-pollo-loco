@@ -12,6 +12,7 @@ class World {
   wealthBar = new CoinBar();
 
   projectiles = [];
+  isThrowing = false;
   bossEntity = this.stage.enemies[this.stage.enemies.length - 1];
   sessionOver;
 
@@ -126,10 +127,21 @@ class World {
     this.monitorChickenProximity();
   }
 
+  /**
+   * Removes bottles from memory once they are done splashing to prevent lag.
+   */
+  clearOldProjectiles() {
+    this.projectiles = this.projectiles.filter((p) => !p.splashFinished);
+  }
+
+  /**
+   * Updated loop to clean up bottles that have finished their splash animation.
+   */
   handleItemLogic() {
     this.processBottlePickups();
     this.processCoinPickups();
     this.syncInventoryState();
+    this.clearOldProjectiles();
   }
 
   handleBossLogic() {
@@ -154,8 +166,8 @@ class World {
    */
   paintToCanvas(obj) {
     if (obj.otherDirection) this.reflectEntity(obj);
-    obj.draw(this.ctx);
-    obj.drawFrame(this.ctx);
+    obj.render(this.ctx);
+    obj.debugFrame(this.ctx);
     if (obj.otherDirection) this.restoreEntity(obj);
   }
 
@@ -200,12 +212,17 @@ class World {
   }
 
   fireProjectile() {
-    // Fixed: Logic to check percentage correctly via modern inventoryBar
-    if (this.input.KEY_D && this.inventoryBar.currentStock > 0) {
-      let flask = new ThrowableObject(this.hero.x + 20, this.hero.y + 80);
+    const hasAmmo = this.inventoryBar.currentStock > 0;
+    if (this.input.KEY_D && hasAmmo && !this.isThrowing) {
+      this.isThrowing = true; // Lock the "trigger"
+      let flask = new ThrowableObject(this.hero.x + 80, this.hero.y + 100);
       this.projectiles.push(flask);
+
       this.hero.decreaseBottleStatus();
       this.inventoryBar.refreshProgress(this.hero.bottleAmount);
+      setTimeout(() => {
+        this.isThrowing = false;
+      }, 500);
     }
   }
 
@@ -213,7 +230,7 @@ class World {
     this.stage.coins.forEach((coin, i) => {
       if (this.hero.isColliding(coin)) {
         this.hero.collectCoin();
-        this.wealthBar.setPercentage(this.hero.coinAmount);
+        this.wealthBar.updateLevel(this.hero.coinAmount);
         this.stage.coins.splice(i, 1);
       }
     });

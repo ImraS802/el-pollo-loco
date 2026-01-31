@@ -1,49 +1,51 @@
 class DrawableObject {
-  y;
-  x;
-  img;
+  x = 0;
+  y = 0;
   width = 100;
   height = 180;
+
+  img;
   imageCache = {};
   currentImage = 0;
 
   /**
-   * Loads a single image for this object.
-   *
-   * @param {string} path - The path to the image file.
+   * Assigns a single source to the main image object.
    */
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
+    this.img.onerror = () => console.error(`Failed to load asset: ${path}`);
   }
 
   /**
-   * Preloads multiple images and stores them in the image cache.
-   *
-   * @param {string[]} arr - Array of image paths to preload.
+   * Populates the internal cache with an array of sprites.
    */
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
+  loadImages(paths) {
+    paths.forEach((path) => {
+      const sprite = new Image();
+      sprite.src = path;
+      this.imageCache[path] = sprite;
     });
   }
 
   /**
-   * Draws the current image of the object on the given canvas context.
-   *
-   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   * Renders the entity's current sprite onto the canvas.
    */
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  render(context) {
+    try {
+      if (this.img) {
+        context.drawImage(this.img, this.x, this.y, this.width, this.height);
+      }
+    } catch (e) {
+      // Prevents game freeze if an image is temporarily unavailable
+    }
   }
 
   /**
-   * Draws a blue bounding box around the object for debugging purposes.
-   * Only draws for Character, Chicken, Chick, Coin, Endboss, or ThrowableObject instances.
-   *
-   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   * Debug method left empty to ensure no frames are drawn.
+   * This prevents ReferenceErrors when called by the engine.
    */
-  drawFrame(ctx) {}
+  debugFrame(context) {
+    // Logic removed to hide blue bounding boxes
+  }
 }

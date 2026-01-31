@@ -1,30 +1,41 @@
 class Cloud extends MovableObject {
-  y = 20;
+  // Dimensional settings
+  y = 30; // Slightly adjusted height
   width = 500;
-  height = 300;
+  height = 250; // Modified height for a sleeker look
 
-  /**
-   * Creates a new cloud instance at the specified horizontal position.
-   *
-   * Loads the cloud image and starts the movement animation loop.
-   *
-   * @param {number} x - The initial horizontal position of the cloud.
-   */
-  constructor(x) {
-    super().loadImage('img/5_background/layers/4_clouds/1.png');
-    this.x = x;
-    this.animate();
+  constructor(startingX) {
+    super();
+    this.setupVisuals();
+    this.x = startingX;
+
+    // Randomize speed slightly so clouds move at different paces
+    this.driftSpeed = 0.1 + Math.random() * 0.15;
+
+    this.initFloatingEffect();
   }
 
   /**
-   * Starts the automatic horizontal movement of the cloud.
-   *
-   * The cloud moves left at a consistent rate to simulate
-   * background motion. The update runs approximately 60 times per second.
+   * Loads the cloud texture from the assets folder.
    */
-  animate() {
+  setupVisuals() {
+    this.loadImage('img/5_background/layers/4_clouds/1.png');
+  }
+
+  /**
+   * Starts the background drifting logic.
+   */
+  initFloatingEffect() {
+    this.processDrift();
+  }
+
+  /**
+   * Constant movement loop to simulate wind.
+   * Runs at a standard 60 FPS refresh rate.
+   */
+  processDrift() {
     setInterval(() => {
-      this.moveLeft();
+      this.x -= this.driftSpeed;
     }, 1000 / 60);
   }
 }
