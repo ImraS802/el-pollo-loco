@@ -2,140 +2,134 @@
 <html lang="en" translate="no">
 
 <head>
-    <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>El Pollo Loco | Pepe's Adventure</title>
     <link rel="icon" href="./img/assets/favicon.png" type="image/png" />
     <link rel="stylesheet" href="style.css">
-    <script src="models/world.class.js"></script>
+
     <script src="models/drawable-object.class.js"></script>
+    <script src="models/movable-object.class.js"></script>
+    <script src="models/world.class.js"></script>
+    <script src="models/level.class.js"></script>
+    <script src="models/keyboard-object.class.js"></script>
+    <script src="models/game-over.class.js"></script>
     <script src="models/status-bar.class.js"></script>
     <script src="models/bottle-bar.class.js"></script>
     <script src="models/coin-bar.class.js"></script>
     <script src="models/endboss-status-bar.class.js"></script>
-    <script src="models/movable-object.class.js"></script>
     <script src="models/character.class.js"></script>
+    <script src="models/endboss.class.js"></script>
     <script src="models/chicken.class.js"></script>
     <script src="models/chick.class.js"></script>
-    <script src="models/cloud.class.js"></script>
-    <script src="models/background-object.class.js"></script>
-    <script src="models/keyboard-object.class.js"></script>
-    <script src="models/level.class.js"></script>
-    <script src="models/endboss.class.js"></script>
     <script src="models/throwable-object.class.js"></script>
     <script src="models/bottle.class.js"></script>
     <script src="models/coin.class.js"></script>
-    <script src="models/game-over.class.js"></script>
+    <script src="models/cloud.class.js"></script>
+    <script src="models/background-object.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/script.js"></script>
-
-    <title>El Pollo Loco</title>
 </head>
 
 <body onload="init()">
-    <div class="container">
+    <main class="container">
         <h1>El Pollo Loco</h1>
-        <div id="rotateOverlay">
-            <p>Please rotate your device to landscape mode to play the game!</p>
-        </div>
 
-        <div class="description" id="description">
+        <aside id="rotate_overlay">
+            <p>Please rotate your device to landscape mode to play the game!</p>
+        </aside>
+
+        <section class="description" id="description">
             <div class="information" onclick="openInformation()">
                 <span class="information-instructions">Instructions</span>
                 <span class="information-icon"></span>
             </div>
-        </div>
-        <div class="d-none info-text" id="info">
-            <p>
-                El Pollo Loco is a fast-paced jump-and-run adventure game where you play as Pepe, a brave little
-                hero on a mission to defeat crazy chickens and collect treasures. Players explore a colorful
-                Mexican-inspired world filled with obstacles, coins, and surprises. <br> Use the
-                <strong>left</strong> and <strong>right
-                    arrow
-                    keys</strong> to move Pepe in the corresponding direction, the <strong>up arrow key</strong> to
-                jump, and
-                press the <strong>key d</strong> to
-                throw
-                bottles at enemies. <br> Your goal is to survive, collect as many items as possible, and defeat the
-                powerful Endboss Chicken to restore peace to the chaotic chicken world. <br> With vibrant graphics,
-                smooth controls, and fun sound effects, El Pollo Loco delivers a classic platforming experience full
-                of action and humor.
-            </p>
+        </section>
+
+        <section class="d-none info-text" id="info">
+            <article>
+                <p>
+                    El Pollo Loco is a fast-paced jump-and-run adventure game where you play as Pepe, a brave little
+                    hero on a mission to defeat crazy chickens and collect treasures. Players explore a colorful
+                    Mexican-inspired world filled with obstacles, coins, and surprises. <br> <br> Use the
+                    <strong>left</strong> and <strong>right arrow keys</strong> to move Pepe, the <strong>up arrow
+                        key</strong> to jump, and
+                    <strong>key d</strong> to throw bottles. <br> <br>Your goal is to survive and defeat the powerful
+                    Endboss.
+                </p>
+            </article>
             <button onclick="closeInformation()"><span class="close-text">Close</span></button>
-        </div>
+        </section>
 
         <div class="canvas-wrapper">
             <div class="startscreen" id="startscreen">
-                <img src="img/9_intro_outro_screens/start/startscreen_2.png">
+                <img src="img/9_intro_outro_screens/start/startscreen_2.png" alt="Game Start Screen">
                 <div class="start-button-center">
                     <div class="start-button">
                         <button onclick="startGame()">Start Game</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="d-none touchControl-responsive" id="touchControl">
-            <div id="touchLeft"><img id="leftTouchArrow" src="icons\left.png"></div>
-            <div id="touchRight"><img id="rightTouchArrow" src="icons\right.png"></div>
-            <div id="touchUp"><img src="icons\jump.png"></div>
-            <div id="touchThrow"><img src="icons\throw.png"></div>
-        </div>
+            <canvas class="d-none" id="canvas" width="720" height="480"></canvas>
 
-        <div class="canvas-wrapper">
-            <canvas class="d-none" id="canvas" width="720" height="480">
-            </canvas>
-
-            <div class="fullscreen-sound-row">
+            <nav class="fullscreen-sound-row">
                 <div class="sound">
-                    <div class="fullscreen d-none" id="fullscreen"><img onclick="goFullScreen()" src="icons/expand.png">
+                    <div class="fullscreen d-none" id="fullscreen">
+                        <img onclick="goFullScreen()" src="icons/expand.png" alt="Toggle Fullscreen">
                     </div>
                     <div class="mute d-none" id="muteMusic" onclick="muteMusic()">
-                        <img id="music" src="icons/speaker.png">
+                        <img id="music" src="icons/speaker.png" alt="Music Toggle">
                         <div>Music</div>
                     </div>
-
                     <div class="mute d-none" id="muteSound" onclick="muteSound()">
-                        <img id="sound" src="icons/speaker.png">
+                        <img id="sound" src="icons/speaker.png" alt="SFX Toggle">
                         <div>Sounds</div>
                     </div>
+                </div>
+            </nav>
 
+            <div id="gameOverOverlay">
+                <div class="d-none play-btn" id="playGameAgain">
+                    <button onclick="startGame()">Play Again</button>
+                </div>
+                <div class="d-none play-btn" id="tryGameAgain">
+                    <button onclick="startGame()">Try Again</button>
                 </div>
             </div>
         </div>
 
-        <div id="gameOverOverlay">
-            <div class="d-none play-btn" id="playGameAgain">
-                <button onclick="startGame()">Play Again</button>
-            </div>
-            <div class="d-none play-btn" id="tryGameAgain">
-                <button onclick="startGame()">Try Again</button>
-            </div>
-        </div>
+        <section class="d-none touchControl-responsive" id="touchControl">
+            <div id="touchLeft"><img id="leftTouchArrow" src="icons/left.png" alt="Move Left"></div>
+            <div id="touchRight"><img id="rightTouchArrow" src="icons/right.png" alt="Move Right"></div>
+            <div id="touchUp"><img src="icons/jump.png" alt="Jump"></div>
+            <div id="touchThrow"><img src="icons/throw.png" alt="Throw"></div>
+        </section>
 
-        <div class="keyboard-mapping">
+        <footer class="keyboard-mapping">
             <div class="key">
-                <img class="arrow" src="./img/assets/arrow_left.svg" alt="arrow left">
+                <img class="arrow" src="./img/assets/arrow_left.svg" alt="Left Key">
                 <span class="instructions">Left</span>
             </div>
             <div class="key">
-                <img class="arrow" src="./img/assets/arrow_right.svg" alt="arrow right">
+                <img class="arrow" src="./img/assets/arrow_right.svg" alt="Right Key">
                 <span class="instructions">Right</span>
             </div>
             <div class="key">
-                <img class="arrow" src="./img/assets/arrow_upward.svg" alt="arrow upward">
+                <img class="arrow" src="./img/assets/arrow_upward.svg" alt="Up Key">
                 <span class="instructions">Jump</span>
             </div>
             <div class="key">
                 <span class="d_key">d</span>
                 <span class="instructions">Throw</span>
             </div>
-        </div>
+        </footer>
+
         <div class="impressum">
             <a href="impressum.html" target="_blank" rel="noopener noreferrer">Impressum</a>
         </div>
-    </div>
-
+    </main>
 </body>
 
 </html>

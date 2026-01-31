@@ -431,7 +431,7 @@ a.credit_links {
     text-decoration: underline;
 }
 
-#rotateOverlay {
+#rotate_overlay {
     position: fixed;
     inset: 0;
     background-color: #c6662f;
@@ -447,13 +447,13 @@ a.credit_links {
 }
 
 @media screen and (orientation: portrait) {
-    #rotateOverlay {
+    #rotate_overlay {
         display: flex;
     }
 }
 
 @media screen and (orientation: landscape) and (pointer: coarse) and (max-height: 376px) {
-    #rotateOverlay {
+    #rotate_overlay {
         display: none;
     }
 
@@ -521,7 +521,7 @@ a.credit_links {
 
 
 @media screen and (orientation: landscape) and (pointer: coarse) and (max-height: 1180px) {
-    #rotateOverlay {
+    #rotate_overlay {
         display: none;
     }
 
