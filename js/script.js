@@ -255,12 +255,18 @@ function toggleCharacterSounds(state) {
 
 /**
  * Toggles sound effects for the endboss.
- * @param {boolean} state - Whether to mute (`true`) or unmute (`false`) the sounds.
+ * @param {boolean} state - Whether to mute (true) or unmute (false) the sounds.
  */
 function toggleEndbossSounds(state) {
   if (world && world.bossEntity) {
-    world.bossEntity.AUDIO_SCREAM.muted = state; // Changed from endBoss to bossEntity
-    world.bossEntity.AUDIO_HURT.muted = state;
+    // We use optional chaining (?.) and check for both names to be extra safe
+    if (world.bossEntity.SFX_ROAR) world.bossEntity.SFX_ROAR.muted = state;
+    if (world.bossEntity.SFX_PAIN) world.bossEntity.SFX_PAIN.muted = state;
+
+    // Fallback in case you didn't rename them yet in the Endboss class
+    if (world.bossEntity.AUDIO_SCREAM)
+      world.bossEntity.AUDIO_SCREAM.muted = state;
+    if (world.bossEntity.AUDIO_HURT) world.bossEntity.AUDIO_HURT.muted = state;
   }
 }
 

@@ -1,53 +1,74 @@
 class GameOver extends DrawableObject {
+  x = 0;
+  y = 0;
   width = 720;
   height = 480;
-  y = 0;
-  x = 0;
-  gameFinished = false;
-  lostGame = false;
-  endscreenShown = false;
 
-  IMAGE_LOST = ['img/9_intro_outro_screens/game_over/oh no you lost!.png'];
-  IMAGE_WON = ['img/You won, you lost/You Won B.png'];
+  isSessionActive = true;
+  hasPlayerLost = false;
+  screenLock = false;
 
-  /**
-   * Initializes the GameOver screen by loading the default game over image.
-   */
+  // Paths defined as single strings to avoid array indexing confusion
+  ASSET_FAILURE = 'img/9_intro_outro_screens/game_over/oh no you lost!.png';
+  ASSET_VICTORY = 'img/You won, you lost/You Won B.png';
+  ASSET_DEFAULT = 'img/9_intro_outro_screens/game_over/game over!.png';
+
   constructor() {
-    super().loadImage('img/9_intro_outro_screens/game_over/game over!.png');
+    super();
+    this.loadImage(this.ASSET_DEFAULT);
   }
 
   /**
-   * Displays the game over screen overlay.
-   * Shows either the "won" or "lost" image based on the game outcome.
-   * Ensures that the endscreen is only shown once per game over event.
+   * Triggers the end-of-game visual sequence.
+   * Switches between victory and defeat assets and toggles UI buttons.
    */
-  showEndscreen() {
-    if (this.endscreenShown) return;
-    this.endscreenShown = true;
-    const overlay = document.getElementById('gameOverOverlay');
-    const tryBtn = document.getElementById('tryGameAgain');
-    const playBtn = document.getElementById('playGameAgain');
-    overlay.classList.remove('d-none');
-    tryBtn.classList.add('d-none');
-    playBtn.classList.add('d-none');
-    if (this.lostGame) {
-      this.loadImage(this.IMAGE_LOST);
-      tryBtn.classList.remove('d-none');
+  resolveGameSession() {
+    if (this.screenLock) return;
+    this.screenLock = true;
+    this.isSessionActive = false;
+
+    this.toggleOverlayVisibility(true);
+    this.updateEndVisuals();
+  }
+
+  /**
+   * Updates the graphic and specific action button based on the outcome.
+   */
+  updateEndVisuals() {
+    const retryBtn = document.getElementById('tryGameAgain');
+    const restartBtn = document.getElementById('playGameAgain');
+
+    if (this.hasPlayerLost) {
+      this.loadImage(this.ASSET_FAILURE);
+      retryBtn.classList.remove('d-none');
     } else {
-      this.loadImage(this.IMAGE_WON);
-      playBtn.classList.remove('d-none');
+      this.loadImage(this.ASSET_VICTORY);
+      restartBtn.classList.remove('d-none');
     }
   }
 
   /**
-   * Hides the game over screen overlay and resets button visibility.
-   * Resets the internal endscreenShown flag to allow future displays.
+   * Resets the UI state for a fresh game start.
    */
-  hideEndscreen() {
-    this.endscreenShown = false;
-    document.getElementById('gameOverOverlay').classList.add('d-none');
+  clearResolutionScreen() {
+    this.screenLock = false;
+    this.toggleOverlayVisibility(false);
+
+    // Ensure both buttons are tucked away
     document.getElementById('tryGameAgain').classList.add('d-none');
     document.getElementById('playGameAgain').classList.add('d-none');
+  }
+
+  /**
+   * Helper to manage the CSS class for the main overlay.
+   * @param {boolean} show
+   */
+  toggleOverlayVisibility(show) {
+    const overlay = document.getElementById('gameOverOverlay');
+    if (show) {
+      overlay.classList.remove('d-none');
+    } else {
+      overlay.classList.add('d-none');
+    }
   }
 }

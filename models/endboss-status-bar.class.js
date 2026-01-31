@@ -1,5 +1,6 @@
 class EndbossStatusBar extends DrawableObject {
-  IMAGES_LIFE = [
+  // Visual Asset Configuration
+  VITALITY_FRAMES = [
     'img/7_statusbars/2_statusbar_endboss/blue/blue0.png',
     'img/7_statusbars/2_statusbar_endboss/blue/blue20.png',
     'img/7_statusbars/2_statusbar_endboss/blue/blue40.png',
@@ -8,53 +9,50 @@ class EndbossStatusBar extends DrawableObject {
     'img/7_statusbars/2_statusbar_endboss/blue/blue100.png',
   ];
 
-  percentage = 100;
+  bossHealth = 100;
 
   /**
-   * Creates an Endboss status bar at a specific position.
-   *
-   * @param {number} x - The horizontal position of the status bar.
-   * @param {number} y - The vertical position of the status bar.
+   * Initializes the health overlay for the final boss.
+   * @param {number} posX - Horizontal coordinate.
+   * @param {number} posY - Vertical coordinate.
    */
-  constructor(x, y) {
+  constructor(posX, posY) {
     super();
-    this.loadImages(this.IMAGES_LIFE);
-    this.x = x;
-    this.y = y;
-    this.width = 130;
-    this.height = 30;
-    this.setPercentage(100);
+    this.prepareHealthBar();
+    this.x = posX;
+    this.y = posY;
+    this.updateHealth(100);
   }
 
   /**
-   * Sets the current life percentage and updates the displayed image.
-   *
-   * @param {number} percentage - The life percentage (0–100).
+   * Pre-loads sprites and sets initial bar dimensions.
    */
-  setPercentage(percentage) {
-    this.percentage = percentage;
-    let path = this.IMAGES_LIFE[this.lifeBarIndex()];
-    this.img = this.imageCache[path];
+  prepareHealthBar() {
+    this.loadImages(this.VITALITY_FRAMES);
+    this.width = 135; // Slightly tweaked dimensions
+    this.height = 35;
   }
 
   /**
-   * Determines the index of the image to display based on current life.
-   *
-   * @returns {number} Index in IMAGES_LIFE corresponding to current percentage.
+   * Updates the visual state of the bar based on boss health.
+   * @param {number} currentHP - The boss's current health (0-100).
    */
-  lifeBarIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage > 80) {
-      return 4;
-    } else if (this.percentage > 60) {
-      return 3;
-    } else if (this.percentage > 40) {
-      return 2;
-    } else if (this.percentage > 20) {
-      return 1;
-    } else {
-      return 0;
-    }
+  updateHealth(currentHP) {
+    this.bossHealth = currentHP;
+    const spritePath = this.VITALITY_FRAMES[this.resolveFrameIndex()];
+    this.img = this.imageCache[spritePath];
+  }
+
+  /**
+   * Resolves the percentage into an array index using early returns.
+   * @returns {number} Corresponding index (0 to 5).
+   */
+  resolveFrameIndex() {
+    if (this.bossHealth >= 100) return 5;
+    if (this.bossHealth > 80) return 4;
+    if (this.bossHealth > 60) return 3;
+    if (this.bossHealth > 40) return 2;
+    if (this.bossHealth > 20) return 1;
+    return 0;
   }
 }

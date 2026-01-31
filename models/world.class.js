@@ -57,10 +57,15 @@ class World {
       if (track) track.muted = false;
     });
 
-    // Mute boss separately to prevent crashes if the boss isn't loaded yet
-    if (this.bossEntity && this.bossEntity.AUDIO_SCREAM) {
-      this.bossEntity.AUDIO_SCREAM.muted = false;
-      this.bossEntity.AUDIO_HURT.muted = false;
+    if (this.bossEntity) {
+      // Use the renamed SFX properties
+      if (this.bossEntity.SFX_ROAR) this.bossEntity.SFX_ROAR.muted = false;
+      if (this.bossEntity.SFX_PAIN) this.bossEntity.SFX_PAIN.muted = false;
+
+      // Keep these as fallbacks if needed
+      if (this.bossEntity.AUDIO_SCREAM)
+        this.bossEntity.AUDIO_SCREAM.muted = false;
+      if (this.bossEntity.AUDIO_HURT) this.bossEntity.AUDIO_HURT.muted = false;
     }
   }
 
@@ -103,7 +108,7 @@ class World {
 
   renderEntities() {
     this.addBatchToCanvas(this.stage.enemies);
-    if (!this.bossEntity.dead) {
+    if (!this.bossEntity.isDefeated) {
       this.paintToCanvas(this.bossEntity.endbossBar);
     }
     this.addBatchToCanvas(this.projectiles);
@@ -116,7 +121,7 @@ class World {
     this.paintToCanvas(this.healthStatus);
     this.paintToCanvas(this.inventoryBar);
     this.paintToCanvas(this.wealthBar);
-    if (this.sessionOver.gameFinished) {
+    if (!this.sessionOver.isSessionActive) {
       this.paintToCanvas(this.sessionOver);
     }
   }
@@ -258,8 +263,8 @@ class World {
   processProjectileImpacts() {
     this.projectiles.forEach((flask) => {
       if (this.isFlaskHittingBoss(flask)) {
-        this.bossEntity.hitEndboss();
-        this.bossEntity.endbossBar.setPercentage(this.bossEntity.energyEndboss);
+        this.bossEntity.receiveDamage();
+        this.bossEntity.endbossBar.updateHealth(this.bossEntity.health);
       }
     });
   }
@@ -276,7 +281,7 @@ class World {
 
   trackHeroMovement() {
     if (this.hero.x > this.stage.level_end_x - 100) {
-      this.bossEntity.characterCloseToEndboss = true;
+      this.bossEntity.targetSpotted = true;
     }
   }
 
@@ -306,13 +311,16 @@ class World {
   }
 
   evaluateEndState() {
-    if (this.sessionOver.gameFinished) return;
+    // 1. Use 'screenLock' instead of 'endscreenShown'
+    if (this.sessionOver.screenLock) return;
 
-    if (this.hero.energy <= 0 || this.bossEntity.dead) {
-      this.sessionOver.gameFinished = true;
-      this.sessionOver.lostGame =
-        this.hero.energy <= 0 && !this.bossEntity.dead;
-      this.sessionOver.showEndscreen();
+    // 2. Check health or boss status (ensure bossEntity.isDefeated matches your Endboss class)
+    if (this.hero.energy <= 0 || this.bossEntity.isDefeated) {
+      // 3. Use 'hasPlayerLost' instead of 'lostGame'
+      this.sessionOver.hasPlayerLost = this.hero.energy <= 0;
+
+      // 4. Use 'resolveGameSession()' instead of 'showEndscreen()'
+      this.sessionOver.resolveGameSession();
 
       this.AMBIENT_TRACK.pause();
       safePlayAudio(this.SFX_GAME_OVER);
