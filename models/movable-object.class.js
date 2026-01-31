@@ -48,8 +48,8 @@ class MovableObject extends DrawableObject {
    * Checks if the object is dead.
    * @returns {boolean} True if the object's energy is 0.
    */
-  isDead() {
-    return this.energy == 0;
+  checkEnergyState() {
+    return this.energy === 0;
   }
 
   /**
@@ -128,7 +128,8 @@ class MovableObject extends DrawableObject {
   isAboveGround() {
     if (this instanceof ThrowableObject || this instanceof Endboss) {
       return true;
-    } else if (this.isDead()) {
+    } else if (this.checkEnergyState()) {
+      // Updated name here
       return true;
     } else {
       return this.y < 180;

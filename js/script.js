@@ -67,10 +67,14 @@ function startGame() {
   document.getElementById('touchControl').classList.remove('d-none');
   canvas = document.getElementById('canvas');
   gameOver = new GameOver();
-  gameOver.gameFinished = false;
-  gameOver.lostGame = false;
+
+  // CRITICAL: Ensure level1 is defined before creating the world
   level1 = initLevel1();
+
+  // Initialize World
   world = new World(canvas, keyboard, gameOver);
+
+  // Apply settings AFTER world exists
   applySavedAudioSettings();
   touchControl();
 }
@@ -175,9 +179,11 @@ function muteMusic() {
   document.getElementById('music').src = isMuted
     ? 'icons/mute.png'
     : 'icons/speaker.png';
-  if (world && world.AUDIO_BACKGROUND) {
-    world.AUDIO_BACKGROUND.muted = isMuted;
-    world.AUDIO_GAMEOVER.muted = isMuted;
+  if (world) {
+    // Changed AUDIO_BACKGROUND to AMBIENT_TRACK to match your World class
+    if (world.AMBIENT_TRACK) world.AMBIENT_TRACK.muted = isMuted;
+    // Changed AUDIO_GAMEOVER to SFX_GAME_OVER to match your World class
+    if (world.SFX_GAME_OVER) world.SFX_GAME_OVER.muted = isMuted;
   }
 }
 
@@ -228,7 +234,9 @@ function unmuteAllSounds() {
  * @param {boolean} state - Whether to mute (`true`) or unmute (`false`) the sounds.
  */
 function toggleWorldSounds(state) {
-  world.AUDIO_CHICKEN.muted = state;
+  if (world && world.SFX_CHICKEN) {
+    world.SFX_CHICKEN.muted = state; // Matches SFX_CHICKEN in World rewrite
+  }
 }
 
 /**
@@ -236,11 +244,13 @@ function toggleWorldSounds(state) {
  * @param {boolean} state - Whether to mute (`true`) or unmute (`false`) the sounds.
  */
 function toggleCharacterSounds(state) {
-  world.character.AUDIO_WALKING.muted = state;
-  world.character.AUDIO_HURTING.muted = state;
-  world.character.AUDIO_JUMPING.muted = state;
-  world.character.AUDIO_BOTTLE.muted = state;
-  world.character.AUDIO_COIN.muted = state;
+  if (world && world.hero) {
+    world.hero.RUN_SOUND.muted = state;
+    world.hero.PAIN_SOUND.muted = state;
+    world.hero.JUMP_SOUND.muted = state;
+    world.hero.AUDIO_BOTTLE.muted = state;
+    world.hero.AUDIO_COIN.muted = state;
+  }
 }
 
 /**
@@ -248,8 +258,10 @@ function toggleCharacterSounds(state) {
  * @param {boolean} state - Whether to mute (`true`) or unmute (`false`) the sounds.
  */
 function toggleEndbossSounds(state) {
-  world.endBoss.AUDIO_SCREAM.muted = state;
-  world.endBoss.AUDIO_HURT.muted = state;
+  if (world && world.bossEntity) {
+    world.bossEntity.AUDIO_SCREAM.muted = state; // Changed from endBoss to bossEntity
+    world.bossEntity.AUDIO_HURT.muted = state;
+  }
 }
 
 /**
@@ -260,17 +272,20 @@ function applySavedAudioSettings() {
   const soundMuted = localStorage.getItem('soundMuted') === 'true';
 
   if (world) {
-    world.AUDIO_BACKGROUND.muted = musicMuted;
-    world.AUDIO_GAMEOVER.muted = musicMuted;
-    document.getElementById('music').src = musicMuted
-      ? 'icons/mute.png'
-      : 'icons/speaker.png';
+    if (world.AMBIENT_TRACK) world.AMBIENT_TRACK.muted = musicMuted;
+    if (world.SFX_GAME_OVER) world.SFX_GAME_OVER.muted = musicMuted;
+
+    let musicIcon = document.getElementById('music');
+    if (musicIcon)
+      musicIcon.src = musicMuted ? 'icons/mute.png' : 'icons/speaker.png';
+
     toggleCharacterSounds(soundMuted);
     toggleWorldSounds(soundMuted);
     toggleEndbossSounds(soundMuted);
-    document.getElementById('sound').src = soundMuted
-      ? 'icons/mute.png'
-      : 'icons/speaker.png';
+
+    let soundIcon = document.getElementById('sound');
+    if (soundIcon)
+      soundIcon.src = soundMuted ? 'icons/mute.png' : 'icons/speaker.png';
   }
 }
 

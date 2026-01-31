@@ -1,5 +1,5 @@
 class BottleBar extends DrawableObject {
-  IMAGES_BOTTLE = [
+  UI_IMAGES = [
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png',
@@ -8,61 +8,41 @@ class BottleBar extends DrawableObject {
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png',
   ];
 
-  percentage = 0;
+  currentStock = 0;
 
   /**
-   * Creates a new instance of the BottleBar.
-   *
-   * Loads all bottle bar images and sets the initial position, size,
-   * and percentage value.
+   * Constructs the visual inventory bar for salsa bottles.
    */
   constructor() {
     super();
-    this.loadImages(this.IMAGES_BOTTLE);
+    this.loadImages(this.UI_IMAGES);
     this.x = 40;
     this.y = 60;
     this.width = 170;
     this.height = 50;
-    this.setPercentage(0);
+    this.refreshProgress(0);
   }
 
   /**
-   * Updates the bottle bar’s fill level and corresponding image.
-   *
-   * @param {number} percentage - The new bottle fill percentage (0–100).
-   *
-   * @example
-   * Set the bottle bar to 80%
-   * bottleBar.setPercentage(80);
+   * Syncs the bar's appearance with the character's inventory.
+   * @param {number} val - The current percentage value (0-100).
    */
-  setPercentage(percentage) {
-    this.percentage = percentage;
-    let path = this.IMAGES_BOTTLE[this.lifeBarIndex()];
+  refreshProgress(val) {
+    this.currentStock = val;
+    let path = this.UI_IMAGES[this.calculateIconIndex()];
     this.img = this.imageCache[path];
   }
 
   /**
-   * Determines the correct image index for the current percentage.
-   *
-   * @returns {number} The index of the image corresponding to the current bottle fill level.
-   *
-   * @example
-   * For 75% the result is 4 (the 80% image)
-   * const index = bottleBar.lifeBarIndex();
+   * Logic to determine which image index matches the inventory level.
+   * @returns {number} Array index for the UI image.
    */
-  lifeBarIndex() {
-    if (this.percentage == 100) {
-      return 5;
-    } else if (this.percentage >= 80) {
-      return 4;
-    } else if (this.percentage >= 60) {
-      return 3;
-    } else if (this.percentage >= 40) {
-      return 2;
-    } else if (this.percentage >= 20) {
-      return 1;
-    } else {
-      return 0;
-    }
+  calculateIconIndex() {
+    if (this.currentStock >= 100) return 5;
+    if (this.currentStock >= 80) return 4;
+    if (this.currentStock >= 60) return 3;
+    if (this.currentStock >= 40) return 2;
+    if (this.currentStock >= 20) return 1;
+    return 0;
   }
 }

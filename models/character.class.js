@@ -1,5 +1,5 @@
 class Character extends MovableObject {
-  IMAGES_WALKING = [
+  LOOK_WALK = [
     'img/2_character_pepe/2_walk/W-21.png',
     'img/2_character_pepe/2_walk/W-22.png',
     'img/2_character_pepe/2_walk/W-23.png',
@@ -8,7 +8,7 @@ class Character extends MovableObject {
     'img/2_character_pepe/2_walk/W-26.png',
   ];
 
-  IMAGES_JUMPING = [
+  LOOK_JUMP = [
     'img/2_character_pepe/3_jump/J-31.png',
     'img/2_character_pepe/3_jump/J-32.png',
     'img/2_character_pepe/3_jump/J-33.png',
@@ -20,7 +20,7 @@ class Character extends MovableObject {
     'img/2_character_pepe/3_jump/J-39.png',
   ];
 
-  IMAGES_DEAD = [
+  LOOK_DIE = [
     'img/2_character_pepe/5_dead/D-51.png',
     'img/2_character_pepe/5_dead/D-52.png',
     'img/2_character_pepe/5_dead/D-53.png',
@@ -30,13 +30,13 @@ class Character extends MovableObject {
     'img/2_character_pepe/5_dead/D-57.png',
   ];
 
-  IMAGES_HURT = [
+  LOOK_PAIN = [
     'img/2_character_pepe/4_hurt/H-41.png',
     'img/2_character_pepe/4_hurt/H-42.png',
     'img/2_character_pepe/4_hurt/H-43.png',
   ];
 
-  IMAGES_STANDING = [
+  LOOK_IDLE = [
     'img/2_character_pepe/1_idle/idle/I-1.png',
     'img/2_character_pepe/1_idle/idle/I-2.png',
     'img/2_character_pepe/1_idle/idle/I-3.png',
@@ -49,7 +49,7 @@ class Character extends MovableObject {
     'img/2_character_pepe/1_idle/idle/I-10.png',
   ];
 
-  IMAGES_SLEEPING = [
+  LOOK_SLEEP = [
     'img/2_character_pepe/1_idle/long_idle/I-11.png',
     'img/2_character_pepe/1_idle/long_idle/I-12.png',
     'img/2_character_pepe/1_idle/long_idle/I-13.png',
@@ -62,191 +62,152 @@ class Character extends MovableObject {
     'img/2_character_pepe/1_idle/long_idle/I-20.png',
   ];
 
-  IMAGES_DEAD = [
-    'img/2_character_pepe/5_dead/D-51.png',
-    'img/2_character_pepe/5_dead/D-52.png',
-    'img/2_character_pepe/5_dead/D-53.png',
-    'img/2_character_pepe/5_dead/D-54.png',
-    'img/2_character_pepe/5_dead/D-55.png',
-    'img/2_character_pepe/5_dead/D-56.png',
-    'img/2_character_pepe/5_dead/D-57.png',
-  ];
-
-  world;
   height = 240;
   width = 170;
   x = 120;
-  y = 100;
+  y = 190;
+
+  world;
   speed = 5;
-  dead = false;
-  AUDIO_WALKING = new Audio('audio/running.mp3');
-  AUDIO_HURTING = new Audio('audio/hurt.mp3');
-  AUDIO_JUMPING = new Audio('audio/jump.mp3');
+  isDead = false;
+
+  // Audio configuration
+  RUN_SOUND = new Audio('audio/running.mp3');
+  PAIN_SOUND = new Audio('audio/hurt.mp3');
+  JUMP_SOUND = new Audio('audio/jump.mp3');
 
   /**
-   * Creates an instance of the character.
-   *
-   * Loads all required character images (standing, walking, jumping, hurt, dead, sleeping),
-   * applies gravity, initializes animation state, and starts the animation loops.
+   * Initializes the hero with physical boundaries and preloaded visuals.
    */
   constructor() {
     super();
-    this.loadImage('img/2_character_pepe/2_walk/W-21.png');
-    this.loadImages(this.IMAGES_STANDING);
-    this.loadImages(this.IMAGES_WALKING);
-    this.loadImages(this.IMAGES_SLEEPING);
-    this.loadImages(this.IMAGES_JUMPING);
-    this.loadImages(this.IMAGES_HURT);
-    this.loadImages(this.IMAGES_DEAD);
-    this.offset = {
-      top: 100,
-      right: 60,
-      bottom: 10,
-      left: 40,
-    };
+    this.setupVisuals();
+    this.collisionPadding();
     this.applyGravity();
-    this.currentImage = 0;
-    this.img = this.imageCache[this.IMAGES_STANDING[0]];
-    this.idleStartTime = new Date().getTime();
-    this.animate();
+    this.lastActionTime = Date.now();
+    this.initControllers();
+  }
+
+  setupVisuals() {
+    this.loadImage(this.LOOK_WALK[0]);
+    this.loadImages(this.LOOK_IDLE);
+    this.loadImages(this.LOOK_WALK);
+    this.loadImages(this.LOOK_SLEEP);
+    this.loadImages(this.LOOK_JUMP);
+    this.loadImages(this.LOOK_PAIN);
+    this.loadImages(this.LOOK_DIE);
+  }
+
+  collisionPadding() {
+    this.offset = {top: 100, right: 60, bottom: 10, left: 40};
+  }
+
+  initControllers() {
+    this.processPhysics();
+    this.processVisualState();
   }
 
   /**
-   * Starts the main animation and movement handling loops.
-   *
-   * This method initializes two independent timed loops:
-   * one for handling character movement and one for updating animations.
+   * High-frequency loop for movement and camera updates (60 FPS).
    */
-  animate() {
-    this.handleMovement();
-    this.handleAnimations();
-  }
-
-  /**
-   * Handles player movement based on keyboard input.
-   *
-   * Moves the character left, right, or makes it jump.
-   * Also updates camera position to follow the character.
-   *
-   * @fires Character#moveCharacterRight
-   * @fires Character#moveCharacterLeft
-   * @fires Character#jumpCharacter
-   */
-  handleMovement() {
+  processPhysics() {
     setInterval(() => {
-      this.AUDIO_WALKING.pause();
-      if (
-        this.world.keyboard.KEY_RIGHT &&
-        this.x < this.world.level.level_end_x
-      )
-        this.moveCharacterRight();
-      if (this.world.keyboard.KEY_LEFT && this.x > 0) this.moveCharacterLeft();
-      if (this.world.keyboard.KEY_UP && !this.isAboveGround())
-        this.jumpCharacter();
+      this.RUN_SOUND.pause();
+
+      if (this.canMoveRight()) this.executeMoveRight();
+      if (this.canMoveLeft()) this.executeMoveLeft();
+      if (this.canJump()) this.executeJump();
+
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
   }
 
   /**
-   * Handles animation updates depending on character state.
-   *
-   * Switches between standing, walking, jumping, hurt, or dead animations
-   * depending on user input and internal status flags.
+   * Lower-frequency loop for switching sprite frames.
    */
-  handleAnimations() {
+  processVisualState() {
     setInterval(() => {
-      const idleTime = (new Date().getTime() - this.idleStartTime) / 1000;
-      if (this.isHurt()) return this.playHurtAnimation();
-      if (this.isDead()) return this.playDeadAnimation();
-      if (this.isAboveGround()) return this.playAnimation(this.IMAGES_JUMPING);
-      this.playIdleOrWalkAnimation(idleTime);
+      const secondsIdle = (Date.now() - this.lastActionTime) / 1000;
+
+      if (this.isHurt()) return this.triggerPainSeq();
+      if (this.energy <= 0) return this.triggerDeathSeq(); // Use energy check directly
+      if (this.isAboveGround()) return this.playAnimation(this.LOOK_JUMP);
+
+      this.resolveGroundAnimation(secondsIdle);
     }, 100);
   }
 
-  /**
-   * Moves the character to the right and plays walking sound if on the ground.
-   */
-  moveCharacterRight() {
+  canMoveRight() {
+    return this.world.input.KEY_RIGHT && this.x < this.world.stage.level_end_x;
+  }
+
+  canMoveLeft() {
+    return this.world.input.KEY_LEFT && this.x > 0;
+  }
+
+  canJump() {
+    return this.world.input.KEY_UP && !this.isAboveGround();
+  }
+
+  executeMoveRight() {
     this.moveRight();
     this.otherDirection = false;
-    this.idleStartTime = new Date().getTime();
-    if (!this.isAboveGround()) safePlayAudio(this.AUDIO_WALKING);
+    this.resetIdleTimer();
+    if (!this.isAboveGround()) safePlayAudio(this.RUN_SOUND);
   }
 
-  /**
-   * Moves the character to the left and plays walking sound if on the ground.
-   */
-  moveCharacterLeft() {
+  executeMoveLeft() {
     this.moveLeft();
     this.otherDirection = true;
-    this.idleStartTime = new Date().getTime();
-    if (!this.isAboveGround()) safePlayAudio(this.AUDIO_WALKING);
+    this.resetIdleTimer();
+    if (!this.isAboveGround()) safePlayAudio(this.RUN_SOUND);
   }
 
-  /**
-   * Makes the character jump and plays the jump sound.
-   */
-  jumpCharacter() {
+  executeJump() {
     this.jump();
-    this.idleStartTime = new Date().getTime();
-    safePlayAudio(this.AUDIO_JUMPING);
+    this.resetIdleTimer();
+    safePlayAudio(this.JUMP_SOUND);
   }
 
-  /**
-   * Plays the hurt animation and sound.
-   * Reduces volume to prevent sound distortion.
-   */
-  playHurtAnimation() {
-    this.playAnimation(this.IMAGES_HURT);
-    safePlayAudio(this.AUDIO_HURTING);
-    this.AUDIO_HURTING.volume = 0.1;
+  triggerPainSeq() {
+    this.playAnimation(this.LOOK_PAIN);
+    this.PAIN_SOUND.volume = 0.1;
+    safePlayAudio(this.PAIN_SOUND);
   }
 
-  /**
-   * Plays the death animation and sets the character state to dead.
-   * Applies gravity after a delay to make the fall look natural.
-   */
-  playDeadAnimation() {
-    this.playAnimation(this.IMAGES_DEAD);
+  triggerDeathSeq() {
+    this.playAnimation(this.LOOK_DIE);
     setTimeout(() => this.applyGravity(), 2000);
-    this.dead = true;
+    this.isDead = true;
   }
 
-  /**
-   * Chooses between idle, walking, or sleeping animation
-   * based on the character's idle time and movement input.
-   *
-   * @param {number} idleTime - The number of seconds since the last movement.
-   */
-  playIdleOrWalkAnimation(idleTime) {
-    if (this.world.keyboard.KEY_RIGHT || this.world.keyboard.KEY_LEFT) {
-      this.playAnimation(this.IMAGES_WALKING);
+  resolveGroundAnimation(idleTime) {
+    if (this.world.input.KEY_RIGHT || this.world.input.KEY_LEFT) {
+      this.playAnimation(this.LOOK_WALK);
     } else if (idleTime > 5) {
-      this.playLoopingAnimation(this.IMAGES_SLEEPING);
+      this.cyclicAnimation(this.LOOK_SLEEP);
     } else {
-      this.playLoopingAnimation(this.IMAGES_STANDING);
+      this.cyclicAnimation(this.LOOK_IDLE);
     }
   }
 
   /**
-   * Plays a looping animation from the given image array.
-   *
-   * Cycles through all frames in the provided image list and updates
-   * the displayed image accordingly.
-   *
-   * @param {string[]} images - The array of image paths to loop through.
+   * Refined looping logic for stationary animations.
    */
-  playLoopingAnimation(images) {
-    let i = this.currentImage % images.length;
-    let path = images[i];
-    this.img = this.imageCache[path];
+  cyclicAnimation(frames) {
+    let index = this.currentImage % frames.length;
+    this.img = this.imageCache[frames[index]];
     this.currentImage++;
   }
 
-  die() {
+  resetIdleTimer() {
+    this.lastActionTime = Date.now();
+  }
+
+  forceGameOver() {
     this.energy = 0;
-    this.dead = true;
-    this.playDeathAnimation();
-    stopGame();
+    this.isDead = true;
+    this.triggerDeathSeq();
+    if (typeof stopGame === 'function') stopGame();
   }
 }

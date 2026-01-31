@@ -3,14 +3,15 @@ class BackgroundObject extends MovableObject {
   height = 480;
 
   /**
-   *
-   * @param {string} imagePath - The file path or URL of the background image.
-   * @param {number} x - The x-coordinate position where the background should be placed.
-   * @param {number} y - The y-coordinate position where the background should be placed.
+   * Creates a static background element for the game world.
+   * @param {string} file - The path to the image resource.
+   * @param {number} startX - Horizontal starting position.
+   * @param {number} startY - Vertical starting position.
    */
-  constructor(imagePath, x, y) {
-    super().loadImage(imagePath);
-    this.x = x;
-    this.y = y;
+  constructor(file, startX, startY) {
+    super();
+    this.loadImage(file);
+    this.x = startX;
+    this.y = startY;
   }
 }

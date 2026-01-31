@@ -1,54 +1,50 @@
 class Chicken extends MovableObject {
+  // Positioning and Physical Properties
+  y = 310;
   height = 120;
   width = 120;
-  y = 310;
   chickenAlive = true;
 
-  offset = {
-    top: 10,
-    right: 20,
-    bottom: 20,
-    left: 10,
-  };
+  // Collision adjustment
+  offset = {top: 12, right: 18, bottom: 12, left: 18};
 
-  IMAGES_WALKING = [
+  // Sprite Collections
+  WALK_TEXTURES = [
     'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
     'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
     'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
   ];
 
-  IMAGES_DEAD = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
+  DEFEAT_TEXTURES = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
 
-  /**
-   * Creates a new chicken instance with randomized position and speed.
-   *
-   * Loads walking and dead animations, initializes the default image,
-   * and starts both movement and animation loops.
-   */
   constructor() {
-    super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
-    this.x = 350 + Math.random() * 5900;
-    this.speed = 0.15 + Math.random() * 0.25;
-    this.loadImages(this.IMAGES_WALKING);
-    this.loadImages(this.IMAGES_DEAD);
-    this.animate();
+    super(); // Initialize parent properties
+    this.prepareAssets();
+    this.initSpawnSettings();
+    this.activateBehavior();
   }
 
-  /**
-   * Initializes both movement and animation loops for the chicken.
-   */
-  animate() {
-    this.startMovement();
-    this.startAnimationLoop();
+  /** * Loads necessary image files into cache */
+  prepareAssets() {
+    this.loadImage(this.WALK_TEXTURES[0]);
+    this.loadImages(this.WALK_TEXTURES);
+    this.loadImages(this.DEFEAT_TEXTURES);
   }
 
-  /**
-   * Starts the chicken’s continuous leftward movement.
-   *
-   * This loop runs at approximately 60 frames per second and
-   * only executes while the chicken is alive.
-   */
-  startMovement() {
+  /** * Defines randomized spawn point and drifting speed */
+  initSpawnSettings() {
+    this.x = 400 + Math.random() * 5900;
+    this.speed = 0.2 + Math.random() * 0.45;
+  }
+
+  /** * Starts the asynchronous logic for movement and visuals */
+  activateBehavior() {
+    this.runPhysicsCycle();
+    this.runAnimationCycle();
+  }
+
+  /** * Handles the horizontal translation at ~60fps */
+  runPhysicsCycle() {
     setInterval(() => {
       if (this.chickenAlive) {
         this.moveLeft();
@@ -56,20 +52,16 @@ class Chicken extends MovableObject {
     }, 1000 / 60);
   }
 
-  /**
-   * Starts the animation loop for the chicken.
-   *
-   * Updates the displayed image every 100 milliseconds,
-   * switching between walking and dead animations depending
-   * on the chicken’s state.
-   */
-  startAnimationLoop() {
+  /** * Manages sprite switching based on life state */
+  runAnimationCycle() {
     setInterval(() => {
       if (this.chickenAlive) {
-        this.playAnimation(this.IMAGES_WALKING);
+        this.playAnimation(this.WALK_TEXTURES);
       } else {
-        this.playAnimation(this.IMAGES_DEAD);
+        // Direct assignment to the dead frame for efficiency
+        const deadSprite = this.DEFEAT_TEXTURES[0];
+        this.img = this.imageCache[deadSprite];
       }
-    }, 100);
+    }, 110); // Slightly varied timing for a more organic feel
   }
 }
