@@ -198,7 +198,7 @@ class World {
           this.hero.speedY = 15;
         } else {
           this.hero.hit();
-          this.healthStatus.setPercentage(this.hero.energy);
+          this.healthStatus.updateStatus(this.hero.energy);
           this.evaluateEndState();
         }
       }
@@ -209,7 +209,6 @@ class World {
     this.stage.bottles.forEach((bottle, i) => {
       if (this.hero.isColliding(bottle)) {
         this.hero.collectBottle();
-        // Fixed: Matching the updated BottleBar method refreshProgress
         this.inventoryBar.refreshProgress(this.hero.bottleAmount);
         this.stage.bottles.splice(i, 1);
       }
@@ -245,7 +244,7 @@ class World {
     if (this.isTouchingBoss()) {
       this.hero.energy = 0;
       this.hero.dead = true;
-      this.healthStatus.setPercentage(0);
+      this.healthStatus.updateStatus(0);
       this.evaluateEndState();
     }
   }
