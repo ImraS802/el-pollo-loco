@@ -1,24 +1,19 @@
 class Endboss extends MovableObject {
-  // Appearance and Physics
   y = 145;
   height = 300;
   width = 250;
 
-  // Game State
   isDefeated = false;
   health = 100;
   isAggressive = false;
   isRecovering = false;
 
-  // External Logic Triggers
   targetSpotted = false;
   targetEscaping = false;
   ammoInStock = false;
 
-  // Hitbox Fine-Tuning
   offset = {top: 85, right: 55, bottom: 15, left: 35};
 
-  // Sprite Collections
   SPRITES_IDLE = [
     'img/4_enemie_boss_chicken/2_alert/G5.png',
     'img/4_enemie_boss_chicken/2_alert/G6.png',
@@ -84,9 +79,7 @@ class Endboss extends MovableObject {
 
   /** * Orchestrates logic and visual loops */
   beginBehaviorCycles() {
-    // Logic Loop (Physics & AI)
     setInterval(() => this.processAI(), 1000 / 60);
-    // Visual Loop (Animations)
     setInterval(() => this.updateGraphics(), 100);
   }
 
@@ -127,7 +120,7 @@ class Endboss extends MovableObject {
 
     setTimeout(() => {
       this.isRecovering = false;
-      this.isAggressive = true; // Counter-attack after being hit
+      this.isAggressive = true;
     }, 1500);
 
     if (this.health <= 0) this.health = 0;

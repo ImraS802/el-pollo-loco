@@ -129,7 +129,6 @@ class MovableObject extends DrawableObject {
     if (this instanceof ThrowableObject || this instanceof Endboss) {
       return true;
     } else if (this.checkEnergyState()) {
-      // Updated name here
       return true;
     } else {
       return this.y < 180;

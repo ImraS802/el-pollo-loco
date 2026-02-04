@@ -37,7 +37,6 @@ class StatusBar extends DrawableObject {
   calculateIconIndex() {
     if (this.currentValue <= 0) return 0;
     if (this.currentValue >= 100) return 5;
-    // Divides percentage into 5 blocks to match 6 images
     return Math.ceil(this.currentValue / 20);
   }
 

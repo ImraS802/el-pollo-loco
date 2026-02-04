@@ -3,7 +3,6 @@ class ThrowableObject extends MovableObject {
   height = 70;
   isSplashing = false;
 
-  // Asset Collections
   FLIGHT_SPRITES = [
     'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
     'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -37,19 +36,16 @@ class ThrowableObject extends MovableObject {
 
   /** * Initiates physics and visual loops */
   executeLaunch() {
-    this.speedY = 15; // The "Upward" force (Increase for higher arch)
-    this.acceleration = 1; // How fast it falls (Higher = faster drop)
+    this.speedY = 15;
+    this.acceleration = 1;
     this.applyGravity();
 
-    // The "Forward" force
     this.flightInterval = setInterval(() => {
       if (!this.isSplashing) {
-        // Reduced from 10 to 6-8 for a shorter, more natural arch
         this.x += 6;
       }
     }, 1000 / 60);
 
-    // Visual animation loop
     setInterval(() => {
       this.refreshVisuals();
     }, 60);
@@ -67,7 +63,7 @@ class ThrowableObject extends MovableObject {
   /** * Call this method when the bottle hits the ground or an enemy */
   triggerImpact() {
     this.isSplashing = true;
-    this.speedY = 0; // Stop falling
-    this.acceleration = 0; // Disable gravity
+    this.speedY = 0;
+    this.acceleration = 0;
   }
 }

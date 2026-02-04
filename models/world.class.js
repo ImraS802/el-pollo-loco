@@ -6,7 +6,6 @@ class World {
   input;
   camera_x = 0;
 
-  // Interface Elements
   healthStatus = new StatusBar();
   inventoryBar = new BottleBar();
   wealthBar = new CoinBar();
@@ -16,7 +15,6 @@ class World {
   bossEntity = this.stage.enemies[this.stage.enemies.length - 1];
   sessionOver;
 
-  // Sound Assets
   AMBIENT_TRACK = new Audio(
     'audio/ambient-desert-atmosphere-with-dry-wind-sounds-1-377883.mp3',
   );
@@ -29,9 +27,9 @@ class World {
     this.input = input;
     this.sessionOver = sessionOver;
 
-    this.linkHeroToWorld(); // Link first
-    this.setupAudioEngine(); // Audio second
-    this.initLoop(); // Logic third
+    this.linkHeroToWorld();
+    this.setupAudioEngine();
+    this.initLoop();
     this.render();
   }
 
@@ -45,12 +43,11 @@ class World {
     this.AMBIENT_TRACK.loop = true;
     safePlayAudio(this.AMBIENT_TRACK);
 
-    // Use a safer way to mute tracks only if they exist
     const audioTargets = [
       this.SFX_CHICKEN,
-      this.hero.RUN_SOUND, // Changed from AUDIO_WALKING to match your Character rewrite
-      this.hero.PAIN_SOUND, // Changed from AUDIO_HURTING
-      this.hero.JUMP_SOUND, // Changed from AUDIO_JUMPING
+      this.hero.RUN_SOUND,
+      this.hero.PAIN_SOUND,
+      this.hero.JUMP_SOUND,
     ];
 
     audioTargets.forEach((track) => {
@@ -58,11 +55,8 @@ class World {
     });
 
     if (this.bossEntity) {
-      // Use the renamed SFX properties
       if (this.bossEntity.SFX_ROAR) this.bossEntity.SFX_ROAR.muted = false;
       if (this.bossEntity.SFX_PAIN) this.bossEntity.SFX_PAIN.muted = false;
-
-      // Keep these as fallbacks if needed
       if (this.bossEntity.AUDIO_SCREAM)
         this.bossEntity.AUDIO_SCREAM.muted = false;
       if (this.bossEntity.AUDIO_HURT) this.bossEntity.AUDIO_HURT.muted = false;
@@ -71,7 +65,6 @@ class World {
 
   initLoop() {
     setInterval(() => {
-      // Move ALL "Process" and "Handle" functions here
       this.handleHeroLogic();
       this.handleItemLogic();
       this.handleBossLogic();
@@ -218,7 +211,7 @@ class World {
   fireProjectile() {
     const hasAmmo = this.inventoryBar.currentStock > 0;
     if (this.input.KEY_D && hasAmmo && !this.isThrowing) {
-      this.isThrowing = true; // Lock the "trigger"
+      this.isThrowing = true;
       let flask = new ThrowableObject(this.hero.x + 80, this.hero.y + 100);
       this.projectiles.push(flask);
 
@@ -310,17 +303,10 @@ class World {
   }
 
   evaluateEndState() {
-    // 1. Use 'screenLock' instead of 'endscreenShown'
     if (this.sessionOver.screenLock) return;
-
-    // 2. Check health or boss status (ensure bossEntity.isDefeated matches your Endboss class)
     if (this.hero.energy <= 0 || this.bossEntity.isDefeated) {
-      // 3. Use 'hasPlayerLost' instead of 'lostGame'
       this.sessionOver.hasPlayerLost = this.hero.energy <= 0;
-
-      // 4. Use 'resolveGameSession()' instead of 'showEndscreen()'
       this.sessionOver.resolveGameSession();
-
       this.AMBIENT_TRACK.pause();
       safePlayAudio(this.SFX_GAME_OVER);
     }

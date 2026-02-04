@@ -8,7 +8,6 @@ class GameOver extends DrawableObject {
   hasPlayerLost = false;
   screenLock = false;
 
-  // Paths defined as single strings to avoid array indexing confusion
   ASSET_FAILURE = 'img/9_intro_outro_screens/game_over/oh no you lost!.png';
   ASSET_VICTORY = 'img/You won, you lost/You Won B.png';
   ASSET_DEFAULT = 'img/9_intro_outro_screens/game_over/game over!.png';
@@ -53,8 +52,6 @@ class GameOver extends DrawableObject {
   clearResolutionScreen() {
     this.screenLock = false;
     this.toggleOverlayVisibility(false);
-
-    // Ensure both buttons are tucked away
     document.getElementById('tryGameAgain').classList.add('d-none');
     document.getElementById('playGameAgain').classList.add('d-none');
   }

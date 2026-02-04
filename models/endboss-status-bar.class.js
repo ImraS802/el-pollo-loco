@@ -1,5 +1,4 @@
 class EndbossStatusBar extends DrawableObject {
-  // Visual Asset Configuration
   VITALITY_FRAMES = [
     'img/7_statusbars/2_statusbar_endboss/blue/blue0.png',
     'img/7_statusbars/2_statusbar_endboss/blue/blue20.png',
@@ -29,7 +28,7 @@ class EndbossStatusBar extends DrawableObject {
    */
   prepareHealthBar() {
     this.loadImages(this.VITALITY_FRAMES);
-    this.width = 135; // Slightly tweaked dimensions
+    this.width = 135;
     this.height = 35;
   }
 

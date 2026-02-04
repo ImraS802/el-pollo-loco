@@ -36,16 +36,12 @@ class DrawableObject {
       if (this.img) {
         context.drawImage(this.img, this.x, this.y, this.width, this.height);
       }
-    } catch (e) {
-      // Prevents game freeze if an image is temporarily unavailable
-    }
+    } catch (e) {}
   }
 
   /**
    * Debug method left empty to ensure no frames are drawn.
    * This prevents ReferenceErrors when called by the engine.
    */
-  debugFrame(context) {
-    // Logic removed to hide blue bounding boxes
-  }
+  debugFrame(context) {}
 }
