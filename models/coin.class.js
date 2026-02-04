@@ -1,5 +1,4 @@
 class Coin extends MovableObject {
-  // Dimensions and Hitbox
   width = 110;
   height = 110;
   hitbox = {top: 35, right: 35, bottom: 35, left: 35};
@@ -29,7 +28,6 @@ class Coin extends MovableObject {
   setSpawnPoint(x, y) {
     this.x = x;
     this.y = y;
-    // Overwriting the inherited offset with our specific hitbox
     this.offset = this.hitbox;
   }
 

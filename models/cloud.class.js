@@ -1,15 +1,13 @@
 class Cloud extends MovableObject {
-  // Dimensional settings
-  y = 30; // Slightly adjusted height
+  y = 30;
   width = 500;
-  height = 250; // Modified height for a sleeker look
+  height = 250;
 
   constructor(startingX) {
     super();
     this.setupVisuals();
     this.x = startingX;
 
-    // Randomize speed slightly so clouds move at different paces
     this.driftSpeed = 0.1 + Math.random() * 0.15;
 
     this.initFloatingEffect();

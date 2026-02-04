@@ -68,13 +68,10 @@ function startGame() {
   canvas = document.getElementById('canvas');
   gameOver = new GameOver();
 
-  // CRITICAL: Ensure level1 is defined before creating the world
   level1 = initLevel1();
 
-  // Initialize World
   world = new World(canvas, keyboard, gameOver);
 
-  // Apply settings AFTER world exists
   applySavedAudioSettings();
   touchControl();
 }
@@ -180,9 +177,7 @@ function muteMusic() {
     ? 'icons/mute.png'
     : 'icons/speaker.png';
   if (world) {
-    // Changed AUDIO_BACKGROUND to AMBIENT_TRACK to match your World class
     if (world.AMBIENT_TRACK) world.AMBIENT_TRACK.muted = isMuted;
-    // Changed AUDIO_GAMEOVER to SFX_GAME_OVER to match your World class
     if (world.SFX_GAME_OVER) world.SFX_GAME_OVER.muted = isMuted;
   }
 }
@@ -235,7 +230,7 @@ function unmuteAllSounds() {
  */
 function toggleWorldSounds(state) {
   if (world && world.SFX_CHICKEN) {
-    world.SFX_CHICKEN.muted = state; // Matches SFX_CHICKEN in World rewrite
+    world.SFX_CHICKEN.muted = state;
   }
 }
 
@@ -259,11 +254,9 @@ function toggleCharacterSounds(state) {
  */
 function toggleEndbossSounds(state) {
   if (world && world.bossEntity) {
-    // We use optional chaining (?.) and check for both names to be extra safe
     if (world.bossEntity.SFX_ROAR) world.bossEntity.SFX_ROAR.muted = state;
     if (world.bossEntity.SFX_PAIN) world.bossEntity.SFX_PAIN.muted = state;
 
-    // Fallback in case you didn't rename them yet in the Endboss class
     if (world.bossEntity.AUDIO_SCREAM)
       world.bossEntity.AUDIO_SCREAM.muted = state;
     if (world.bossEntity.AUDIO_HURT) world.bossEntity.AUDIO_HURT.muted = state;

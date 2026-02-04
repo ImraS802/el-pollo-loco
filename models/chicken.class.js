@@ -1,14 +1,11 @@
 class Chicken extends MovableObject {
-  // Positioning and Physical Properties
   y = 310;
   height = 120;
   width = 120;
   chickenAlive = true;
 
-  // Collision adjustment
   offset = {top: 12, right: 18, bottom: 12, left: 18};
 
-  // Sprite Collections
   WALK_TEXTURES = [
     'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
     'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -18,7 +15,7 @@ class Chicken extends MovableObject {
   DEFEAT_TEXTURES = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
 
   constructor() {
-    super(); // Initialize parent properties
+    super();
     this.prepareAssets();
     this.initSpawnSettings();
     this.activateBehavior();
@@ -58,10 +55,9 @@ class Chicken extends MovableObject {
       if (this.chickenAlive) {
         this.playAnimation(this.WALK_TEXTURES);
       } else {
-        // Direct assignment to the dead frame for efficiency
         const deadSprite = this.DEFEAT_TEXTURES[0];
         this.img = this.imageCache[deadSprite];
       }
-    }, 110); // Slightly varied timing for a more organic feel
+    }, 110);
   }
 }

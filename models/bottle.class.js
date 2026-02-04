@@ -1,5 +1,4 @@
 class Bottle extends DrawableObject {
-  // Standard sprite dimensions
   width = 70;
   height = 70;
   groundLevel = 355;

@@ -71,7 +71,6 @@ class Character extends MovableObject {
   speed = 5;
   isDead = false;
 
-  // Audio configuration
   RUN_SOUND = new Audio('audio/running.mp3');
   PAIN_SOUND = new Audio('audio/hurt.mp3');
   JUMP_SOUND = new Audio('audio/jump.mp3');
@@ -130,7 +129,7 @@ class Character extends MovableObject {
       const secondsIdle = (Date.now() - this.lastActionTime) / 1000;
 
       if (this.isHurt()) return this.triggerPainSeq();
-      if (this.energy <= 0) return this.triggerDeathSeq(); // Use energy check directly
+      if (this.energy <= 0) return this.triggerDeathSeq();
       if (this.isAboveGround()) return this.playAnimation(this.LOOK_JUMP);
 
       this.resolveGroundAnimation(secondsIdle);

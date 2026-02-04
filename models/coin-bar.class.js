@@ -1,5 +1,4 @@
 class CoinBar extends DrawableObject {
-  // Asset configuration
   BAR_SPRITES = [
     'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
     'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',
@@ -23,7 +22,7 @@ class CoinBar extends DrawableObject {
   initStatusBar() {
     this.loadImages(this.BAR_SPRITES);
     this.x = 40;
-    this.y = 90; // Slightly adjusted for a custom layout
+    this.y = 90;
     this.width = 180;
     this.height = 55;
   }

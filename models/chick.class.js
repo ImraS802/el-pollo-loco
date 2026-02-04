@@ -1,11 +1,9 @@
 class Chick extends MovableObject {
-  // Positioning and Dimensions
   y = 385;
   height = 38;
   width = 38;
   chickenAlive = true;
 
-  // Animation Assets
   IMAGES_WALKING = [
     'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
     'img/3_enemies_chicken/chicken_small/1_walk/2_w.png',
@@ -20,7 +18,6 @@ class Chick extends MovableObject {
     this.setRandomPosition();
     this.startEntityLoops();
 
-    // Custom hitbox for better gameplay feel
     this.offset = {top: 2, left: 2, right: 2, bottom: 2};
   }
 
