@@ -294,57 +294,76 @@ function applySavedAudioSettings() {
  * Handles directional movement and throwing bottles using touchstart and touchend events.
  */
 function touchControl() {
-  document
-    .getElementById('touchRight')
-    .addEventListener('touchstart', function (e) {
+  const options = {passive: false};
+  document.getElementById('touchRight').addEventListener(
+    'touchstart',
+    function (e) {
       e.preventDefault();
       keyboard.KEY_RIGHT = true;
-    });
+    },
+    options,
+  );
 
-  document
-    .getElementById('touchRight')
-    .addEventListener('touchend', function (e) {
+  document.getElementById('touchRight').addEventListener(
+    'touchend',
+    function (e) {
       e.preventDefault();
       keyboard.KEY_RIGHT = false;
-    });
+    },
+    options,
+  );
 
-  document
-    .getElementById('touchLeft')
-    .addEventListener('touchstart', function (e) {
+  document.getElementById('touchLeft').addEventListener(
+    'touchstart',
+    function (e) {
       e.preventDefault();
       keyboard.KEY_LEFT = true;
-    });
+    },
+    options,
+  );
 
-  document
-    .getElementById('touchLeft')
-    .addEventListener('touchend', function (e) {
+  document.getElementById('touchLeft').addEventListener(
+    'touchend',
+    function (e) {
       e.preventDefault();
       keyboard.KEY_LEFT = false;
-    });
+    },
+    options,
+  );
 
-  document
-    .getElementById('touchUp')
-    .addEventListener('touchstart', function (e) {
+  document.getElementById('touchUp').addEventListener(
+    'touchstart',
+    function (e) {
       e.preventDefault();
       keyboard.KEY_UP = true;
-    });
+    },
+    options,
+  );
 
-  document.getElementById('touchUp').addEventListener('touchend', function (e) {
-    e.preventDefault();
-    keyboard.KEY_UP = false;
-  });
+  document.getElementById('touchUp').addEventListener(
+    'touchend',
+    function (e) {
+      e.preventDefault();
+      keyboard.KEY_UP = false;
+    },
+    options,
+  );
 
-  document
-    .getElementById('touchThrow')
-    .addEventListener('touchstart', function (e) {
+  document.getElementById('touchThrow').addEventListener(
+    'touchstart',
+    function (e) {
       e.preventDefault();
       keyboard.KEY_D = true;
-    });
+    },
+    options,
+  );
 
-  document
-    .getElementById('touchThrow')
-    .addEventListener('touchend', function (e) {
+  document.getElementById('touchThrow').addEventListener(
+    'touchend',
+    function (e) {
       e.preventDefault();
       keyboard.KEY_D = false;
-    });
+    },
+    options,
+  );
 }

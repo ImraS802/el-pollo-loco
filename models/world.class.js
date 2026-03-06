@@ -23,13 +23,13 @@ class World {
 
   constructor(canvas, input, sessionOver) {
     this.ctx = canvas.getContext('2d');
+    this.ctx.imageSmoothingEnabled = false;
     this.canvas = canvas;
     this.input = input;
     this.sessionOver = sessionOver;
 
     this.linkHeroToWorld();
     this.setupAudioEngine();
-    this.initLoop();
     this.render();
   }
 
@@ -63,50 +63,76 @@ class World {
     }
   }
 
-  initLoop() {
-    setInterval(() => {
-      this.handleHeroLogic();
-      this.handleItemLogic();
-      this.handleBossLogic();
-      this.handleFinalLogic();
-    }, 1000 / 25);
-  }
-
   prepareScenario() {
     this.linkHeroToWorld();
   }
 
   linkHeroToWorld() {
     this.hero.world = this;
+    this.regularEnemies = this.stage.enemies.filter(
+      (e) => !(e instanceof Endboss),
+    );
   }
 
   /**
    * Core rendering cycle using requestAnimationFrame.
    */
   render() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.runLogic();
 
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
+
     this.renderEnvironment();
     this.renderEntities();
+
     this.ctx.translate(-this.camera_x, 0);
     this.renderInterface();
     requestAnimationFrame(() => this.render());
   }
 
+  runLogic() {
+    if (!this.sessionOver.gameFinished) {
+      this.handleHeroLogic();
+      this.handleItemLogic();
+      this.handleBossLogic();
+      this.handleFinalLogic();
+    }
+  }
+
   renderEnvironment() {
-    this.addBatchToCanvas(this.stage.backgroundObjects);
-    this.addBatchToCanvas(this.stage.clouds);
+    const viewLeft = -this.camera_x - 100;
+    const viewRight = -this.camera_x + this.canvas.width + 100;
+
+    this.optimizedBatchRender(
+      this.stage.backgroundObjects,
+      viewLeft,
+      viewRight,
+    );
+    this.optimizedBatchRender(this.stage.clouds, viewLeft, viewRight);
+  }
+
+  optimizedBatchRender(list, left, right) {
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
+      if (item.x + item.width > left && item.x < right) {
+        this.paintToCanvas(item);
+      }
+    }
   }
 
   renderEntities() {
-    this.addBatchToCanvas(this.stage.enemies);
+    const vLeft = -this.camera_x - 100;
+    const vRight = -this.camera_x + this.canvas.width + 100;
+
+    this.addBatchToCanvas(this.stage.enemies, vLeft, vRight);
+    this.addBatchToCanvas(this.projectiles, vLeft, vRight);
+    this.addBatchToCanvas(this.stage.bottles, vLeft, vRight);
+    this.addBatchToCanvas(this.stage.coins, vLeft, vRight);
+
     if (!this.bossEntity.isDefeated) {
       this.paintToCanvas(this.bossEntity.endbossBar);
     }
-    this.addBatchToCanvas(this.projectiles);
-    this.addBatchToCanvas(this.stage.bottles);
-    this.addBatchToCanvas(this.stage.coins);
     this.paintToCanvas(this.hero);
   }
 
@@ -155,8 +181,13 @@ class World {
   /**
    * Loops through arrays to draw multiple objects.
    */
-  addBatchToCanvas(list) {
-    list.forEach((item) => this.paintToCanvas(item));
+  addBatchToCanvas(list, viewLeft, viewRight) {
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
+      if (item.x + item.width > viewLeft && item.x < viewRight) {
+        this.paintToCanvas(item);
+      }
+    }
   }
 
   /**
@@ -165,7 +196,6 @@ class World {
   paintToCanvas(obj) {
     if (obj.otherDirection) this.reflectEntity(obj);
     obj.render(this.ctx);
-    obj.debugFrame(this.ctx);
     if (obj.otherDirection) this.restoreEntity(obj);
   }
 
@@ -181,31 +211,16 @@ class World {
     this.ctx.restore();
   }
 
-  processCollisions() {
-    this.stage.enemies.forEach((foe) => {
-      if (!foe.chickenAlive) return;
-
-      if (this.hero.isColliding(foe)) {
-        if (this.hero.isAboveGround() && this.hero.speedY < 0) {
-          this.eliminateChicken(foe);
-          this.hero.speedY = 15;
-        } else {
-          this.hero.hit();
-          this.healthStatus.updateStatus(this.hero.energy);
-          this.evaluateEndState();
-        }
-      }
-    });
-  }
-
   processBottlePickups() {
-    this.stage.bottles.forEach((bottle, i) => {
+    const bottles = this.stage.bottles;
+    for (let i = bottles.length - 1; i >= 0; i--) {
+      const bottle = bottles[i];
       if (this.hero.isColliding(bottle)) {
         this.hero.collectBottle();
         this.inventoryBar.refreshProgress(this.hero.bottleAmount);
-        this.stage.bottles.splice(i, 1);
+        bottles.splice(i, 1);
       }
-    });
+    }
   }
 
   fireProjectile() {
@@ -224,13 +239,15 @@ class World {
   }
 
   processCoinPickups() {
-    this.stage.coins.forEach((coin, i) => {
+    const coins = this.stage.coins;
+    for (let i = coins.length - 1; i >= 0; i--) {
+      const coin = coins[i];
       if (this.hero.isColliding(coin)) {
         this.hero.collectCoin();
         this.wealthBar.updateLevel(this.hero.coinAmount);
-        this.stage.coins.splice(i, 1);
+        coins.splice(i, 1);
       }
-    });
+    }
   }
 
   processBossCombat() {
@@ -290,16 +307,46 @@ class World {
   }
 
   monitorChickenProximity() {
-    this.stage.enemies.slice(0, -1).forEach((chicken) => {
+    const now = Date.now();
+    const enemies = this.regularEnemies;
+
+    for (let i = 0; i < enemies.length; i++) {
+      const chicken = enemies[i];
+      if (!chicken.chickenAlive) continue;
+
       const isNear =
         this.hero.x > chicken.x - 200 &&
         this.hero.x + this.hero.width < chicken.x + chicken.width;
 
       if (isNear && !this.sessionOver.gameFinished) {
-        safePlayAudio(this.SFX_CHICKEN);
-        this.SFX_CHICKEN.volume = 0.1;
+        if (!chicken.lastSoundTime || now - chicken.lastSoundTime > 2000) {
+          safePlayAudio(this.SFX_CHICKEN);
+          chicken.lastSoundTime = now;
+        }
       }
-    });
+    }
+  }
+
+  processCollisions() {
+    const vLeft = -this.camera_x - 100;
+    const vRight = -this.camera_x + this.canvas.width + 100;
+    const enemies = this.stage.enemies;
+
+    for (let i = 0; i < enemies.length; i++) {
+      const foe = enemies[i];
+      if (foe.x < vLeft || foe.x > vRight || !foe.chickenAlive) continue;
+
+      if (this.hero.isColliding(foe)) {
+        if (this.hero.isAboveGround() && this.hero.speedY < 0) {
+          this.eliminateChicken(foe);
+          this.hero.speedY = 15;
+        } else if (!this.hero.isHurt()) {
+          this.hero.hit();
+          this.healthStatus.updateStatus(this.hero.energy);
+          this.evaluateEndState();
+        }
+      }
+    }
   }
 
   evaluateEndState() {
